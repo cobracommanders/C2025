@@ -115,8 +115,8 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           break;
         case DEEP_CLIMB:
-          if (currentState == RobotState.IDLE) {
-            nextState = RobotState.DEEP_CLIMB;
+          if (!currentState.ignoreRequests && !currentState.inverted) {
+            nextState = RobotState.PREPARE_DEEP_CLIMB;
           }
           break;
         case HOMING:
@@ -139,6 +139,7 @@ public class RobotManager extends StateMachine<RobotState> {
             case CAPPED_L4:
               nextState = RobotState.SCORE_L4;
             case DEEP_CLIMB:
+              nextState = RobotState.DEEP_CLIMB_RETRACT;
             default:
               break;
           }
@@ -159,6 +160,11 @@ public class RobotManager extends StateMachine<RobotState> {
       case REMOVE_ALGAE:
       case WAIT_L3:
         break;
+
+      case DEEP_CLIMB_DEPLOY:
+        if(timeout(0.25)){
+          nextState = RobotState.DEEP_CLIMB_WAIT;
+        } 
       
       case INVERTED_INTAKE_CORAL_STATION:
         if (timeout(5) || ManipulatorSubsystem.getInstance().manipulatorMotor.getStatorCurrent().getValueAsDouble() > ManipulatorConstants.coralStallCurrent); {
@@ -213,6 +219,12 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_INTAKE_CORAL_STATION;
         }
         break;
+
+      case PREPARE_DEEP_CLIMB:
+        if (elbow.atGoal() && elevator.atGoal() && wrist.atGoal()) {
+          nextState = RobotState.DEEP_CLIMB_DEPLOY;
+        }
+        break;
       case PREPARE_IDLE:
         if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && manipulator.atGoal()) {
           nextState = RobotState.IDLE;
@@ -257,11 +269,6 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.PREPARE_INVERTED_IDLE;
         }
         break;
-      case PREPARE_DEEP_CLIMB:
-        if (climber.atGoal()) {
-          nextState = RobotState.WAIT_DEEP_CLIMB;
-        }
-        break;
       case PREPARE_HOMING:
           if (DriverStation.isEnabled()) {
             nextState = RobotState.HOMING_STAGE_1_ELEVATOR;
@@ -282,6 +289,10 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_IDLE;
         }
         break;
+      case DEEP_CLIMB_RETRACT:
+        if (timeout(5)){
+          nextState = RobotState.DEEP_CLIMB_WAIT;
+        }
     }
     DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && manipulator.atGoal());
     flags.clear();
@@ -398,15 +409,34 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           case PREPARE_DEEP_CLIMB -> {
             elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.PREPARE_DEEP_CLIMB);
+            climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
             kicker.setState(KickerState.IDLE);
           }
-          case DEEP_CLIMB -> {
+
+          case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.DEEP_CLIMB);
+            climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
+            kicker.setState(KickerState.IDLE);
+          }
+
+          case DEEP_CLIMB_RETRACT -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
+            kicker.setState(KickerState.IDLE);
+          }
+
+          case DEEP_CLIMB_WAIT -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
