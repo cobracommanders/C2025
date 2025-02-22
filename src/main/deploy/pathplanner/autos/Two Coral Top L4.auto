@@ -5,43 +5,44 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "set drivetrain auto"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Cage 3 to I"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "remove height cap"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto reef align"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 2.0
+                  "name": "remove height cap"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "set drivetrain auto"
+                }
+              },
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Cage 3 to I"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "auto reef align"
                 }
               },
               {
@@ -49,32 +50,8 @@
                 "data": {
                   "name": "score"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "inverted idle"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "I to Coral Station Top"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto coral station align"
           }
         },
         {
@@ -82,9 +59,9 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 3.0
+                  "pathName": "I to Coral Station Top"
                 }
               },
               {
@@ -94,7 +71,26 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 3.0
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "auto coral station align"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
                       }
                     },
                     {
@@ -107,12 +103,6 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "inverted idle"
@@ -122,49 +112,50 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Coral Station Top to K"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "auto reef align"
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 1.6
+                  "name": "set drivetrain auto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Coral Station Top to K"
+                }
+              },
+              {
+                "type": "deadline",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "L4"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
+                  "name": "auto reef align"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "score"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "inverted idle"
                 }
               }
             ]

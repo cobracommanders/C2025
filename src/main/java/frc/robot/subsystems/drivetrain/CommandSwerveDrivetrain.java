@@ -18,6 +18,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -178,8 +179,12 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
     
-        private static CommandSwerveDrivetrain instance;
-
+    private static CommandSwerveDrivetrain instance;
+    
+    public boolean isNear(Pose2d pose) {
+        Pose2d robotPose = getState().Pose;
+        return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.01) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.01);
+    }
     public static CommandSwerveDrivetrain getInstance() {
         if (instance == null) instance = TunerConstants.createDrivetrain(); 
         return instance;

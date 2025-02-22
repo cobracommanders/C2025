@@ -25,6 +25,7 @@ import frc.robot.StateMachine;
 import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.Constants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.RobotManager;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
@@ -94,8 +95,8 @@ public class WristSubsystem extends StateMachine<WristState>{
   }
 
   public void setState(WristState newState) {
-      setStateFromRequest(newState);
-    }
+    setStateFromRequest(newState);
+  }
 
   public boolean isIdle() {
     return getState() == WristState.INVERTED_IDLE;

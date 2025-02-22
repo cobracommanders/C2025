@@ -239,7 +239,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L4:
-        if (timeout(2)) {
+        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.5) && DriverStation.isAutonomous())) {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
@@ -525,6 +525,7 @@ public class RobotManager extends StateMachine<RobotState> {
   public void periodic() {
     super.periodic(); 
     DogLog.log(getName() + "/Is capped", isHeightCapped);
+    //DogLog.log(getName() + "Active Command", elevator.getCurrentCommand().toString());
   }
 
   public void prepareIdleRequest() {
@@ -588,7 +589,7 @@ public class RobotManager extends StateMachine<RobotState> {
   }
 
   public void autoCoralStationAlignRequest(){
-    DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_CORAL_STATION_ALIGN);
+    DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_CORAL_STATION_ALIGN_1);
   }
 
   public void stopScoringRequest() {
