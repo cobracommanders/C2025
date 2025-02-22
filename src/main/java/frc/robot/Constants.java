@@ -11,32 +11,32 @@ public final class Constants {
 
 public static final class ElevatorConstants{
   public static final double homingStallCurrent = 30;
-  public static final double P = 40;
+  public static final double P = 40; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.5075;
   public static final double MotionMagicAcceleration = 40; //40
-  public static final double MotionMagicCruiseVelocity = 200; //115
-  public static final double MotionMagicJerk = 250; //175
+  public static final double MotionMagicCruiseVelocity = 150; //115
+  public static final double MotionMagicJerk = 300; //175
 }
 
 public static final class WristConstants{
   public static final double homingStallCurrent = 10;
-  public static final double P = 28;
+  public static final double P = 24; //24
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.15;
-  public static final double MotionMagicAcceleration = 11;
+  public static final double MotionMagicAcceleration = 15;
   public static final double MotionMagicCruiseVelocity = 40;
   public static final double MotionMagicJerk = 95;
 }
 public static final class ElbowConstants{
   public static final double homingStallCurrent = 15;
-  public static final double P = 40;
+  public static final double P = 40; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.2;
-  public static final double MotionMagicAcceleration = 16;
+  public static final double MotionMagicAcceleration = 20;
   public static final double MotionMagicCruiseVelocity = 50;
   public static final double MotionMagicJerk = 150;
 }

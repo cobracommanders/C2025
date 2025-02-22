@@ -33,9 +33,9 @@ public class LED extends SubsystemBase {
   public LED(RobotManager robotManager) {
     this.robotManager = robotManager;
     blinkTimer.start();
-    // PWM port 9
+    // PWM port 0
     // Must be a PWM header, not MXP or DIO
-    m_led = new AddressableLED(9);
+    m_led = new AddressableLED(0);
     // Reuse buffer
     // Default to a length of 60, start empty output
     // Length is expensive to set, so only set it once, then just update data
