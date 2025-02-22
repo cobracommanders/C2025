@@ -20,7 +20,9 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -49,6 +51,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private Field2d field = new Field2d();
     public SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
+    private final PIDController rotationController = new PIDController(5.75 * 3.14/180.0, 0, 0);
 
     public void setYaw(Rotation2d rotation) {
         // this.getPigeon2().setYaw(angle);
@@ -86,12 +89,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
     }
-        public void driveRobotRelative(ChassisSpeeds speeds) {
-            this.setControl(new SwerveRequest.RobotCentric().withVelocityX(speeds.vxMetersPerSecond).withVelocityY(speeds.vyMetersPerSecond).withRotationalRate(speeds.omegaRadiansPerSecond).withDriveRequestType(DriveRequestType.Velocity));        
-        }
-        public void driveFieldRelative(ChassisSpeeds speeds) {
-            this.setControl(new SwerveRequest.FieldCentric().withVelocityX(xLimiter.calculate(speeds.vxMetersPerSecond)).withVelocityY(yLimiter.calculate(speeds.vyMetersPerSecond)).withRotationalRate(speeds.omegaRadiansPerSecond));
-        }
     public CommandSwerveDrivetrain(SwerveDrivetrainConstants driveTrainConstants, SwerveModuleConstants... modules) {
         super(driveTrainConstants, modules);
 
@@ -107,10 +104,10 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             () -> this.getState().Pose, // Robot pose supplier
             this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
             () -> this.getState().Speeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+            (speeds, feedforwards) -> DrivetrainSubsystem.getInstance().setAutoSpeeds(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
             new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                    new PIDConstants(8.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(8.0, 0.0, 0.0) // Rotation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -138,6 +135,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
         return run(() -> this.setControl(requestSupplier.get()));
+    }
+
+    private PIDController xController = new PIDController(5.0, 0, 0);
+    private PIDController yController = new PIDController(5.0, 0, 0);
+    public ChassisSpeeds driveToPoseSpeeds(Pose2d pose) {
+        double xSpeed = xController.calculate(getState().Pose.getX(), pose.getX());
+        double ySpeed = yController.calculate(getState().Pose.getY(), pose.getY());
+        return new ChassisSpeeds(xSpeed, ySpeed, 0);
     }
 
     private void startSimThread() {

@@ -12,8 +12,7 @@ import frc.robot.commands.RobotFlag;
 
 public class ClimberSubsystem extends StateMachine<ClimberState>{
     
-  private final TalonFX left_motor;
-  private final TalonFX right_motor;
+  private final TalonFX motor;
   
   private ClimberState currentState;
   private double setpoint;
@@ -25,8 +24,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   public ClimberSubsystem() {
       super(ClimberState.IDLE);
       // motor = new LazySparkMax(Ports.IntakePorts.LMOTOR, MotorType.kBrushless);
-      left_motor = new TalonFX(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR);
-      right_motor = new TalonFX(Ports.ClimberPorts.RIGHT_CLIMBER_MOTOR);
+      motor = new TalonFX(Ports.ClimberPorts.CLIMBER_MOTOR);
       
       
       currentState = ClimberState.IDLE;
@@ -40,10 +38,10 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
     protected void afterTransition(ClimberState newState) {
       switch (newState) {
         case IDLE -> {
-          left_motor.set(0.0);
+          motor.set(0.0);
         }
         case DEEP_CLIMB -> {
-          left_motor.set(0);
+          motor.set(0.1);
         }
         default -> {}
       }
@@ -58,7 +56,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   }
 
   public void set(double speed) {
-      left_motor.set(speed);
+      motor.set(speed);
   }
 
   private static ClimberSubsystem instance;

@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.DrivetrainState;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class RobotCommands {
 
   public Command L1Command() {
     if (!robot.getState().inverted) {
-      return invertIdleCommand() // go to non-inverted idle
+      return invertIdleCommand() // go to inverted idle
         .andThen(Commands.runOnce(robot::prepareL1Request, requirements)) // Prepare CS (non-inverted)
         .andThen(robot.waitForState(RobotState.WAIT_L1)); // Goes back to idle when we're done intaking
     }else {
@@ -63,17 +65,6 @@ public class RobotCommands {
     } else {
     return Commands.runOnce(robot::prepareL4Request, requirements)
       .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.PREPARE_L4));
-    }
-  }
-
-  public Command L4AutoCommand() {
-    if (robot.getState().inverted) {
-      return idleCommand() // go to non-inverted idle
-        .andThen(Commands.runOnce(robot::prepareL4Request, requirements)) // Prepare CS (non-inverted)
-        .andThen(robot.waitForState(RobotState.PREPARE_L4)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareL2Request, requirements)
-          .andThen(robot.waitForState(RobotState.PREPARE_L4));
     }
   }
 
@@ -128,6 +119,14 @@ public class RobotCommands {
 
   public Command autoReefAlign(){
     return Commands.runOnce(robot::autoReefAlignRequest, requirements);
+  }
+
+  public Command setDrivetrainAuto(){
+    return Commands.runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO));
+  }
+
+  public Command setDrivetrainTeleop(){
+    return Commands.runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP));
   }
 
   public Command homeCommand(){

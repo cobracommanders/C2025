@@ -174,14 +174,14 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         case INVERTED_CORAL_STATION -> {
           setElbowPosition(ElbowPositions.INVERTED_CORAL_STATION);
         }
+        case L4_ELBOW -> {
+          setElbowPosition(ElbowPositions.L4_ELBOW);
+        }
         case HOME_ELBOW -> {
           motor.setControl(new VoltageOut(-0.38));
         }
         case DISABLED -> {
           motor.setControl(new VoltageOut(0));
-        }
-        case L4_ELBOW -> {
-          setElbowPosition(ElbowPositions.L4_ELBOW);
         }
       }
     }

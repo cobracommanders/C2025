@@ -22,7 +22,6 @@ import frc.robot.subsystems.elbow.ElbowSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
-import frc.robot.vision.LimelightLocalization;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +67,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L1", Robot.robotCommands.L1Command());
         NamedCommands.registerCommand("L2", Robot.robotCommands.L2Command());
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
-        NamedCommands.registerCommand("L4", Robot.robotCommands.L4AutoCommand());
+        NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
         NamedCommands.registerCommand("auto coral station align", Robot.robotCommands.autoCoralStationAlign());
         NamedCommands.registerCommand("auto reef align", Robot.robotCommands.autoReefAlign());
@@ -78,12 +77,13 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("inverted intake", Robot.robotCommands.invertedIntakeCommand());
         NamedCommands.registerCommand("home", Robot.robotCommands.homeCommand());
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
+        NamedCommands.registerCommand("set drivetrain auto", Robot.robotCommands.setDrivetrainAuto());
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
         // DogLog.setOptions(new DogLogOptions().withCaptureDs(true));
 
-        //LimelightLocalization.getInstance();
+        // Limelight.getInstance();
         LED led = new LED(robotManager);
     }
 
@@ -95,6 +95,8 @@ public class Robot extends TimedRobot{
             alliance = DriverStation.getAlliance();
         }
         // blinkin.setColor(BlinkinColor
+
+        
         }
 
     @Override

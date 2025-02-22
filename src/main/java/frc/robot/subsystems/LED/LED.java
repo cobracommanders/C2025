@@ -33,7 +33,7 @@ public class LED extends SubsystemBase {
   public LED(RobotManager robotManager) {
     this.robotManager = robotManager;
     blinkTimer.start();
-    // PWM port 0
+    // PWM port 9
     // Must be a PWM header, not MXP or DIO
     m_led = new AddressableLED(0);
     // Reuse buffer
@@ -48,7 +48,7 @@ public class LED extends SubsystemBase {
   @Override
   public void periodic() {
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP_CORAL_STATION_ALIGN){
-      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState()) {
+      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
         case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
@@ -67,7 +67,7 @@ public class LED extends SubsystemBase {
       }
         }
         else if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN){
-          switch (LimelightLocalization.getInstance().getCoralStationAlignmentState()) {
+          switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(true)) {
           case ALIGNED:
             LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
             break;

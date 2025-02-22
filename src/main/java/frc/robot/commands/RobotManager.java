@@ -161,8 +161,8 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       
       case INVERTED_INTAKE_CORAL_STATION:
-        if (timeout(5)) {
-          nextState = RobotState.PREPARE_INVERTED_IDLE;
+        if (timeout(5) || ManipulatorSubsystem.getInstance().manipulatorMotor.getStatorCurrent().getValueAsDouble() > ManipulatorConstants.coralStallCurrent); {
+          nextState = RobotState.INVERTED_IDLE;
         }
       case PREPARE_L1:
         if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
@@ -209,7 +209,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case PREPARE_INVERTED_CORAL_STATION:
-        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && manipulator.atGoal()) {
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.INVERTED_INTAKE_CORAL_STATION;
         }
         break;
@@ -239,7 +239,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L4:
-        if (timeout(1)) {
+        if (timeout(2)) {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
@@ -322,7 +322,7 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.PREPARE_L2);
             wrist.setState(WristState.L2);
             elbow.setState(ElbowState.L2);
-            kicker.setState(KickerState.REMOVE_ALGAE);   
+            kicker.setState(KickerState.REMOVE_ALGAE);
           }
           case SCORE_L2 -> {
             elevator.setState(ElevatorState.L2);
@@ -426,7 +426,7 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.L4);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.L4);
+            wrist.setState(WristState.L4_WRIST);
             elbow.setState(ElbowState.L4_ELBOW);
             kicker.setState(KickerState.REMOVE_ALGAE);
           }
@@ -488,21 +488,13 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.HOME_ELEVATOR);
             wrist.setState(WristState.DISABLED);
             elbow.setState(ElbowState.DISABLED);
-            manipulator.setState(ManipulatorState.IDLE);
-            kicker.setState(KickerState.IDLE);
           }
           case HOMING_STAGE_2_ELBOW -> {
             elbow.setState(ElbowState.HOME_ELBOW);
             wrist.setState(WristState.DISABLED);
-            manipulator.setState(ManipulatorState.IDLE);
-            kicker.setState(KickerState.IDLE);
-
           }
           case HOMING_STAGE_3_WRIST -> {
             wrist.setState(WristState.HOME_WRIST);
-            manipulator.setState(ManipulatorState.IDLE);
-            kicker.setState(KickerState.IDLE);
-
           }
           case WAIT_L2 -> {
             kicker.setState(KickerState.REMOVE_ALGAE);
@@ -513,8 +505,13 @@ public class RobotManager extends StateMachine<RobotState> {
           case WAIT_L4 -> {
             kicker.setState(KickerState.REMOVE_ALGAE);
             elbow.setState(ElbowState.L4_ELBOW);
+            wrist.setState(WristState.L4_WRIST);
           }
-          case INVERTED_IDLE,
+
+          case INVERTED_IDLE -> {
+            
+          }
+          case 
             WAIT_DEEP_CLIMB, 
             WAIT_IDLE, 
             WAIT_INVERTED_IDLE, 

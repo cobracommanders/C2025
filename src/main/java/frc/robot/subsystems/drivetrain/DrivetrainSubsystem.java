@@ -12,6 +12,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.Controls;
 import frc.robot.Robot;
 import frc.robot.StateMachine;
+import frc.robot.commands.Autos;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.drivers.Xbox;
@@ -47,6 +49,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   private LimelightLocalization limelightLocalization = LimelightLocalization.getInstance();
   private double snapCoralStationAngle;
   private double snapReefAngle;
+  private int coralStationTag;
 
   public final Pigeon2 drivetrainPigeon = CommandSwerveDrivetrain.getInstance().getPigeon2();
 
@@ -85,8 +88,8 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     driveToAngle.HeadingController.enableContinuousInput(-Math.PI, Math.PI);
     driveToAngle.HeadingController.setTolerance(0.5);
 
-    coralStationAutoAlignTA.setPID(0.7, 0, 0);
-    coralStationAutoAlignTX.setPID(0.2, 0, 0);
+    coralStationAutoAlignTA.setPID(0.3, 0, 0);
+    coralStationAutoAlignTX.setPID(1.0 / 30.0, 0, 0);
 
     reefAutoAlignTA.setPID(0.1, 0, 0);
     reefAutoAlignTX.setPID(0.025, 0, 0);
@@ -100,27 +103,30 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     DrivetrainState nextState = currentState;
      switch (currentState) {
       case AUTO_CORAL_STATION_ALIGN -> {
-        if (LimelightLocalization.getInstance().getCoralStationAlignmentState() == AlignmentState.ALIGNED) {
-          nextState = DrivetrainState.AUTO; 
+        if (LimelightLocalization.getInstance().getCoralStationAlignmentState(true) == AlignmentState.ALIGNED) {
+          nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP; 
         }
       }
       case AUTO_REEF_ALIGN -> {
         if (LimelightLocalization.getInstance().getReefAlignmentState() == AlignmentState.ALIGNED) {
-          nextState = DrivetrainState.AUTO;
+          nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP;
         }
       }
       case TELEOP_CORAL_STATION_ALIGN, TELEOP_REEF_ALIGN-> {
         switch (RobotManager.getInstance().getState()) {
-          // case IDLE, INVERTED_IDLE, PREPARE_IDLE, PREPARE_INVERTED_IDLE, PREPARE_INVERTED_FROM_IDLE, PREPARE_IDLE_FROM_INVERTED-> {
+          case IDLE, INVERTED_IDLE, PREPARE_IDLE, PREPARE_INVERTED_IDLE, PREPARE_INVERTED_FROM_IDLE, PREPARE_IDLE_FROM_INVERTED-> {
+            nextState = DrivetrainState.TELEOP;
+          }
           //  if(DriverStation.isAutonomous()){
           //   nextState = DrivetrainState.AUTO;
           //  }
           //   nextState = DrivetrainState.TELEOP;
           // }
+
           default -> {}
         }
       }
-      case TELEOP, AUTO -> {
+      case TELEOP-> {
         switch (RobotManager.getInstance().getState()) {
           case PREPARE_CORAL_STATION, PREPARE_INVERTED_CORAL_STATION, INVERTED_INTAKE_CORAL_STATION, INTAKE_CORAL_STATION-> {
             // nextState = DrivetrainState.TELEOP_CORAL_STATION_ALIGN;
@@ -128,12 +134,14 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
             //   nextState = DrivetrainState.AUTO_CORAL_STATION_ALIGN;
             // }
             // else nextState = DrivetrainState.TELEOP_CORAL_STATION_ALIGN;
+            nextState = DrivetrainState.TELEOP_CORAL_STATION_ALIGN;
           }
           case PREPARE_L1, PREPARE_L2, PREPARE_L3, PREPARE_L4, WAIT_L1, WAIT_L2, WAIT_L3, WAIT_L4, SCORE_L1, SCORE_L2, SCORE_L3, SCORE_L4, CAPPED_L4-> {
             // if (DriverStation.isAutonomous()){
             //   nextState = DrivetrainState.AUTO_REEF_ALIGN;
             // }
             // else nextState = DrivetrainState.TELEOP_REEF_ALIGN;
+            nextState = DrivetrainState.TELEOP_REEF_ALIGN;
           }
           default -> {}
         }
@@ -141,6 +149,10 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       default -> {}
      }
     return nextState;
+  }
+
+  public void setAutoSpeeds(ChassisSpeeds speeds) {
+    autoSpeeds = speeds;
   }
   
   public void setSnapToAngle(double angle) {
@@ -155,7 +167,11 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   protected void collectInputs() {
     limelightLocalization.update();
     drivetrainState = drivetrain.getState();
-    teleopSpeeds = new ChassisSpeeds(-Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * MaxSpeed, -Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * MaxSpeed, Robot.controls.driver.rightX() * MaxAngularRate);
+    teleopSpeeds = new ChassisSpeeds(
+      -Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * MaxSpeed, 
+      -Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * MaxSpeed, 
+      Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * MaxAngularRate);
+
     DogLog.log(getName() + "/teleopSpeeds", teleopSpeeds);
     DogLog.log(getName() + "/robot pose", CommandSwerveDrivetrain.getInstance().getState().Pose);
     boolean isSlow = false;
@@ -163,11 +179,18 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       teleopSpeeds = teleopSpeeds.div(2);
       isSlow = true;
     }
-    if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN) {
-      double coralStationSpeedX = -coralStationAutoAlignTA.calculate(LimelightHelpers.getTA("limelight-middle"), 4.5);
-      double coralStationSpeedY = coralStationAutoAlignTX.calculate(-LimelightHelpers.getTX("limelight-middle"), 0);
-      coralStationAutoAlignSpeeds = new ChassisSpeeds(coralStationSpeedX, coralStationSpeedY, 0);
-    } 
+    // if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN) {
+    //   coralStationTag = (int) LimelightHelpers.getFiducialID("limelight-middle");
+    //   boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);
+    //   if (isValidTag) {
+    //     double coralStationSpeedX = -coralStationAutoAlignTA.calculate(LimelightHelpers.getTA("limelight-middle"), 4.5);
+    //     double coralStationSpeedY = coralStationAutoAlignTX.calculate(-LimelightHelpers.getTX("limelight-middle"), 0);
+    //     coralStationAutoAlignSpeeds = new ChassisSpeeds(coralStationSpeedX, coralStationSpeedY, 0);
+    //   } else {
+    //     coralStationAutoAlignSpeeds = new ChassisSpeeds();
+    //   }
+    // } 
+    // else 
     if (getState() == DrivetrainState.AUTO_REEF_ALIGN) {
       double reefSpeedX = reefAutoAlignTA.calculate(LimelightHelpers.getTA("limelight-right"), 14);
       double reefSpeedY = reefAutoAlignTX.calculate(LimelightHelpers.getTX("limelight-right"), -14);
@@ -257,20 +280,31 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       // } else {
       //   drivetrain.setControl(CommandSwerveDrivetrain.getInstance().brake);
       case AUTO_CORAL_STATION_ALIGN -> {
-        if (!MathUtil.isNear(snapCoralStationAngle, CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 3)) {
+        if (coralStationTag == 12) {
+          ChassisSpeeds speeds = drivetrain.driveToPoseSpeeds(LimelightLocalization.tag12Pose);
           drivetrain.setControl(
-            driveToAngle
-              .withVelocityX(autoSpeeds.vxMetersPerSecond)
-              .withVelocityY(autoSpeeds.vyMetersPerSecond)
-              .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-              .withTargetDirection(Rotation2d.fromDegrees(snapCoralStationAngle)));
-        } else {
-          drivetrain.setControl(
-            driveRobotRelative
-              .withVelocityX(coralStationAutoAlignSpeeds.vxMetersPerSecond)
-              .withVelocityY(coralStationAutoAlignSpeeds.vyMetersPerSecond)
-              .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
+            new SwerveRequest.FieldCentricFacingAngle()
+              .withVelocityX(speeds.vxMetersPerSecond)
+              .withVelocityY(speeds.vyMetersPerSecond)
+              .withTargetDirection(Rotation2d.fromDegrees(snapCoralStationAngle))
+              .withDriveRequestType(DriveRequestType.Velocity)
+          );
+
         }
+        // if (!MathUtil.isNear(snapCoralStationAngle, CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 3)) {
+        //   drivetrain.setControl(
+        //     driveToAngle
+        //       .withVelocityX(autoSpeeds.vxMetersPerSecond)
+        //       .withVelocityY(autoSpeeds.vyMetersPerSecond)
+        //       .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+        //       .withTargetDirection(Rotation2d.fromDegrees(snapCoralStationAngle)));
+        // } else {
+        //   drivetrain.setControl(
+        //     driveRobotRelative
+        //       .withVelocityX(0)
+        //       .withVelocityY(coralStationAutoAlignSpeeds.vyMetersPerSecond)
+        //       .withDriveRequestType(DriveRequestType.Velocity));
+        // }
       }
         
       case AUTO_REEF_ALIGN -> {
@@ -289,7 +323,15 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
               .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
         }
       }
-      case AUTO -> {}
+      case AUTO -> {
+        drivetrain.setControl(
+          driveRobotRelative
+            .withVelocityX(autoSpeeds.vxMetersPerSecond)
+            .withVelocityY(autoSpeeds.vyMetersPerSecond)
+            .withRotationalRate(autoSpeeds.omegaRadiansPerSecond)
+            .withDriveRequestType(DriveRequestType.Velocity)
+        );
+      }
     }
   }
 

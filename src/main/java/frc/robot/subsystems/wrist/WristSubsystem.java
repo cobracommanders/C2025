@@ -1,5 +1,7 @@
 package frc.robot.subsystems.wrist;
 
+import java.nio.channels.WritableByteChannel;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -51,6 +53,9 @@ public class WristSubsystem extends StateMachine<WristState>{
     if (getState() == WristState.HOME_WRIST && this.atGoal()) { 
       wristMotor.setPosition(0.38);
       return WristState.INVERTED_IDLE;
+    } else if (getState() == WristState.IDLE && this.atGoal()) {
+      setWristPosition(WristPositions.POST_IDLE);
+      return currentState;
     } else {
       return currentState;
     }
@@ -58,7 +63,7 @@ public class WristSubsystem extends StateMachine<WristState>{
    public boolean atGoal() {
     return switch (getState()) {
       case IDLE -> 
-        MathUtil.isNear(WristPositions.IDLE, wristPosition, tolerance);
+        MathUtil.isNear(WristPositions.IDLE, wristPosition, tolerance) || MathUtil.isNear(WristPositions.POST_IDLE, wristPosition, tolerance);
       case INVERTED_IDLE ->
         MathUtil.isNear(WristPositions.INVERTED_IDLE, wristPosition, tolerance);
       case L1 ->
@@ -77,6 +82,8 @@ public class WristSubsystem extends StateMachine<WristState>{
         MathUtil.isNear(WristPositions.CORAL_STATION, wristPosition, tolerance);
       case HOME_WRIST ->
         wristMotor.getStatorCurrent().getValueAsDouble() > WristConstants.homingStallCurrent;
+      case L4_WRIST ->
+        MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
       case INVERTED_CORAL_STATION ->
         MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
       case AFTER_L4 ->
@@ -137,7 +144,11 @@ public class WristSubsystem extends StateMachine<WristState>{
     protected void afterTransition(WristState newState) {
       switch (newState) {
         case IDLE -> {
+          if (getState() == WristState.L4) {
+          setWristPosition(WristPositions.POST_IDLE);
+          } else {
           setWristPosition(WristPositions.IDLE);
+          }
         }
         case INVERTED_IDLE -> {
           setWristPosition(WristPositions.INVERTED_IDLE);
@@ -171,6 +182,9 @@ public class WristSubsystem extends StateMachine<WristState>{
         }
         case AFTER_L4 -> {
           setWristPosition(WristPositions.AFTER_L4);
+        }
+        case L4_WRIST -> {
+          setWristPosition(WristPositions.L4_WRIST);
         }
         default -> {}
       }
