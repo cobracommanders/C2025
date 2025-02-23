@@ -187,3 +187,6 @@ compile_commands.json
 .factorypath
 *.lock
 *.bin
+*.lock
+*.bin
+*.class
