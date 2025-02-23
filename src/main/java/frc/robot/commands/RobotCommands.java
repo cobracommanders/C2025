@@ -3,6 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
@@ -22,6 +24,11 @@ public class RobotCommands {
   public Command scoreCommand() {
     return Commands.runOnce(robot::scoreRequest, requirements)
         .andThen(robot.waitForState(RobotState.INVERTED_IDLE));
+  }
+
+  public Command retractClimbCommand(){
+    return Commands.runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT), requirements)
+    .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
   }
 
   public Command L1Command() {

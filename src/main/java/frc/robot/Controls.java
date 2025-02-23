@@ -15,6 +15,8 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotFlag;
 import frc.robot.commands.RobotManager;
 import frc.robot.drivers.Xbox;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
@@ -68,8 +70,11 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.B().onTrue(Robot.robotCommands.autoReefAlign());
-        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
+        driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        //driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
+        driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 
     public void configureOperatorCommands(){
