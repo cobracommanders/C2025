@@ -118,13 +118,13 @@ public class LimelightLocalization{
 
   public AlignmentState getReefAlignmentState(){
 
-    double tolerance = 6;
+    double tolerance = 3.25;
 
     // Pose2d robotPose = CommandSwerveDrivetrain.getInstance().getState().Pose;
     // Pose2d nearestBranch = robotPose.nearest(List.of(branchPoses));
     //Transform2d poseDifference = nearestBranch.minus(robotPose);
-    if ((Math.abs(LimelightHelpers.getTX("limelight-left") - 6)  < tolerance && LimelightHelpers.getTA("limelight-left") > 10) || 
-      (Math.abs(LimelightHelpers.getTX("limelight-right") + 14) < tolerance && LimelightHelpers.getTA("limelight-right") > 10)) {
+    if ((Math.abs(LimelightHelpers.getTX("limelight-left") - 6)  < tolerance && LimelightHelpers.getTA("limelight-left") > 14.5) || 
+      (Math.abs(LimelightHelpers.getTX("limelight-right") + 18.60) < tolerance && LimelightHelpers.getTA("limelight-right") > 14.5)) {
       return AlignmentState.ALIGNED;
     }
     // else if (Math.abs(LimelightHelpers.getTX("limelight-left") - 6)  < tolerance || Math.abs(LimelightHelpers.getTX("limelight-right") + 8) < tolerance){
@@ -183,7 +183,7 @@ public class LimelightLocalization{
   }
 
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
-    double tolerance = isAuto ? 3 : 3;
+    double tolerance = isAuto ? 2.5 : 3;
     // if (LimelightHelpers.getCurrentPipelineIndex("limelight-middle") != 2){
     //   return AlignmentState.INVALID;
     // }

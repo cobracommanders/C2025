@@ -553,10 +553,10 @@ public class RobotManager extends StateMachine<RobotState> {
             wrist.setState(WristState.HOME_WRIST);
           }
           case WAIT_L2 -> {
-            kicker.setState(KickerState.REMOVE_ALGAE);
+            kicker.setState(KickerState.IDLE);
           }
           case WAIT_L3 -> {
-            kicker.setState(KickerState.REMOVE_ALGAE);
+            kicker.setState(KickerState.IDLE);
           }
           case WAIT_L4 -> {
             kicker.setState(KickerState.REMOVE_ALGAE);
