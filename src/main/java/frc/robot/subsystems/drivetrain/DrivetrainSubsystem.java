@@ -102,7 +102,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
       }
       case AUTO_CORAL_STATION_ALIGN_2 -> {
-        if (LimelightLocalization.getInstance().getReefAlignmentState() == AlignmentState.ALIGNED) {
+        if (LimelightLocalization.getInstance().getCoralStationAlignmentState(true) == AlignmentState.ALIGNED) {
           nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP;
         }
       

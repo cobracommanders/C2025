@@ -39,13 +39,13 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
           rMotor.set(0.0);
         }
         case DEEP_CLIMB_DEPLOY -> {
-          lMotor.set(0.5);
-          rMotor.set(-0.5);
+          lMotor.set(1);
+          rMotor.set(-1);
         }
 
         case DEEP_CLIMB_RETRACT -> {
-          lMotor.set(-0.5);
-          rMotor.set(0.5);
+          lMotor.set(-1);
+          rMotor.set(1);
         }
         default -> {}
       }

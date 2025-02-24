@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.OIConstants;
 import frc.robot.drivers.Xbox;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorState;
@@ -44,8 +46,12 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
+        driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
+        driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 
     public void configureOperatorCommands(){
