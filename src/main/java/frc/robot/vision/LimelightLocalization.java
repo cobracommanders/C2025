@@ -68,7 +68,7 @@ public class LimelightLocalization{
 
     double tolerance = 3;
 
-    if (Math.abs(limelightTXRight + 18.60) < tolerance && limelightTARight > 14) {
+    if ((Math.abs(limelightTXRight + 18.60) < tolerance && limelightTARight > 14) || (Math.abs(limelightTXLeft + 0) < tolerance && limelightTALeft > 0)) {
       return AlignmentState.ALIGNED;
     }
     else {
