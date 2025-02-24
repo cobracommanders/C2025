@@ -1,15 +1,9 @@
 package frc.robot.subsystems.wrist;
 
-import java.nio.channels.WritableByteChannel;
-
 import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.CoastOut;
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -17,25 +11,20 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.Constants;
 import frc.robot.Constants.WristConstants;
-import frc.robot.commands.RobotManager;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
   private final TalonFX wristMotor;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(WristConstants.P).withKI(WristConstants.I).withKD(WristConstants.D).withKG(Constants.WristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((18.0 / 1.0)));
   private double wristPosition;
+  private double motorCurrent;
   private final double tolerance;
   private boolean brakeModeEnabled;
-  // private boolean preMatchHomingOccured = false;
-  // private double lowestSeenHeight = 0.0;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
@@ -81,7 +70,7 @@ public class WristSubsystem extends StateMachine<WristState>{
       case CORAL_STATION ->
         MathUtil.isNear(WristPositions.CORAL_STATION, wristPosition, tolerance);
       case HOME_WRIST ->
-        wristMotor.getStatorCurrent().getValueAsDouble() > WristConstants.homingStallCurrent;
+        motorCurrent > WristConstants.homingStallCurrent;
       case L4_WRIST ->
         MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
       case INVERTED_CORAL_STATION ->
@@ -104,14 +93,15 @@ public class WristSubsystem extends StateMachine<WristState>{
     @Override
   public void collectInputs(){
     wristPosition = wristMotor.getPosition().getValueAsDouble();
+    motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);
+    DogLog.log(getName() + "/Wrist AtGoal", atGoal());
+    DogLog.log(getName() + "/wrist current", motorCurrent);
   }
 
   @Override
   public void periodic(){
     super.periodic();
-    DogLog.log(getName() + "/Wrist AtGoal", atGoal());
-    // DogLog.log(getName() + "/wrist current", wristMotor.getStatorCurrent().getValueAsDouble());
 
       if (DriverStation.isDisabled() && brakeModeEnabled == true) {
         motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -123,16 +113,6 @@ public class WristSubsystem extends StateMachine<WristState>{
         wristMotor.getConfigurator().apply(motor_config);
         brakeModeEnabled = true;
       }
-      
-
-    // if (!preMatchHomingOccured) {
-    //   double homingEndPosition = 0;
-    //   double homedPosition = homingEndPosition + (wristPosition - lowestSeenHeight);
-    //   wristMotor.setPosition(homedPosition);
-
-    //   preMatchHomingOccured = true;
-    //   }
-    // }
   }
 
   public void setWristPosition(double position){

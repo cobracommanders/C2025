@@ -3,26 +3,17 @@ package frc.robot.subsystems.elbow;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.pathplanner.lib.config.RobotConfig;
-
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.ElbowConstants;
-import frc.robot.commands.RobotManager;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.subsystems.elevator.ElevatorState;
 
 public class ElbowSubsystem extends StateMachine<ElbowState>{
     
@@ -33,6 +24,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   private boolean preMatchHomingOccured = false;
   private double lowestSeenHeight = Double.POSITIVE_INFINITY;
   private boolean brakeModeEnabled;
+  private double motorCurrent;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
@@ -76,7 +68,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       case CORAL_STATION ->
         MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
       case HOME_ELBOW ->
-        motor.getStatorCurrent().getValueAsDouble() > ElbowConstants.homingStallCurrent;
+        motorCurrent > ElbowConstants.homingStallCurrent;
       case INVERTED_CORAL_STATION ->
         MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
       case CAPPED_L3 ->
@@ -90,7 +82,6 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
 
   public void setState(ElbowState newState) {
       setStateFromRequest(newState);
-      //DogLog.log(getName() + "/Elbow State", newState);
   }
 
   public boolean isIdle() {
@@ -100,14 +91,15 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   @Override
   public void collectInputs() {
     elbowPosition = motor.getPosition().getValueAsDouble();
+    motorCurrent = motor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Elbow Position", elbowPosition);
+    DogLog.log(getName() + "/Elbow current", motorCurrent);
+    DogLog.log(getName() + "/Elbow AtGoal", atGoal());
   }
 
   @Override
   public void periodic() {
     super.periodic();
-    DogLog.log(getName() + "/Elbow current", motor.getStatorCurrent().getValueAsDouble());
-    DogLog.log(getName() + "/Elbow AtGoal", atGoal());
 
     if (DriverStation.isDisabled() && brakeModeEnabled == true) {
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;

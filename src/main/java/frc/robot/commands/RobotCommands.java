@@ -87,7 +87,7 @@ public class RobotCommands {
 
   public Command climbCommand() {
     return Commands.runOnce(robot::climbRequest, requirements)
-        .andThen(robot.waitForState(RobotState.DEEP_CLIMB));    
+        .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));    
   }
 
   public Command removeHeightCapCommand() {

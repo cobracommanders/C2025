@@ -4,10 +4,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,21 +12,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
 import frc.robot.subsystems.LED.LED;
-import frc.robot.subsystems.climber.ClimberSubsystem;
-import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.elbow.ElbowPositions;
-import frc.robot.subsystems.elbow.ElbowSubsystem;
-import frc.robot.subsystems.elevator.ElevatorSubsystem;
-import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
-import frc.robot.subsystems.wrist.WristSubsystem;
 
-import java.util.List;
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
-import dev.doglog.DogLog;
-import dev.doglog.DogLogOptions;
 
 
 public class Robot extends TimedRobot{
@@ -37,23 +23,13 @@ public class Robot extends TimedRobot{
 
     public static RobotManager robotManager = RobotManager.getInstance();
     public static RobotCommands robotCommands = new RobotCommands();
-    // public static int coordinateFlip = 1;
-    // public static int rotationOffset = 0;
 
     public static Optional<Alliance> alliance = Optional.empty();
     public static final Controls controls = new Controls();
 
-    // private final CommandSwerveDrivetrain drivetrain = CommandSwerveDrivetrain.getInstance();
-    // private final ClimberSubsystem climber = ClimberSubsystem.getInstance();
-    // private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    // private final ElbowSubsystem elbow = ElbowSubsystem.getInstance();
-    // private final ManipulatorSubsystem manipulator = ManipulatorSubsystem.getInstance();
-    // private final WristSubsystem wrist = WristSubsystem.getInstance();
-
     private SendableChooser<Command> autoChooser;
 
     public Robot() {
-      //  DogLog.setOptions(new DogLogOptions().withCaptureNt(false).withNtPublish(true));
     }
 
     @Override
@@ -80,10 +56,6 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("set drivetrain auto", Robot.robotCommands.setDrivetrainAuto());
 
         autoChooser = AutoBuilder.buildAutoChooser();
-
-        // DogLog.setOptions(new DogLogOptions().withCaptureDs(true));
-
-        // Limelight.getInstance();
         LED led = new LED(robotManager);
     }
 
@@ -94,10 +66,7 @@ public class Robot extends TimedRobot{
         if (alliance.isEmpty()) {
             alliance = DriverStation.getAlliance();
         }
-        // blinkin.setColor(BlinkinColor
-
-        
-        }
+    }
 
     @Override
     public void disabledPeriodic() {
@@ -127,7 +96,6 @@ public class Robot extends TimedRobot{
     
     @Override
     public void autonomousInit() {
-        //ElevatorSubsystem.getInstance();
         if (autoChooser.getSelected() != null)
             autoChooser.getSelected().schedule();
     }

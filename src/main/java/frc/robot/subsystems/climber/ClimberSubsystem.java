@@ -1,18 +1,10 @@
 package frc.robot.subsystems.climber;
 
-import javax.sound.sampled.Port;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.commands.RobotFlag;
 
 public class ClimberSubsystem extends StateMachine<ClimberState>{
     
@@ -21,11 +13,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   
   private ClimberState currentState;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
-  private double setpoint;
   private double GEAR_RATIO = 224.0/16200.0;
-  private double manualSpeed;
-  
-  private boolean isActivated = true;
   
   public ClimberSubsystem() {
       super(ClimberState.IDLE);

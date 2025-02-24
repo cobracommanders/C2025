@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-
 public final class Constants {
   public static final class DrivetrainConstants{
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.94;
@@ -25,13 +22,13 @@ public static final class WristConstants{
   public static final double P = 24; //24
   public static final double I = 0;
   public static final double D = 0;
-  public static final double G = 0.15;
-  public static final double MotionMagicAcceleration = 15;
+  public static final double G = 0.05;
+  public static final double MotionMagicAcceleration = 20;//15
   public static final double MotionMagicCruiseVelocity = 40;
-  public static final double MotionMagicJerk = 95;
+  public static final double MotionMagicJerk = 150;//95
 }
 public static final class ElbowConstants{
-  public static final double homingStallCurrent = 15;
+  public static final double homingStallCurrent = 10;
   public static final double P = 40; //40
   public static final double I = 0;
   public static final double D = 0;
