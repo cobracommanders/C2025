@@ -11,7 +11,6 @@ public class WristPositions {
     public static final double CAPPED_L4 = 0.1;
     public static final double L4_TRANSITION = 0.1;
     public static final double CORAL_STATION = 0.125;
-    public static final double AFTER_L4 = 0.1;
     public static final double INVERTED_IDLE = 0.339;
     public static final double INVERTED_CORAL_STATION = 0.055;
 }

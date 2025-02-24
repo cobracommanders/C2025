@@ -8,7 +8,6 @@ public enum RobotState {
   PREPARE_IDLE(false, false, new LEDState(Color.kPurple, Patterns.SLOW_BLINK)),
   WAIT_IDLE(false, false,  new LEDState(Color.kBlue, Patterns.SOLID)),
   IDLE(false, false,  new LEDState(Color.kBlue, Patterns.SOLID)),
-  AFTER_L4(false, false,  new LEDState(Color.kBlue, Patterns.SOLID)),
   PREPARE_INVERTED_IDLE(false, true,  new LEDState(Color.kPurple, Patterns.SLOW_BLINK)),
   INVERTED_IDLE(false, true,  new LEDState(Color.kBlue, Patterns.SOLID)),
   DEEP_CLIMB_DEPLOY(true, false,  new LEDState(Color.kYellow, Patterns.SLOW_BLINK)),

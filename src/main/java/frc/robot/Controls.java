@@ -46,12 +46,12 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
-        driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
-        driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        // driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
+        // driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        // driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
+        // driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 
     public void configureOperatorCommands(){
