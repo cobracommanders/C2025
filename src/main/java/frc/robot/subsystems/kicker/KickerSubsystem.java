@@ -1,16 +1,10 @@
 package frc.robot.subsystems.kicker;
 
 import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.units.measure.Angle;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 
@@ -32,15 +26,6 @@ public class KickerSubsystem extends StateMachine<KickerState>{
     public void collectInputs(){
       kickerSpeed = kickerMotor.get();
     }
-  
-     public boolean atGoal() {
-      return true;
-      // switch (getState()) {
-      //   case IDLE -> 
-      //     KickerSpeeds.IDLE == kickerSpeed;
-      //   case REMOVE_ALGAE -> 
-      //     KickerSpeeds.REMOVE_ALGAE == kickerSpeed;
-      };
   
     public void setState(KickerState newState) {
         setStateFromRequest(newState);

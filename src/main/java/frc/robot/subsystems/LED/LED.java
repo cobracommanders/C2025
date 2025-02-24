@@ -4,10 +4,6 @@
 
 package frc.robot.subsystems.LED;
 
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,7 +15,6 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
-import frc.robot.vision.AlignmentState;
 import frc.robot.vision.LimelightLocalization;
 
 public class LED extends SubsystemBase {
@@ -53,12 +48,6 @@ public class LED extends SubsystemBase {
         case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
-      case FAR_LEFT:
-        LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
-        break;
-      case FAR_RIGHT:
-        LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
-        break;
       case NOT_ALIGNED:
         LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
         break;
@@ -71,12 +60,6 @@ public class LED extends SubsystemBase {
           switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(true)) {
           case ALIGNED:
             LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
-            break;
-          case FAR_LEFT:
-            LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
-            break;
-          case FAR_RIGHT:
-            LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
             break;
           case NOT_ALIGNED:
             LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
@@ -91,12 +74,6 @@ public class LED extends SubsystemBase {
         case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
-      case FAR_LEFT:
-        LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
-        break;
-      case FAR_RIGHT:
-        LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
-        break;
       case NOT_ALIGNED:
         LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
         break;
@@ -110,12 +87,6 @@ public class LED extends SubsystemBase {
           case ALIGNED:
           LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
           break;
-        case FAR_LEFT:
-          LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
-          break;
-        case FAR_RIGHT:
-          LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
-          break;
         case NOT_ALIGNED:
           LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
           break;
@@ -127,7 +98,6 @@ public class LED extends SubsystemBase {
 
     else{
       state = robotManager.getState().ledState;
-      //m_scrollingRainbo.applyTo(m_ledBuffer);
       switch (state.patterns()) {
         case SOLID:
             LEDPattern.solid(state.color()).applyTo(m_ledBuffer);
@@ -150,9 +120,11 @@ public class LED extends SubsystemBase {
           break;
       }
     }
-    m_led.setData(m_ledBuffer);
     if (DriverStation.isDisabled()) {
       LEDPattern.solid(Color.kPurple).applyTo(m_ledBuffer);
     }
+
+    m_led.setData(m_ledBuffer);
+    
   }
 }

@@ -1,37 +1,14 @@
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.RobotCommands;
-import frc.robot.commands.RobotFlag;
-import frc.robot.commands.RobotManager;
 import frc.robot.drivers.Xbox;
-import frc.robot.subsystems.climber.ClimberState;
-import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.drivetrain.DrivetrainState;
-import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.drivetrain.TunerConstants;
-import frc.robot.subsystems.elbow.ElbowState;
-import frc.robot.subsystems.elbow.ElbowSubsystem;
 import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.wrist.WristState;
-import frc.robot.subsystems.wrist.WristSubsystem;
-
 import static edu.wpi.first.wpilibj2.command.Commands.*;
-
-import java.util.function.Supplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -60,9 +37,6 @@ public class Controls {
 
     public void configureDriverCommands() {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
-        // driver.B().onTrue(runOnce(() -> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP)));
-        // driver.Y().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
         driver.leftTrigger().and(driver.rightBumper().negate()).onTrue(Robot.robotCommands.invertedIntakeCommand());
             driver.leftTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.rightBumper().and(driver.leftTrigger()).onTrue(Robot.robotCommands.intakeCommand());
@@ -70,13 +44,8 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-            driver.B().onTrue(Robot.robotCommands.autoReefAlign());
-            //driver.Y().onTrue(Robot.robotCommands.autoReefAlign());
-        // driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
-        // driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        // driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
-        // driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 
     public void configureOperatorCommands(){
