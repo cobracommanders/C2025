@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;
@@ -131,11 +132,13 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.01) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.01);
     }
 
-    @Override
-    public void periodic() {
+    public void update() {
         field.setRobotPose(this.getState().Pose);
         SmartDashboard.putData(field);
         DogLog.log("heading", this.getState().Pose.getRotation().getDegrees());
+        DogLog.log("robot speed", this.getState().Speeds.vxMetersPerSecond);
+        DogLog.log("robot speed", this.getState().Speeds.vyMetersPerSecond);
+        DogLog.log("has applied operator prespective", hasAppliedOperatorPerspective);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */
         /* This allows us to correct the perspective in case the robot code restarts mid-match */
@@ -144,8 +147,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent((allianceColor) -> {
                 this.setOperatorPerspectiveForward(
-                        allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation
-                                : BlueAlliancePerspectiveRotation);
+                        allianceColor == Alliance.Red ? RedAlliancePerspectiveRotation : BlueAlliancePerspectiveRotation);
                 hasAppliedOperatorPerspective = true;
             });
         }

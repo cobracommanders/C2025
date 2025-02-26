@@ -204,6 +204,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   public void periodic() {
     super.periodic();
     sendSwerveRequest(getState());
+    CommandSwerveDrivetrain.getInstance().update();
   }
 
     @Override
@@ -236,6 +237,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       case TELEOP -> {
         drivetrain.setControl(
           drive
+          .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
           .withVelocityX(teleopSpeeds.vxMetersPerSecond)
           .withVelocityY(teleopSpeeds.vyMetersPerSecond)
           .withRotationalRate(teleopSpeeds.omegaRadiansPerSecond)

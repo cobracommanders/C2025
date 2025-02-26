@@ -18,7 +18,7 @@ public static final class ElevatorConstants{
 }
 
 public static final class WristConstants{
-  public static final double homingStallCurrent = 10;
+  public static final double homingStallCurrent = 0;
   public static final double P = 24; //24
   public static final double I = 0;
   public static final double D = 0;

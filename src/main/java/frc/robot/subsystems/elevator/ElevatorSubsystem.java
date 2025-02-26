@@ -9,6 +9,8 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
@@ -44,6 +46,8 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     right_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     leftMotor = new TalonFX(Ports.ElevatorPorts.LMOTOR);
     rightMotor = new TalonFX(Ports.ElevatorPorts.RMOTOR);
+    left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     leftMotor.getConfigurator().apply(left_motor_config);
     rightMotor.getConfigurator().apply(right_motor_config);
     tolerance = 0.1;

@@ -50,7 +50,7 @@ public class LimelightLocalization{
     // new Pose2d(0.66, 1.1, Rotation2d.fromDegrees(50)) // Right CS
   };
   public Pose2d[] coralStationPosesRed = {
-    // new Pose2d(1.09, 7.08, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(16.40, 0.97, Rotation2d.fromDegrees(130)), // tag 1 CS
   };
   public static List<Integer> coralStationTags = List.of(
     1, 2, 12, 13
