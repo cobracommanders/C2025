@@ -47,7 +47,7 @@ public class Controls {
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
         //driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        //driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
         driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
         driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
         driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));

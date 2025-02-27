@@ -82,7 +82,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     coralStationAutoAlignTX.setPID(1.0 / 10.0, 0, 0);
 
     reefAutoAlignTA.setPID(0.1, 0, 0);
-    reefAutoAlignTX.setPID(0.025, 0, 0);
+    reefAutoAlignTX.setPID(0.03, 0, 0);
 
     reefAutoAlignSpeeds = new ChassisSpeeds(0, 0, 0);
     coralStationAutoAlignSpeeds = new ChassisSpeeds(0, 0, 0);
@@ -269,6 +269,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
             .withVelocityX(speeds.vxMetersPerSecond)
             .withVelocityY(speeds.vyMetersPerSecond)
             .withDriveRequestType(DriveRequestType.Velocity)
+            .withForwardPerspective(ForwardPerspectiveValue.BlueAlliance)
             .withTargetDirection(targetCoralStationPose.getRotation())
         );
       }

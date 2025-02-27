@@ -46,9 +46,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "auto reef align"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "auto reef align"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 5.0
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -160,9 +173,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "auto reef align"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "auto reef align"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 5.0
+                      }
+                    }
+                  ]
                 }
               },
               {
