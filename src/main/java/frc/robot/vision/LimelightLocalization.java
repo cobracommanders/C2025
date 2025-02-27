@@ -61,8 +61,7 @@ public class LimelightLocalization{
     LimelightHelpers.setPipelineIndex("limelight-middle", 0);
   }
   public Pose2d[] getCoralStationPoses() {
-    return coralStationPosesRed;
-    //return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
+    return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
   }
 
   public AlignmentState getReefAlignmentState(){

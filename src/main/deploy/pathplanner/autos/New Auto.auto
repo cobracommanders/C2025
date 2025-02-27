@@ -67,6 +67,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "set drivetrain auto"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "score"
                 }
               }
@@ -189,6 +195,12 @@
                       }
                     }
                   ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "set drivetrain auto"
                 }
               },
               {
