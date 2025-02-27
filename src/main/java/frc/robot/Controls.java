@@ -46,18 +46,18 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        // driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
-        // driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        // driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
-        // driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        //driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        driver.B().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_DEPLOY)));
+        driver.B().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.Y().onTrue(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
+        driver.Y().onFalse(runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
     }
 
     public void configureOperatorCommands(){
         operator.leftBumper().onTrue(Robot.robotCommands.invertIdleCommand());
         operator.rightBumper().onTrue(Robot.robotCommands.idleCommand());
-        operator.leftTrigger().onTrue(Commands.runOnce(()-> ElevatorSubsystem.getInstance().setState(ElevatorState.HOME_ELEVATOR)));
+        // operator.leftTrigger().onTrue(Commands.runOnce(()-> ElevatorSubsystem.getInstance().setState(ElevatorState.HOME_ELEVATOR)));
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.Y().onTrue(Robot.robotCommands.L3Command());
         operator.B().onTrue(Robot.robotCommands.L4Command());

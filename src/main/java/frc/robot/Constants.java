@@ -22,7 +22,7 @@ public static final class WristConstants{
   public static final double P = 24; //24
   public static final double I = 0;
   public static final double D = 0;
-  public static final double G = 0.05;
+  public static final double G = 0.065;
   public static final double MotionMagicAcceleration = 20;//15
   public static final double MotionMagicCruiseVelocity = 40;
   public static final double MotionMagicJerk = 150;//95
