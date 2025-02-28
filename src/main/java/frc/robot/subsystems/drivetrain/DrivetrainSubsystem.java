@@ -298,6 +298,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
               .withVelocityX(autoSpeeds.vxMetersPerSecond)
               .withVelocityY(autoSpeeds.vyMetersPerSecond)
               .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+              .withForwardPerspective(ForwardPerspectiveValue.BlueAlliance)
               .withTargetDirection(Rotation2d.fromDegrees(snapReefAngle)));
         } else {
           drivetrain.setControl(

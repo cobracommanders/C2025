@@ -28,6 +28,7 @@ public enum RobotState {
   WAIT_L4(false, false,  new LEDState(Color.kYellowGreen, Patterns.SOLID)),
   L4_ELBOW(false, false,  new LEDState(Color.kGreen, Patterns.SOLID)),
   PRE_L4(false, false,  new LEDState(Color.kGreen, Patterns.SOLID)),
+  PRE_HEIGHT_L4(false, false,  new LEDState(Color.kGreen, Patterns.SOLID)),
   SCORE_L4(false, false,  new LEDState(Color.kGreen, Patterns.SOLID)),
   CAPPED_L4(false, false,  new LEDState(Color.kYellowGreen, Patterns.SLOW_BLINK)),
   PREPARE_CORAL_STATION(false, false,  new LEDState(Color.kPurple, Patterns.FAST_BLINK)),
