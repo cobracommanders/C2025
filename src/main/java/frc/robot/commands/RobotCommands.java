@@ -86,8 +86,14 @@ public class RobotCommands {
   }
 
   public Command climbCommand() {
+    if (robot.getState().inverted) {
+      return idleCommand()
+      .andThen(Commands.runOnce(robot::climbRequest, requirements))
+      .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
+    } else{
     return Commands.runOnce(robot::climbRequest, requirements)
         .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));    
+    }
   }
 
   public Command removeHeightCapCommand() {
