@@ -44,13 +44,14 @@ public class LimelightLocalization{
     new Pose2d(4, 5.227, Rotation2d.fromDegrees(-60)), //K
   };
   public Pose2d[] coralStationPosesBlue = {
-    new Pose2d(1.11, 7.05, Rotation2d.fromDegrees(-50)), // tag 13 CS
-    new Pose2d(1.17, 1.03, Rotation2d.fromDegrees(50)) // tag 12 CS
+    new Pose2d(1.04, 7.11, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(1.05, 0.91, Rotation2d.fromDegrees(50)) // tag 12 CS
     // new Pose2d(0.58, 7.13, Rotation2d.fromDegrees(-50)), // Left CS
     // new Pose2d(0.66, 1.1, Rotation2d.fromDegrees(50)) // Right CS
   };
   public Pose2d[] coralStationPosesRed = {
-    new Pose2d(16.39, 0.97, Rotation2d.fromDegrees(130)), // tag 1 CS
+    new Pose2d(17, 0.99, Rotation2d.fromDegrees(130)), // tag 1 CS
+    new Pose2d(16.28, 7.58, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
   public static List<Integer> coralStationTags = List.of(
     1, 2, 12, 13
@@ -68,7 +69,7 @@ public class LimelightLocalization{
 
     double tolerance = 5;
 
-    if ((Math.abs(limelightTXRight + 18.60) < tolerance && limelightTARight > 14) || (Math.abs(limelightTXLeft - 17) < tolerance && limelightTALeft > 14)) {
+    if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.8) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;
     }
     else {
@@ -136,7 +137,7 @@ public class LimelightLocalization{
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
     double tolerance = isAuto ? 2.25 : 3;
 
-    if (Math.abs(limelightTXMiddle + 3) < tolerance && limelightTAMiddle > 3.6) {
+    if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;
     }
     else{
