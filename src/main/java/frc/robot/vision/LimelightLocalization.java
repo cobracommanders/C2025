@@ -130,7 +130,7 @@ public class LimelightLocalization{
       case 22:
         return 120;
       default:
-        return 0;
+      return CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees();
     }
   }
 
