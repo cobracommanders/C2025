@@ -17,6 +17,8 @@ import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import dev.doglog.DogLog;
+
 
 public class Robot extends TimedRobot{
     public static final double DEFAULT_PERIOD = 0.02;
@@ -98,6 +100,7 @@ public class Robot extends TimedRobot{
     public void autonomousInit() {
         if (autoChooser.getSelected() != null)
             autoChooser.getSelected().schedule();
+            DogLog.log("Selected Auto", autoChooser.getSelected().getName());
     }
 
     @Override

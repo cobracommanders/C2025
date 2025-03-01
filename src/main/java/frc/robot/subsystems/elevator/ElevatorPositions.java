@@ -10,6 +10,6 @@ public class ElevatorPositions {
     public static final double CAPPED_L3 = 3;
     public static final double CAPPED_L4 = 3;
     public static final double CORAL_STATION = 1.15;
-    public static final double INVERTED_CORAL_STATION = 1.05;
+    public static final double INVERTED_CORAL_STATION = 1.1;
 } 
 

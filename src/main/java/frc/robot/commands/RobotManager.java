@@ -148,6 +148,7 @@ public class RobotManager extends StateMachine<RobotState> {
       case INVERTED_IDLE:
       case DEEP_CLIMB_WAIT:
       case WAIT_L3:
+      case INVERTED_INTAKE_CORAL_STATION:
         break;
 
       case DEEP_CLIMB_DEPLOY:
@@ -159,11 +160,6 @@ public class RobotManager extends StateMachine<RobotState> {
         if(timeout(0.1873)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         } 
-        break;
-      case INVERTED_INTAKE_CORAL_STATION:
-        if (timeout(5)){
-          nextState = RobotState.PREPARE_INVERTED_IDLE;
-        }
         break;
       case PRE_L4:
         if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
@@ -289,6 +285,7 @@ public class RobotManager extends StateMachine<RobotState> {
         if (timeout(5)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
+        break;
     }
     DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
     flags.clear();
@@ -372,7 +369,7 @@ public class RobotManager extends StateMachine<RobotState> {
             kicker.setState(KickerState.REMOVE_ALGAE);
           }
           case SCORE_L4 -> {
-            elevator.setState(ElevatorState.L4);
+            elevator.setState(ElevatorState.L4_MAX);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.L4);
             wrist.setState(WristState.L4_WRIST);

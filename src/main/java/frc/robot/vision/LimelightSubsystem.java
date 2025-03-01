@@ -29,6 +29,9 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
     @Override
     public void collectInputs(){
       limelightLocalization.collectInputs();
+        DogLog.log(getName() + "/left camera reject data", limelightLocalization.rejectLeftData);
+        DogLog.log(getName() + "/right camera reject data", limelightLocalization.rejectRightData);
+        DogLog.log(getName() + "/middle camera reject data", limelightLocalization.rejectMiddleData);
        }
     
     public void setState(LimelightState newState) {
@@ -91,9 +94,6 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
           default -> {}
           }
 
-        DogLog.log(getName() + "/left camera reject data", limelightLocalization.rejectLeftData);
-        DogLog.log(getName() + "/right camera reject data", limelightLocalization.rejectRightData);
-        DogLog.log(getName() + "/middle camera reject data", limelightLocalization.rejectMiddleData);
       }
 
       
