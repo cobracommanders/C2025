@@ -57,9 +57,6 @@ public class RobotManager extends StateMachine<RobotState> {
     if (DriverStation.isDisabled() && DriverStation.isAutonomous()){
         nextState = RobotState.INVERTED_IDLE;
     }
-    if(DriverStation.isDisabled() && DriverStation.isTeleop()){
-      nextState = RobotState.PREPARE_HOMING;
-    }
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
         case APPLY_HEIGHT_CAP:
@@ -132,8 +129,9 @@ public class RobotManager extends StateMachine<RobotState> {
               break;
             case CAPPED_L4:
               nextState = RobotState.SCORE_L4;
-            case DEEP_CLIMB_WAIT:
-              nextState = RobotState.DEEP_CLIMB_RETRACT;
+              break;
+            // case DEEP_CLIMB_WAIT:
+            //   nextState = RobotState.DEEP_CLIMB_RETRACT;
             default:
               break;
           }
@@ -201,7 +199,7 @@ public class RobotManager extends StateMachine<RobotState> {
       case L4_ELBOW:
         if(isHeightCapped) {
           nextState = RobotState.CAPPED_L4;
-        } else if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+        } else if (elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.WAIT_L4;
         }
         break;

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
 
 import java.util.Optional;
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L2", Robot.robotCommands.L2Command());
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
+        NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
         NamedCommands.registerCommand("auto coral station align", Robot.robotCommands.autoCoralStationAlign());
         NamedCommands.registerCommand("auto reef align", Robot.robotCommands.autoReefAlign());
@@ -54,7 +56,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("intake", Robot.robotCommands.intakeCommand());
         NamedCommands.registerCommand("inverted intake", Robot.robotCommands.invertedIntakeCommand());
         NamedCommands.registerCommand("home", Robot.robotCommands.homeCommand());
-        NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
+        NamedCommands.registerCommand("apply height cap", Robot.robotCommands.applyHeightCapCommand());
         NamedCommands.registerCommand("set drivetrain auto", Robot.robotCommands.setDrivetrainAuto());
 
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -78,7 +80,9 @@ public class Robot extends TimedRobot{
 
     @Override
     public void teleopInit() {
+        CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand());
         CommandScheduler.getInstance().schedule(Robot.robotCommands.setDrivetrainTeleop());
+        CommandScheduler.getInstance().schedule(Robot.robotCommands.idleCommand());
     }
 
     @Override

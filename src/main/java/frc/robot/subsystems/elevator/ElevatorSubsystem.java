@@ -85,6 +85,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.CORAL_STATION, elevatorPosition, tolerance);
         case HOME_ELEVATOR ->
           (motorCurrent > ElevatorConstants.homingStallCurrent);
+        // case MANUAL_UP ->
+        //   true;
+        // case MANUAL_DOWN ->
+        //   true;
         case INVERTED_CORAL_STATION ->
           MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
       };
@@ -146,6 +150,12 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         case HOME_ELEVATOR -> {
           rightMotor.setControl(new VoltageOut(-0.7));
         }
+        // case MANUAL_UP -> {
+        //   rightMotor.setControl(new VoltageOut(0.7));
+        // }
+        // case MANUAL_DOWN -> {
+        //   rightMotor.setControl(new VoltageOut(-0.7));
+        // }
         case CORAL_STATION -> {
           setElevatorPosition(ElevatorPositions.CORAL_STATION);
         }

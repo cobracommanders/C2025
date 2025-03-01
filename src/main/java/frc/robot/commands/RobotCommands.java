@@ -26,6 +26,11 @@ public class RobotCommands {
         .andThen(robot.waitForState(RobotState.PREPARE_INVERTED_FROM_IDLE));
   }
 
+  public Command L4ScoreCommand() {
+    return Commands.runOnce(robot::scoreRequest, requirements)
+        .andThen(robot.waitForState(RobotState.PREPARE_INVERTED_FROM_IDLE));
+  }
+
   public Command retractClimbCommand(){
     return Commands.runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT), requirements)
     .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));

@@ -50,7 +50,7 @@ public class LimelightLocalization{
     // new Pose2d(0.66, 1.1, Rotation2d.fromDegrees(50)) // Right CS
   };
   public Pose2d[] coralStationPosesRed = {
-    new Pose2d(17, 0.99, Rotation2d.fromDegrees(130)), // tag 1 CS
+    new Pose2d(16.40, 0.99, Rotation2d.fromDegrees(130)), // tag 1 CS
     new Pose2d(16.28, 7.58, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
   public static List<Integer> coralStationTags = List.of(
@@ -67,7 +67,7 @@ public class LimelightLocalization{
 
   public AlignmentState getReefAlignmentState(){
 
-    double tolerance = 5;
+    double tolerance = 5.5;
 
     if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.8) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;

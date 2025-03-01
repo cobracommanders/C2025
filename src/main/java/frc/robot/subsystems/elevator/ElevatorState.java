@@ -8,6 +8,8 @@ public enum ElevatorState {
     CAPPED_L4,
     L4,
     L4_MAX,
+    // MANUAL_UP,
+    // MANUAL_DOWN,
     CAPPED_L3,
     HOME_ELEVATOR,
     CORAL_STATION,
