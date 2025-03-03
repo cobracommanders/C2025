@@ -19,7 +19,7 @@ import frc.robot.Constants.WristConstants;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
-  private final TalonFX wristMotor;
+  public final TalonFX wristMotor;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(WristConstants.P).withKI(WristConstants.I).withKD(WristConstants.D).withKG(Constants.WristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((18.0 / 1.0)));
   private double wristPosition;
   private double motorCurrent;

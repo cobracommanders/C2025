@@ -54,9 +54,9 @@ public class RobotManager extends StateMachine<RobotState> {
   protected RobotState getNextState(RobotState currentState) {
     flags.log();
     RobotState nextState = currentState;
-    if (DriverStation.isDisabled() && DriverStation.isAutonomous()){
-        nextState = RobotState.INVERTED_IDLE;
-    }
+    // if (DriverStation.isDisabled() && DriverStation.isAutonomous()){
+    //     nextState = RobotState.INVERTED_IDLE;
+    // }
     for (RobotFlag flag : flags.getChecked()) {
       switch (flag) {
         case APPLY_HEIGHT_CAP:
@@ -123,6 +123,9 @@ public class RobotManager extends StateMachine<RobotState> {
               break;
             case WAIT_L3:
               nextState = RobotState.SCORE_L3;
+              break;
+            case L4_ELBOW:
+              nextState = RobotState.SCORE_L4;
               break;
             case WAIT_L4:
               nextState = RobotState.SCORE_L4;
@@ -518,11 +521,11 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           case WAIT_L2 -> {
             kicker.setState(KickerState.IDLE);
-            manipulator.setState(ManipulatorState.IDLE);
+            manipulator.setState(ManipulatorState.PRE_SCORE);
           }
           case WAIT_L3 -> {
-            kicker.setState(KickerState.IDLE);
-            manipulator.setState(ManipulatorState.IDLE);
+            kicker.setState(KickerState.REMOVE_ALGAE);
+            manipulator.setState(ManipulatorState.PRE_SCORE);
           }
           case WAIT_L4 -> {
             kicker.setState(KickerState.REMOVE_ALGAE);

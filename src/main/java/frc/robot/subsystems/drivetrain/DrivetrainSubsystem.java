@@ -178,8 +178,8 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       coralStationTag = limelightLocalization.limelightTagIDMiddle;
       boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);
       if (isValidTag) {
-        double coralStationSpeedX = -coralStationAutoAlignTA.calculate(limelightLocalization.limelightTAMiddle, 4.5);
-        double coralStationSpeedY = coralStationAutoAlignTX.calculate(-limelightLocalization.limelightTXMiddle, 0);
+        double coralStationSpeedX = -coralStationAutoAlignTA.calculate(limelightLocalization.limelightTAMiddle, 3.9);
+        double coralStationSpeedY = coralStationAutoAlignTX.calculate(-limelightLocalization.limelightTXMiddle, -2.2);
         coralStationAutoAlignSpeeds = new ChassisSpeeds(coralStationSpeedX, coralStationSpeedY, 0);
       } else {
         coralStationAutoAlignSpeeds = new ChassisSpeeds();
@@ -192,7 +192,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       reefAutoAlignSpeeds = new ChassisSpeeds(reefSpeedX, reefSpeedY, 0);
     }
     snapReefAngle = LimelightLocalization.getInstance().getReefAngleFromTag();
-   
+    
     DogLog.log(getName() + "/isSlow", isSlow);
     DogLog.log(getName() + "/Reef Snap Angle", snapReefAngle);
     DogLog.log(getName() + "/Coral Station Snap Angle", snapCoralStationAngle);

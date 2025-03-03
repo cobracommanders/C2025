@@ -107,7 +107,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     elevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double leftElevatorPosition = elevatorPosition;
     double rightElevatorPosition = rightMotor.getPosition().getValueAsDouble();
-    motorCurrent = rightMotor.getStatorCurrent().getValueAsDouble();
+    motorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Left Elevator Position", leftElevatorPosition);
     DogLog.log(getName() + "/Right Elevator Position", rightElevatorPosition);
     DogLog.log(getName() + "/Elevator Current", motorCurrent);
@@ -149,6 +149,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         }
         case HOME_ELEVATOR -> {
           rightMotor.setControl(new VoltageOut(-0.7));
+          leftMotor.setControl(new VoltageOut(-0.7));
         }
         // case MANUAL_UP -> {
         //   rightMotor.setControl(new VoltageOut(0.7));

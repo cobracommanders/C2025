@@ -11,5 +11,6 @@ public enum ManipulatorState {
     PREPARE_L2,
     PREPARE_L3,
     PREPARE_L4,
+    PRE_SCORE,
     AFTER_INTAKE
 }
