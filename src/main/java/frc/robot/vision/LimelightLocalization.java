@@ -3,6 +3,7 @@ import java.util.List;
 
 import com.ctre.phoenix6.Utils;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -44,7 +45,7 @@ public class LimelightLocalization{
     new Pose2d(4, 5.227, Rotation2d.fromDegrees(-60)), //K
   };
   public Pose2d[] coralStationPosesBlue = {
-    new Pose2d(1.04, 7.11, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(1.235, 7.11, Rotation2d.fromDegrees(-50)), // tag 13 CS
     new Pose2d(1.05, 0.91, Rotation2d.fromDegrees(50)) // tag 12 CS
     // new Pose2d(0.58, 7.13, Rotation2d.fromDegrees(-50)), // Left CS
     // new Pose2d(0.66, 1.1, Rotation2d.fromDegrees(50)) // Right CS
@@ -69,7 +70,7 @@ public class LimelightLocalization{
 
     double tolerance = 5.5;
 
-    if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.8) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
+    if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;
     }
     else {
@@ -86,6 +87,10 @@ public class LimelightLocalization{
     limelightTALeft= LimelightHelpers.getTA("limelight-left");
     limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
     limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
+     DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
+     DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
+     DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
+     DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
   }
   
   public double getCoralStationAngleFromTag() {
@@ -135,7 +140,7 @@ public class LimelightLocalization{
   }
 
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
-    double tolerance = isAuto ? 2.25 : 3;
+    double tolerance = isAuto ? 1.75 : 3;
 
     if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;

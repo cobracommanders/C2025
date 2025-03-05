@@ -13,6 +13,7 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
+import frc.robot.subsystems.wrist.WristSubsystem;
 
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -39,6 +40,8 @@ public class Robot extends TimedRobot{
     public void robotInit() {
         controls.configureDriverCommands();
         controls.configureOperatorCommands();
+
+        WristSubsystem.getInstance().wristMotor.setPosition(0.38);
 
         NamedCommands.registerCommand("idle", Robot.robotCommands.idleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());
@@ -82,7 +85,7 @@ public class Robot extends TimedRobot{
     public void teleopInit() {
         CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand());
         CommandScheduler.getInstance().schedule(Robot.robotCommands.setDrivetrainTeleop());
-        CommandScheduler.getInstance().schedule(Robot.robotCommands.idleCommand());
+        CommandScheduler.getInstance().schedule(Robot.robotCommands.invertIdleCommand());
     }
 
     @Override

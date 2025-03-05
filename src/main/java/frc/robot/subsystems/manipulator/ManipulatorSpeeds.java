@@ -8,6 +8,7 @@ public class ManipulatorSpeeds {
     public static final double L3 = -0.45;
     public static final double L4 = -0.4;
     public static final double AFTER_INTAKE = 0.2;
+    public static final double PRE_SCORE = 0.05;
     public static final double PREPARE_L1 = 0.05;
     public static final double PREPARE_L2 = 0.05;
     public static final double PREPARE_L3 = 0.05;

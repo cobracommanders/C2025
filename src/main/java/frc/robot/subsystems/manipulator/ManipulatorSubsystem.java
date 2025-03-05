@@ -3,6 +3,7 @@ package frc.robot.subsystems.manipulator;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
 import frc.robot.Ports;
@@ -19,6 +20,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       super(ManipulatorState.IDLE);
       manipulatorMotor = new TalonFX(Ports.ManipulatorPorts.MANIPULATOR_MOTOR);
       motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       manipulatorMotor.getConfigurator().apply(motor_config);
     }
 
@@ -63,6 +65,9 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
           }
           case L4 -> {
             setManipulatorPositions(ManipulatorSpeeds.L4);
+          }
+          case PRE_SCORE -> {
+            setManipulatorPositions(ManipulatorSpeeds.PRE_SCORE);
           }
           default -> {}
         }

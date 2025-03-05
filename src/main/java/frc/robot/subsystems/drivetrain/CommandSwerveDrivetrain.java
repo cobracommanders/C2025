@@ -129,7 +129,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     public boolean isNear(Pose2d pose) {
         Pose2d robotPose = getState().Pose;
-        return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.01) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.01);
+        return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.03) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.03);
     }
 
     public void update() {
