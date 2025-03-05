@@ -609,7 +609,7 @@ public class RobotManager extends StateMachine<RobotState> {
   }
 
   public void autoReefAlignRequest(){
-    DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_REEF_ALIGN);
+    DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_REEF_ALIGN_1);
   }
 
   public void autoCoralStationAlignRequest(){
