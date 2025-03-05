@@ -35,17 +35,26 @@ public class LimelightLocalization{
   public static List<Integer> coralStationTags = List.of(
     1, 2, 12, 13
   );
+
+  public static List<Integer> reefTags = List.of(
+  6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22
+  );
+
   public LimelightLocalization() {
     LimelightHelpers.setPipelineIndex("limelight-left", 0);
     LimelightHelpers.setPipelineIndex("limelight-right", 0);
     LimelightHelpers.setPipelineIndex("limelight-middle", 0);
   }
+
   public Pose2d[] getCoralStationPoses() {
     return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
   }
 
-  public AlignmentState getReefAlignmentState(){
+public Pose2d[] getReefPoses(){
+  return Robot.alliance.get() == Alliance.Red ? redBranchPoses : blueBranchPoses;
+}
 
+  public AlignmentState getReefAlignmentState(){
     double tolerance = 5.5;
 
     if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
@@ -56,21 +65,18 @@ public class LimelightLocalization{
     }
 
   }
-  public void collectInputs(){
-    limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
-    limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
-    limelightTXRight = LimelightHelpers.getTX("limelight-right");
-    limelightTARight = LimelightHelpers.getTA("limelight-right");
-    limelightTXLeft = LimelightHelpers.getTX("limelight-left");
-    limelightTALeft= LimelightHelpers.getTA("limelight-left");
-    limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
-    limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
-     DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
-     DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
-     DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
-     DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
+
+  public AlignmentState getCoralStationAlignmentState(boolean isAuto){
+    double tolerance = isAuto ? 1.75 : 3;
+
+    if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
+      return AlignmentState.ALIGNED;
+    }
+    else{
+      return AlignmentState.NOT_ALIGNED;
+    }
   }
-  
+
   public double getCoralStationAngleFromTag() {
     switch (limelightTagIDMiddle) {
       case 13:
@@ -87,7 +93,7 @@ public class LimelightLocalization{
   }
 
   public double getReefAngleFromTag() {
-    switch (limelightTagIDRight) {
+    switch (limelightTagIDRight){
       case 6:
         return 120;
       case 7:
@@ -117,15 +123,19 @@ public class LimelightLocalization{
     }
   }
 
-  public AlignmentState getCoralStationAlignmentState(boolean isAuto){
-    double tolerance = isAuto ? 1.75 : 3;
-
-    if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
-      return AlignmentState.ALIGNED;
-    }
-    else{
-      return AlignmentState.NOT_ALIGNED;
-    }
+  public void collectInputs(){
+    limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
+    limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
+    limelightTXRight = LimelightHelpers.getTX("limelight-right");
+    limelightTARight = LimelightHelpers.getTA("limelight-right");
+    limelightTXLeft = LimelightHelpers.getTX("limelight-left");
+    limelightTALeft= LimelightHelpers.getTA("limelight-left");
+    limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
+    limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
+     DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
+     DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
+     DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
+     DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
   }
 
   public void update(){
@@ -139,12 +149,14 @@ public class LimelightLocalization{
     LimelightHelpers.PoseEstimate mt2l = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
     LimelightHelpers.PoseEstimate mt2r = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-right");
     LimelightHelpers.PoseEstimate mt2m = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-middle");
+
     // if(CommandSwerveDrivetrain.getInstance().isMoving() && DriverStation.isTeleop()) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
     // {
     //   rejectLeftData = true;
     //   rejectRightData = true;
     //   rejectMiddleData = true;
     // }
+
     if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
     {
       rejectMiddleData = true;
@@ -157,6 +169,7 @@ public class LimelightLocalization{
     {
       rejectLeftData = true;
     }
+
     if(!rejectRightData)
     {
 
@@ -167,16 +180,16 @@ public class LimelightLocalization{
       SmartDashboard.putNumber("mt2r", mt2r.timestampSeconds);
 
     }
+
     if(!rejectLeftData)
     {
-
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2l.pose,
           Utils.fpgaToCurrentTime(mt2l.timestampSeconds),
           VecBuilder.fill(0.75, 0.75,9999999));
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
-
     }
+
     if(!rejectMiddleData)
     {
 

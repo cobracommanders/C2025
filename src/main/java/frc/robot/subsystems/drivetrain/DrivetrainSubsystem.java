@@ -41,7 +41,9 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   private double snapCoralStationAngle;
   private double snapReefAngle;
   private int coralStationTag;
+  private int reefTag;
   private Pose2d targetCoralStationPose;
+  private Pose2d targetReefPose;
   private SwerveDriveState drivetrainState = new SwerveDriveState();
   private double goalSnapAngle = 0;
   // private boolean hasAppliedOperatorPerspective = false;
@@ -170,6 +172,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       teleopSpeeds = teleopSpeeds.div(2);
       isSlow = true;
     }
+
     if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1 || getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_2) {
 
       Pose2d robotPose = drivetrain.getState().Pose;
@@ -184,13 +187,29 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       } else {
         coralStationAutoAlignSpeeds = new ChassisSpeeds();
       }
-    } 
-
-    if (getState() == DrivetrainState.AUTO_REEF_ALIGN) {
-      double reefSpeedX = reefAutoAlignTA.calculate(limelightLocalization.limelightTARight, 14);
-      double reefSpeedY = reefAutoAlignTX.calculate(limelightLocalization.limelightTXRight, -14);
-      reefAutoAlignSpeeds = new ChassisSpeeds(reefSpeedX, reefSpeedY, 0);
     }
+
+    if (getState() == DrivetrainState.AUTO_REEF_ALIGN_1 || getState() == DrivetrainState.AUTO_REEF_ALIGN_2) {
+
+      Pose2d robotPose = drivetrain.getState().Pose;
+      targetReefPose = robotPose.nearest(List.of(LimelightLocalization.getInstance().getReefPoses()));
+      snapReefAngle = targetReefPose.getRotation().getDegrees();
+      reefTag = limelightLocalization.limelightTagIDRight;
+      boolean isValidTag = LimelightLocalization.reefTags.contains(reefTag);
+      if (isValidTag) {
+        double reefSpeedX = -reefAutoAlignTA.calculate(limelightLocalization.limelightTAMiddle, 14.6);
+        double reefSpeedY = reefAutoAlignTX.calculate(-limelightLocalization.limelightTXMiddle, -19.7);
+        reefAutoAlignSpeeds = new ChassisSpeeds(reefSpeedX, reefSpeedY, 0);
+      } else {
+        reefAutoAlignSpeeds = new ChassisSpeeds();
+      }
+    }
+
+    // if (getState() == DrivetrainState.AUTO_REEF_ALIGN) {
+    //   double reefSpeedX = reefAutoAlignTA.calculate(limelightLocalization.limelightTARight, 14);
+    //   double reefSpeedY = reefAutoAlignTX.calculate(limelightLocalization.limelightTXRight, -14);
+    //   reefAutoAlignSpeeds = new ChassisSpeeds(reefSpeedX, reefSpeedY, 0);
+    // }
     snapReefAngle = LimelightLocalization.getInstance().getReefAngleFromTag();
     
     DogLog.log(getName() + "/isSlow", isSlow);
@@ -222,7 +241,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
           case TELEOP_CORAL_STATION_ALIGN -> {
             LimelightSubsystem.getInstance().setState(LimelightState.CORAL_STATION);
           }
-          case AUTO_REEF_ALIGN -> {
+          case AUTO_REEF_ALIGN_1 -> {
             LimelightSubsystem.getInstance().setState(LimelightState.AUTO_REEF);
           }
           case AUTO_CORAL_STATION_ALIGN_1 -> {
@@ -290,8 +309,21 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
               .withDriveRequestType(DriveRequestType.Velocity));
           }
         }
+
+      case AUTO_REEF_ALIGN_1 -> {
+          ChassisSpeeds speeds = drivetrain.driveToPoseSpeeds(targetReefPose);
+          drivetrain.setControl(
+  
+            driveToAngle
+              .withVelocityX(speeds.vxMetersPerSecond)
+              .withVelocityY(speeds.vyMetersPerSecond)
+              .withDriveRequestType(DriveRequestType.Velocity)
+              .withForwardPerspective(ForwardPerspectiveValue.BlueAlliance)
+              .withTargetDirection(targetReefPose.getRotation())
+          );
+        }
         
-      case AUTO_REEF_ALIGN -> {
+      case AUTO_REEF_ALIGN_2 -> {
         if (!MathUtil.isNear(snapReefAngle, CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 3)) {
           drivetrain.setControl(
             driveToAngle
