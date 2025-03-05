@@ -4,6 +4,8 @@ public enum RobotFlag {
   IDLE,
   INVERTED_IDLE,
   DEEP_CLIMB,
+  CLIMB_RETRACT,
+  CLIMB_UNWIND,
   L1,
   L2,
   L3,

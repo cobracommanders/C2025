@@ -110,6 +110,16 @@ public class RobotManager extends StateMachine<RobotState> {
             nextState = RobotState.PREPARE_DEEP_CLIMB;
           }
           break;
+        case CLIMB_UNWIND:
+        if (currentState == RobotState.DEEP_CLIMB_WAIT) {
+          nextState = RobotState.DEEP_CLIMB_UNWIND;
+        }
+        break;
+        case CLIMB_RETRACT:
+        if (currentState == RobotState.DEEP_CLIMB_WAIT) {
+          nextState = RobotState.DEEP_CLIMB_RETRACT;
+        }
+        break;
         case HOMING:
           nextState = RobotState.HOMING_STAGE_1_ELEVATOR;
           break;
@@ -133,8 +143,6 @@ public class RobotManager extends StateMachine<RobotState> {
             case CAPPED_L4:
               nextState = RobotState.SCORE_L4;
               break;
-            // case DEEP_CLIMB_WAIT:
-            //   nextState = RobotState.DEEP_CLIMB_RETRACT;
             default:
               break;
           }
@@ -283,7 +291,12 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case DEEP_CLIMB_RETRACT:
-        if (timeout(5)){
+        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(3)){
+          nextState = RobotState.DEEP_CLIMB_WAIT;
+        }
+        break;
+      case DEEP_CLIMB_UNWIND:
+        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(3)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
         break;
@@ -445,9 +458,18 @@ public class RobotManager extends StateMachine<RobotState> {
             kicker.setState(KickerState.IDLE);
           }
 
+          case DEEP_CLIMB_UNWIND -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_UNWIND);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
+            kicker.setState(KickerState.IDLE);
+          }
+
           case DEEP_CLIMB_WAIT -> {
             elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_WAIT);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
@@ -594,6 +616,14 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void climbRequest(){
     flags.check(RobotFlag.DEEP_CLIMB);
+  }
+
+  public void climbUnwindRequest(){
+    flags.check(RobotFlag.CLIMB_UNWIND);
+  }
+
+  public void climbRetractRequest(){
+    flags.check(RobotFlag.CLIMB_RETRACT);
   }
 
   public void applyHeightCapRequest(){

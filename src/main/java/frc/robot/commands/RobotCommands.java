@@ -14,6 +14,7 @@ import java.util.List;
 public class RobotCommands {
   private final RobotManager robot;
   private final Subsystem[] requirements;
+  
 
   public RobotCommands() {
     this.robot = RobotManager.getInstance();
@@ -99,6 +100,24 @@ public class RobotCommands {
     // return Commands.runOnce(robot::climbRequest, requirements)
     //     .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));    
     // }
+  }
+
+  public Command climbUnwindCommand() {
+    if (robot.climber.getState() == ClimberState.DEEP_CLIMB_WAIT) {
+      return Commands.runOnce(robot::climbUnwindRequest, requirements)
+      .andThen(robot.waitForState(RobotState.DEEP_CLIMB_UNWIND));
+    } else {
+      return climbCommand();
+    }
+  }
+
+  public Command climbRetractCommand() {
+    if (robot.climber.getState() == ClimberState.DEEP_CLIMB_WAIT) {
+      return Commands.runOnce(robot::climbRetractRequest, requirements)
+      .andThen(robot.waitForState(RobotState.DEEP_CLIMB_RETRACT));
+    } else {
+      return climbCommand();
+    }
   }
 
   public Command removeHeightCapCommand() {
