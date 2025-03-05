@@ -7,7 +7,8 @@ public final class Constants {
   }
 
 public static final class ElevatorConstants{
-  public static final double homingStallCurrent = 35;
+  public static final double encoderOffset = 0;
+  public static final double homingStallCurrent = 30;
   public static final double P = 40; //40
   public static final double I = 0;
   public static final double D = 0;
