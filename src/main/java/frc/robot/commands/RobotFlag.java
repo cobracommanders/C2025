@@ -10,6 +10,8 @@ public enum RobotFlag {
   L2,
   L3,
   L4,
+  ALGAE_HIGH,
+  ALGAE_LOW,
   CORAL_STATION,
   INVERTED_CORAL_STATION,
   SCORE,

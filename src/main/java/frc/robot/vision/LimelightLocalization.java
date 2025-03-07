@@ -51,7 +51,7 @@ public class LimelightLocalization{
   }
 
 public Pose2d[] getReefPoses(){
-  return Robot.alliance.get() == Alliance.Red ? redBranchPoses : blueBranchPoses;
+  return branchPoses;
 }
 
   public AlignmentState getReefAlignmentState(){

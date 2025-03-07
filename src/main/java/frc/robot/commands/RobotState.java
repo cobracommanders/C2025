@@ -41,7 +41,19 @@ public enum RobotState {
   HOMING_STAGE_1_ELEVATOR(false, true, new LEDState(Color.kRed, Patterns.SLOW_BLINK)),
   HOMING_STAGE_2_ELBOW(true, true, new LEDState(Color.kRed, Patterns.SLOW_BLINK)),
   HOMING_STAGE_3_WRIST(true, true,  new LEDState(Color.kRed, Patterns.SLOW_BLINK)),
-  PREPARE_HOMING(true, true, new LEDState(Color.kPurple, Patterns.SOLID));
+  PREPARE_HOMING(true, true, new LEDState(Color.kPurple, Patterns.SOLID)),
+  PREPARE_REMOVE_ALGAE_LOW(true, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  WAIT_REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  PREPARE_REMOVE_ALGAE_HIGH(true, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  REMOVE_ALGAE_HIGH_CAPPED(true, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  WAIT_REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  PREPARE_SCORE_ALGAE(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  SCORE_ALGAE_CAPPED(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  SCORE_ALGAE_WAIT(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
+  SCORE_ALGAE(false, false, new LEDState(Color.kBlue, Patterns.SOLID));
+
 
   public final boolean ignoreRequests;
   public final boolean inverted;
