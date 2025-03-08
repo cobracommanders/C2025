@@ -1,5 +1,7 @@
 package frc.robot.subsystems.wrist;
 
+import javax.sound.sampled.Port;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -11,7 +13,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DutyCycle;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 import frc.robot.Constants;
@@ -25,12 +29,15 @@ public class WristSubsystem extends StateMachine<WristState>{
   private double motorCurrent;
   private final double tolerance;
   private boolean brakeModeEnabled;
+  private final DutyCycle encoder;
+  private double absolutePosition;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
   public WristSubsystem() {
     super(WristState.HOME_WRIST);
     wristMotor = new TalonFX(Ports.WristPorts.WRIST_MOTOR);
+    encoder = new DutyCycle(new DigitalInput(Ports.WristPorts.ENCODER));
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     motor_config.MotionMagic.MotionMagicCruiseVelocity = WristConstants.MotionMagicCruiseVelocity;
     motor_config.MotionMagic.MotionMagicAcceleration = WristConstants.MotionMagicAcceleration;
@@ -40,13 +47,13 @@ public class WristSubsystem extends StateMachine<WristState>{
     brakeModeEnabled = false;
   }
   protected WristState getNextState(WristState currentState) {
-    if (getState() == WristState.HOME_WRIST && this.atGoal()) { 
-      wristMotor.setPosition(0.38);
-      return WristState.INVERTED_IDLE;
-    } else {
+    // if (getState() == WristState.HOME_WRIST && this.atGoal()) {
+    //   //wristMotor.setPosition(0.38);
+    //   return WristState.INVERTED_IDLE;
+    // } else {
       return currentState;
     }
-  }
+
    public boolean atGoal() {
     return switch (getState()) {
       case IDLE -> 
@@ -75,6 +82,10 @@ public class WristSubsystem extends StateMachine<WristState>{
         MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
       case INVERTED_CORAL_STATION ->
         MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
+      case SCORE_ALGAE ->
+        MathUtil.isNear(WristPositions.ALGAE_SCORE, wristPosition, tolerance);
+      case INTAKE_ALGAE ->
+        MathUtil.isNear(WristPositions.ALGAE_INTAKE, wristPosition, tolerance);
       case DISABLED->
         true;
     };
@@ -88,13 +99,20 @@ public class WristSubsystem extends StateMachine<WristState>{
     return getState() == WristState.INVERTED_IDLE;
   }
 
+  // public void syncEncoder(){
+  //   wristMotor.setPosition(absolutePosition);
+  // }
+
+
     @Override
   public void collectInputs(){
+    absolutePosition = encoder.getOutput();
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);
     DogLog.log(getName() + "/Wrist AtGoal", atGoal());
     DogLog.log(getName() + "/wrist current", motorCurrent);
+    DogLog.log(getName() + "/encoder position", absolutePosition);
   }
 
   @Override
@@ -159,6 +177,12 @@ public class WristSubsystem extends StateMachine<WristState>{
         }
         case L4_WRIST -> {
           setWristPosition(WristPositions.L4_WRIST);
+        }
+        case INTAKE_ALGAE -> {
+          setWristPosition(WristPositions.ALGAE_INTAKE);
+        }
+        case SCORE_ALGAE -> {
+          setWristPosition(WristPositions.ALGAE_SCORE);
         }
         default -> {}
       }

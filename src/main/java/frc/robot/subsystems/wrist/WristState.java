@@ -14,5 +14,7 @@ public enum WristState {
     HOME_WRIST,
     L4_WRIST,
     INVERTED_CORAL_STATION,
-    DISABLED
+    DISABLED,
+    INTAKE_ALGAE,
+    SCORE_ALGAE
 }
