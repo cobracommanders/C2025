@@ -7,6 +7,7 @@ import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -121,14 +122,14 @@ public class LimelightLocalization{
   
 
   public Pose2d getAdjustedRobotPose() {
-    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch();
+    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch().plus(new Transform2d(0, 0, Rotation2d.kZero));
     Pose2d branch_to_robot = new Pose2d(-1.02, 0.08, Rotation2d.kZero);
     return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
   }
 
   public Pose2d getAdjustedRobotPose(Pose2d branchPose) {
-    Pose2d field_to_branch = branchPose;
-    Pose2d branch_to_robot = new Pose2d(-1.02, 0.08, Rotation2d.kZero);
+    Pose2d field_to_branch = branchPose.plus(new Transform2d(0, 0, Rotation2d.kZero));
+    Pose2d branch_to_robot = new Pose2d(-.762, 0.08, Rotation2d.kZero);
     return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
   }
 
@@ -167,10 +168,11 @@ public class LimelightLocalization{
     //   rejectMiddleData = true;
     // }
 
-    if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
-    {
-      rejectMiddleData = true;
-    }
+    // if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
+    // {
+    //   rejectMiddleData = true;
+    // }
+    rejectMiddleData = true;
     if(mt2r == null || mt2r.tagCount == 0 || disableRight)
     {
       rejectRightData = true;
@@ -196,7 +198,7 @@ public class LimelightLocalization{
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2l.pose,
           Utils.fpgaToCurrentTime(mt2l.timestampSeconds),
-          VecBuilder.fill(0.75, 0.75,9999999));
+          VecBuilder.fill(0.05, 0.05,9999999));
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
     }
 
