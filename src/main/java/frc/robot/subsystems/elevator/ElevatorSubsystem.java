@@ -113,16 +113,14 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void increaseSetpoint(){
     if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
       ElevatorPositions.INVERTED_CORAL_STATION += 0.1;
-      leftMotor.setPosition(elevatorPosition);
-      rightMotor.setPosition(elevatorPosition);
+      setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
     }
   }
 
   public void decreaseSetpoint(){
     if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
       ElevatorPositions.INVERTED_CORAL_STATION -= 0.1;
-      leftMotor.setPosition(elevatorPosition);
-      rightMotor.setPosition(elevatorPosition);
+      setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
   }
 }
 

@@ -12,6 +12,8 @@ import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elevator.ElevatorPositions;
+import frc.robot.subsystems.elevator.ElevatorState;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
@@ -46,46 +48,50 @@ public class RobotCommands {
   }
 
   public Command L1Command() {
-    if (!robot.getState().inverted) {
-      return invertIdleCommand() // go to inverted idle
-        .andThen(Commands.runOnce(robot::prepareL1Request, requirements)) // Prepare CS (non-inverted)
-        .andThen(robot.waitForState(RobotState.WAIT_L1)); // Goes back to idle when we're done intaking
-    }else {
-      return Commands.runOnce(robot::prepareL1Request, requirements)
-        .andThen(robot.waitForState(RobotState.WAIT_L1));
-    }
+    return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::prepareL1Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L1)), Commands.runOnce(robot::prepareL1Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L1)), () -> !robot.getState().inverted);
+    // if (!robot.getState().inverted) {
+      // return invertIdleCommand()
+      //   .andThen(Commands.runOnce(robot::prepareL1Request, requirements))
+      //   .andThen(robot.waitForState(RobotState.WAIT_L1));
+    // }else {
+      // return Commands.runOnce(robot::prepareL1Request, requirements)
+      //   .andThen(robot.waitForState(RobotState.WAIT_L1));
+    // }
   }
   
   public Command L2Command() {
-    if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
-        .andThen(Commands.runOnce(robot::prepareL2Request, requirements)) // Prepare CS (non-inverted)
-        .andThen(robot.waitForState(RobotState.WAIT_L2)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareL2Request, requirements)
-          .andThen(robot.waitForState(RobotState.WAIT_L2));
-    }
+    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL2Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L2)), Commands.runOnce(robot::prepareL2Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L2)), () -> robot.getState().inverted);
+    //if (robot.getState().inverted) {
+    //   return alternateIdleCommand()
+    //     .andThen(Commands.runOnce(robot::prepareL2Request, requirements))
+    //     .andThen(robot.waitForState(RobotState.WAIT_L2));
+    // } else {
+    //   return Commands.runOnce(robot::prepareL2Request, requirements)
+    //       .andThen(robot.waitForState(RobotState.WAIT_L2));
+    // }
   }
 
   public Command L3Command() {
-    if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
-        .andThen(Commands.runOnce(robot::prepareL3Request, requirements)) // Prepare CS (non-inverted)
-        .andThen(robot.waitForState(RobotState.WAIT_L3)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareL3Request, requirements)
-        .andThen(robot.waitForState(RobotState.WAIT_L3));
-    }
+    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL3Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L3)), Commands.runOnce(robot::prepareL3Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L3)), () -> robot.getState().inverted);
+    // if (robot.getState().inverted) {
+    //   return alternateIdleCommand()
+    //     .andThen(Commands.runOnce(robot::prepareL3Request, requirements))
+    //     .andThen(robot.waitForState(RobotState.WAIT_L3));
+    // } else {
+    //   return Commands.runOnce(robot::prepareL3Request, requirements)
+    //     .andThen(robot.waitForState(RobotState.WAIT_L3));
+    // }
   }
   public Command L4Command() {
-    if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
-      .andThen(Commands.runOnce(robot::prepareL4Request, requirements)); // Prepare CS (non-inverted)
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareL4Request, requirements);
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4));
-    }
+    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL4Request, requirements)), Commands.runOnce(robot::prepareL4Request, requirements), () -> robot.getState().inverted);
+    // if (robot.getState().inverted) {
+    //   return alternateIdleCommand()
+    //   .andThen(Commands.runOnce(robot::prepareL4Request, requirements));
+    //   // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
+    // } else {
+    //   return Commands.runOnce(robot::prepareL4Request, requirements);
+    //   // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4));
+    // }
   }
   public Command lowAlgaeCommand() {
     if (robot.getState().inverted) {
