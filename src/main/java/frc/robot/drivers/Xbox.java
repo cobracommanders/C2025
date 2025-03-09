@@ -8,6 +8,8 @@ import frc.robot.RotationUtil;
 
 import java.util.EnumMap;
 
+import dev.doglog.DogLog;
+
 public class Xbox {
     private final int port;
     private double deadzone = 0;
@@ -285,7 +287,7 @@ public class Xbox {
         double angle = getRawPOV();
 
         angle = -RotationUtil.toSignedDegrees(angle);
-
+        DogLog.log("Controllers/Raw POV Angle", angle);
         return angle;
     }
 

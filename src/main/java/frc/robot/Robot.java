@@ -43,13 +43,13 @@ public class Robot extends TimedRobot{
 
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
 
-        NamedCommands.registerCommand("idle", Robot.robotCommands.idleCommand());
+        NamedCommands.registerCommand("idle", Robot.robotCommands.alternateIdleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());
         NamedCommands.registerCommand("score", Robot.robotCommands.scoreCommand());
         NamedCommands.registerCommand("L1", Robot.robotCommands.L1Command());
         NamedCommands.registerCommand("L2", Robot.robotCommands.L2Command());
-        NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
-        NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
+        NamedCommands.registerCommand("L3", Robot.robotCommands.LowReefCommand());
+        NamedCommands.registerCommand("L4", Robot.robotCommands.HighReefCommand());
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
         NamedCommands.registerCommand("auto coral station align", Robot.robotCommands.autoCoralStationAlign());

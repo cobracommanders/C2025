@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
+import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.vision.LimelightLocalization;
@@ -119,6 +121,9 @@ public class LED extends SubsystemBase {
         default:
           break;
       }
+    }
+    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
+      LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
     }
     if (DriverStation.isDisabled()) {
       LEDPattern.solid(Color.kPurple).applyTo(m_ledBuffer);

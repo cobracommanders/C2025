@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.LED.LEDState;
 import frc.robot.subsystems.LED.Patterns;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 
 public enum RobotState {
   PREPARE_IDLE(false, false, new LEDState(Color.kPurple, Patterns.SLOW_BLINK)),
@@ -46,11 +47,9 @@ public enum RobotState {
   WAIT_REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   PREPARE_REMOVE_ALGAE_HIGH(true, false, new LEDState(Color.kBlue, Patterns.SOLID)),
-  REMOVE_ALGAE_HIGH_CAPPED(true, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   WAIT_REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   PREPARE_SCORE_ALGAE(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
-  SCORE_ALGAE_CAPPED(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   SCORE_ALGAE_WAIT(false, false, new LEDState(Color.kBlue, Patterns.SOLID)),
   SCORE_ALGAE(false, false, new LEDState(Color.kBlue, Patterns.SOLID));
 
@@ -64,5 +63,4 @@ public enum RobotState {
     this.inverted = inverted;
     this.ledState = ledState;
   }
-
 }
