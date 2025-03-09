@@ -6,6 +6,9 @@ import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
+import frc.robot.subsystems.elevator.ElevatorPositions;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -57,6 +60,8 @@ public class Controls {
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
+        operator.POV90().onTrue(runOnce(() -> ElevatorPositions.INVERTED_CORAL_STATION = ElevatorPositions.INVERTED_CORAL_STATION + 0.1));
+        operator.POVMinus90().onTrue(runOnce(() -> ElevatorPositions.INVERTED_CORAL_STATION = ElevatorPositions.INVERTED_CORAL_STATION - 0.1));
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2Command());
