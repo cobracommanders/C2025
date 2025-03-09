@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.LED.LEDState;
 import frc.robot.subsystems.LED.Patterns;
-import frc.robot.subsystems.climber.ClimberSubsystem;
 
 public enum RobotState {
   PREPARE_IDLE(false, false, new LEDState(Color.kPurple, Patterns.SLOW_BLINK)),

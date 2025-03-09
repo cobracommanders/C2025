@@ -123,6 +123,9 @@ public class LED extends SubsystemBase {
       }
     }
     if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
+      LEDPattern.solid(Color.kAquamarine).applyTo(m_ledBuffer);
+    }
+    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
       LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
     }
     if (DriverStation.isDisabled()) {
