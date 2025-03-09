@@ -15,6 +15,7 @@ import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
 import frc.robot.subsystems.wrist.WristSubsystem;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot{
 
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);
+        FieldConstants.getInstance().logBranches();
     }
 
     @Override

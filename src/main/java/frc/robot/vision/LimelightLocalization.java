@@ -28,7 +28,9 @@ public class LimelightLocalization{
   public double limelightTALeft;
   public int limelightTagIDMiddle;
   public int limelightTagIDRight;
-  public Pose2d[] branchPoses = FieldConstants.getInstance().branchPoses;
+  public int limelightTagIDLeft;
+  public Pose2d[] branchPosesBlue = FieldConstants.getInstance().branchPosesBlue;
+  public Pose2d[] branchPosesRed = FieldConstants.getInstance().branchPosesRed;
   public Pose2d[] coralStationPosesBlue = FieldConstants.getInstance().coralStationPosesBlue;
   public Pose2d[] coralStationPosesRed = FieldConstants.getInstance().coralStationPosesRed;
   
@@ -44,15 +46,6 @@ public class LimelightLocalization{
     LimelightHelpers.setPipelineIndex("limelight-left", 0);
     LimelightHelpers.setPipelineIndex("limelight-right", 0);
     LimelightHelpers.setPipelineIndex("limelight-middle", 0);
-  }
-
-  public Pose2d[] getCoralStationPoses() {
-    return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
-  }
-
-  public Pose2d[] getReefPoses(){
-    // return branchPoses;
-    return branchPoses;
   }
 
 
@@ -125,6 +118,20 @@ public class LimelightLocalization{
     }
   }
 
+  
+
+  public Pose2d getAdjustedRobotPose() {
+    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch();
+    Pose2d branch_to_robot = new Pose2d(-1.02, 0.08, Rotation2d.kZero);
+    return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
+  }
+
+  public Pose2d getAdjustedRobotPose(Pose2d branchPose) {
+    Pose2d field_to_branch = branchPose;
+    Pose2d branch_to_robot = new Pose2d(-1.02, 0.08, Rotation2d.kZero);
+    return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
+  }
+
   public void collectInputs(){
     limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
     limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
@@ -134,6 +141,7 @@ public class LimelightLocalization{
     limelightTALeft= LimelightHelpers.getTA("limelight-left");
     limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
     limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
+    limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
      DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
      DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
      DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);

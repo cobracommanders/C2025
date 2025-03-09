@@ -56,12 +56,12 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        //driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        //driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
-        driver.B().onFalse(Robot.robotCommands.idleCommand());
-        driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
-        driver.Y().onFalse(Robot.robotCommands.idleCommand());
+        driver.B().onTrue(Robot.robotCommands.autoReefAlign());
+        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        // driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
+        // driver.B().onFalse(Robot.robotCommands.idleCommand());
+        // driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
+        // driver.Y().onFalse(Robot.robotCommands.idleCommand());
     }
 
     public void configureOperatorCommands(){
@@ -72,17 +72,17 @@ public class Controls {
         operator.POV0().onTrue(runOnce(() -> isCoralMode = true));
         operator.POV180().onTrue(runOnce(() -> isCoralMode = false));
 
-        if (isCoralMode == false){
-            operator.Y().onTrue(Robot.robotCommands.algaeHighCommand());
-            operator.B().onTrue(Robot.robotCommands.algaeLowCommand());
-        }
+        // if (isCoralMode == false){
+        //     operator.Y().onTrue(Robot.robotCommands.algaeHighCommand());
+        //     operator.B().onTrue(Robot.robotCommands.algaeLowCommand());
+        // }
 
-        if (isCoralMode == true){
+        //if (isCoralMode == true){
         operator.Y().onTrue(Robot.robotCommands.L3Command());
         operator.B().onTrue(Robot.robotCommands.L4Command());
         operator.X().onTrue(Robot.robotCommands.L2Command());
         operator.A().onTrue(Robot.robotCommands.L1Command());
-        }
+        //}
         operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
     }
 

@@ -50,34 +50,35 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   }
 
    public boolean atGoal() {
-    return switch (getState()) {
-      case IDLE -> 
-        MathUtil.isNear(ElbowPositions.IDLE, elbowPosition, tolerance);
-      case INVERTED_IDLE -> 
-        MathUtil.isNear(ElbowPositions.INVERTED_IDLE, elbowPosition, tolerance);
-      case L1 ->
-        MathUtil.isNear(ElbowPositions.L1, elbowPosition, tolerance);
-      case L2 ->
-        MathUtil.isNear(ElbowPositions.L2, elbowPosition, tolerance);
-      case L3 ->
-        MathUtil.isNear(ElbowPositions.L3, elbowPosition, tolerance);
-      case CAPPED_L4 ->
-        MathUtil.isNear(ElbowPositions.CAPPED_L4, elbowPosition, tolerance);
-      case L4 ->
-        MathUtil.isNear(ElbowPositions.L4, elbowPosition, tolerance);
-      case CORAL_STATION ->
-        MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
-      case HOME_ELBOW ->
-        motorCurrent > ElbowConstants.homingStallCurrent;
-      case INVERTED_CORAL_STATION ->
-        MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
-      case CAPPED_L3 ->
-        MathUtil.isNear(ElbowPositions.CAPPED_L3, elbowPosition, tolerance);
-      case L4_ELBOW ->
-        MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
-      case DISABLED ->
-        true;
-    };
+    return true;
+    // return switch (getState()) {
+    //   case IDLE -> 
+    //     MathUtil.isNear(ElbowPositions.IDLE, elbowPosition, tolerance);
+    //   case INVERTED_IDLE -> 
+    //     MathUtil.isNear(ElbowPositions.INVERTED_IDLE, elbowPosition, tolerance);
+    //   case L1 ->
+    //     MathUtil.isNear(ElbowPositions.L1, elbowPosition, tolerance);
+    //   case L2 ->
+    //     MathUtil.isNear(ElbowPositions.L2, elbowPosition, tolerance);
+    //   case L3 ->
+    //     MathUtil.isNear(ElbowPositions.L3, elbowPosition, tolerance);
+    //   case CAPPED_L4 ->
+    //     MathUtil.isNear(ElbowPositions.CAPPED_L4, elbowPosition, tolerance);
+    //   case L4 ->
+    //     MathUtil.isNear(ElbowPositions.L4, elbowPosition, tolerance);
+    //   case CORAL_STATION ->
+    //     MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
+    //   case HOME_ELBOW ->
+    //     motorCurrent > ElbowConstants.homingStallCurrent;
+    //   case INVERTED_CORAL_STATION ->
+    //     MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
+    //   case CAPPED_L3 ->
+    //     MathUtil.isNear(ElbowPositions.CAPPED_L3, elbowPosition, tolerance);
+    //   case L4_ELBOW ->
+    //     MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
+    //   case DISABLED ->
+    //     true;
+    //  };
   }
 
   public void setState(ElbowState newState) {
@@ -129,8 +130,8 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
     }
 
   public void setElbowPosition(double position) {
-    motor.setControl(motor_request.withPosition(position));
-    DogLog.log(getName() + "/Elbow Setpoint", position);
+    // motor.setControl(motor_request.withPosition(position));
+    // DogLog.log(getName() + "/Elbow Setpoint", position);
   }
 
     @Override

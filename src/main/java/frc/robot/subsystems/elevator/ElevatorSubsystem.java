@@ -64,34 +64,35 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   }
 
   public boolean atGoal() {
-    return switch (getState()) {
-        case IDLE -> 
-          MathUtil.isNear(ElevatorPositions.IDLE, elevatorPosition, tolerance);
-        case L1 ->
-          MathUtil.isNear(ElevatorPositions.L1, elevatorPosition, tolerance);
-        case L2 ->
-          MathUtil.isNear(ElevatorPositions.L2, elevatorPosition, tolerance);
-        case L3 ->
-          MathUtil.isNear(ElevatorPositions.L3, elevatorPosition, tolerance);
-        case CAPPED_L3 ->
-          MathUtil.isNear(ElevatorPositions.CAPPED_L3, elevatorPosition, tolerance);
-        case CAPPED_L4 ->
-          MathUtil.isNear(ElevatorPositions.CAPPED_L4, elevatorPosition, tolerance);
-        case L4 ->
-          MathUtil.isNear(ElevatorPositions.L4, elevatorPosition, tolerance);
-        case L4_MAX ->
-          MathUtil.isNear(ElevatorPositions.L4_MAX, elevatorPosition, tolerance);
-        case CORAL_STATION ->
-          MathUtil.isNear(ElevatorPositions.CORAL_STATION, elevatorPosition, tolerance);
-        case HOME_ELEVATOR ->
-          (motorCurrent > ElevatorConstants.homingStallCurrent);
-        // case MANUAL_UP ->
-        //   true;
-        // case MANUAL_DOWN ->
-        //   true;
-        case INVERTED_CORAL_STATION ->
-          MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
-      };
+    return true;
+    // return switch (getState()) {
+    //     case IDLE -> 
+    //       MathUtil.isNear(ElevatorPositions.IDLE, elevatorPosition, tolerance);
+    //     case L1 ->
+    //       MathUtil.isNear(ElevatorPositions.L1, elevatorPosition, tolerance);
+    //     case L2 ->
+    //       MathUtil.isNear(ElevatorPositions.L2, elevatorPosition, tolerance);
+    //     case L3 ->
+    //       MathUtil.isNear(ElevatorPositions.L3, elevatorPosition, tolerance);
+    //     case CAPPED_L3 ->
+    //       MathUtil.isNear(ElevatorPositions.CAPPED_L3, elevatorPosition, tolerance);
+    //     case CAPPED_L4 ->
+    //       MathUtil.isNear(ElevatorPositions.CAPPED_L4, elevatorPosition, tolerance);
+    //     case L4 ->
+    //       MathUtil.isNear(ElevatorPositions.L4, elevatorPosition, tolerance);
+    //     case L4_MAX ->
+    //       MathUtil.isNear(ElevatorPositions.L4_MAX, elevatorPosition, tolerance);
+    //     case CORAL_STATION ->
+    //       MathUtil.isNear(ElevatorPositions.CORAL_STATION, elevatorPosition, tolerance);
+    //     case HOME_ELEVATOR ->
+    //       (motorCurrent > ElevatorConstants.homingStallCurrent);
+    //     // case MANUAL_UP ->
+    //     //   true;
+    //     // case MANUAL_DOWN ->
+    //     //   true;
+    //     case INVERTED_CORAL_STATION ->
+    //       MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
+    //   };
   }
 
   public void setState(ElevatorState newState) {
@@ -119,8 +120,8 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
 
   public void setElevatorPosition(double elevatorPosition){
     rightMotor.setControl(right_motor_request);
-    leftMotor.setControl(left_motor_request.withPosition(leftElevatorPosition));
-    DogLog.log(getName() + "/right Motor Setpoint", elevatorPosition);
+    leftMotor.setControl(left_motor_request.withPosition(ElevatorPositions.L2));
+    // DogLog.log(getName() + "/right Motor Setpoint", elevatorPosition);
   }
 
     @Override
