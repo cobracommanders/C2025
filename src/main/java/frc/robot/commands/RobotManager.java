@@ -658,16 +658,26 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.L4);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
-            wrist.setState(WristState.INTAKE_ALGAE);
-            elbow.setState(ElbowState.L3);
+            wrist.setState(WristState.SCORE_ALGAE);
+            elbow.setState(ElbowState.L4);
             kicker.setState(KickerState.IDLE);
           }
 
+          case SCORE_ALGAE_WAIT -> {
+            elevator.setState(ElevatorState.L4_MAX);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.SCORE_ALGAE);
+            elbow.setState(ElbowState.L4);
+            kicker.setState(KickerState.IDLE);
+          }
+          
+
           case SCORE_ALGAE -> {
-            elevator.setState(ElevatorState.L4);
+            elevator.setState(ElevatorState.L4_MAX);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.SCORE_ALGAE);
-            wrist.setState(WristState.SCORE_ALGAE);
+            wrist.setState(WristState.ALGAE_FLICK);
             elbow.setState(ElbowState.L4);
             kicker.setState(KickerState.IDLE);
           }
@@ -712,7 +722,6 @@ public class RobotManager extends StateMachine<RobotState> {
             WAIT_L1,
             WAIT_REMOVE_ALGAE_LOW,
             WAIT_REMOVE_ALGAE_HIGH,
-            SCORE_ALGAE_WAIT,
             PREPARE_HOMING -> {}
           }
       }

@@ -16,5 +16,6 @@ public enum WristState {
     INVERTED_CORAL_STATION,
     DISABLED,
     INTAKE_ALGAE,
+    ALGAE_FLICK,
     SCORE_ALGAE
 }

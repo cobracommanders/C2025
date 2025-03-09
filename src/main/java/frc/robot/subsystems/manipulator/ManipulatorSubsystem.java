@@ -42,6 +42,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
   
     public void setManipulatorPositions(double manipulatorSpeed){
       DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
+      DogLog.log(getName() + "/Motor Current", manipulatorMotor.getStatorCurrent().getValueAsDouble());
       manipulatorMotor.set(manipulatorSpeed);
     }
   

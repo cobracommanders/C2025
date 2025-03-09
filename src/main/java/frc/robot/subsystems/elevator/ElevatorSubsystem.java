@@ -45,6 +45,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
     encoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
+    
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
