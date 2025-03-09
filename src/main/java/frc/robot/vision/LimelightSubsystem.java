@@ -46,7 +46,6 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
         switch (newState) {
           case REEF -> {
             limelightLocalization.disableLeft = false;
-
             limelightLocalization.disableRight = false;
             limelightLocalization.disableMiddle = true;
           }

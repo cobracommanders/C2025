@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.FieldConstants;
 import frc.robot.Robot;
 import frc.robot.StateMachine;
 import frc.robot.commands.RobotManager;
@@ -112,10 +113,13 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         if (LimelightLocalization.getInstance().getCoralStationAlignmentState(true) == AlignmentState.ALIGNED) {
           nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP;
         }
-      
-      
       }
-      case AUTO_REEF_ALIGN -> {
+      case AUTO_REEF_ALIGN_1 -> {
+        if (CommandSwerveDrivetrain.getInstance().isNear(targetReefPose)) {
+          nextState = DrivetrainState.AUTO;
+        }
+      }
+      case AUTO_REEF_ALIGN_2 -> {
         if (LimelightLocalization.getInstance().getReefAlignmentState() == AlignmentState.ALIGNED) {
           nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP;
         }
@@ -179,10 +183,8 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     }
 
     if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1 || getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_2) {
-
-      Pose2d robotPose = drivetrain.getState().Pose;
-      targetCoralStationPose = robotPose.nearest(List.of(LimelightLocalization.getInstance().getCoralStationPoses()));
-      snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees();//LimelightLocalization.getInstance().getCoralStationAngleFromTag();
+      targetCoralStationPose = FieldConstants.getInstance().closestCoralStation;
+      snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees(); //LimelightLocalization.getInstance().getCoralStationAngleFromTag();
       coralStationTag = limelightLocalization.limelightTagIDMiddle;
       boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);
       if (isValidTag) {
@@ -195,11 +197,10 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     }
 
     if (getState() == DrivetrainState.AUTO_REEF_ALIGN_1 || getState() == DrivetrainState.AUTO_REEF_ALIGN_2) {
-
-      Pose2d robotPose = drivetrain.getState().Pose;
-      targetReefPose = robotPose.nearest(List.of(LimelightLocalization.getInstance().getReefPoses()));
+      targetReefPose = LimelightLocalization.getInstance().getAdjustedRobotPose();
       snapReefAngle = targetReefPose.getRotation().getDegrees();
-      reefTag = limelightLocalization.limelightTagIDRight;
+      // reefTag = limelightLocalization.limelightTagIDRight;
+      reefTag = limelightLocalization.limelightTagIDLeft;
       boolean isValidTag = LimelightLocalization.reefTags.contains(reefTag);
       if (isValidTag) {
         double reefSpeedX = -reefAutoAlignTA.calculate(limelightLocalization.limelightTAMiddle, 14.6);
@@ -223,6 +224,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     DogLog.log(getName() + "/teleopSpeeds", teleopSpeeds);
     DogLog.log(getName() + "/robot pose", CommandSwerveDrivetrain.getInstance().getState().Pose);
     DogLog.log(getName() + "/coralStationTag", coralStationTag);
+    DogLog.log(getName() + "/target reef pose", targetReefPose);
   }
   @Override
   public void periodic() {

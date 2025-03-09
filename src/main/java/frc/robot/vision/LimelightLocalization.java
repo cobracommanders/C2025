@@ -7,6 +7,7 @@ import dev.doglog.DogLog;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -24,11 +25,14 @@ public class LimelightLocalization{
   public double limelightTAMiddle;
   public double limelightTXRight;
   public double limelightTARight;
+
   public double limelightTXLeft;
   public double limelightTALeft;
   public int limelightTagIDMiddle;
   public int limelightTagIDRight;
-  public Pose2d[] branchPoses = FieldConstants.getInstance().branchPoses;
+  public int limelightTagIDLeft;
+  public Pose2d[] branchPosesBlue = FieldConstants.getInstance().branchPosesBlue;
+  public Pose2d[] branchPosesRed = FieldConstants.getInstance().branchPosesRed;
   public Pose2d[] coralStationPosesBlue = FieldConstants.getInstance().coralStationPosesBlue;
   public Pose2d[] coralStationPosesRed = FieldConstants.getInstance().coralStationPosesRed;
   
@@ -44,15 +48,6 @@ public class LimelightLocalization{
     LimelightHelpers.setPipelineIndex("limelight-left", 0);
     LimelightHelpers.setPipelineIndex("limelight-right", 0);
     LimelightHelpers.setPipelineIndex("limelight-middle", 0);
-  }
-
-  public Pose2d[] getCoralStationPoses() {
-    return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
-  }
-
-  public Pose2d[] getReefPoses(){
-    // return branchPoses;
-    return branchPoses;
   }
 
 
@@ -136,6 +131,19 @@ public class LimelightLocalization{
     }
   }
 
+  
+
+  public Pose2d getAdjustedRobotPose() {
+    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch();
+    return getAdjustedRobotPose(field_to_branch);
+  }
+
+  public Pose2d getAdjustedRobotPose(Pose2d branchPose) {
+    Pose2d field_to_branch = branchPose;
+    Pose2d branch_to_robot = new Pose2d(-0.5, 0, Rotation2d.kZero);
+    return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
+  }
+
   public void collectInputs(){
     limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
     limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
@@ -145,6 +153,7 @@ public class LimelightLocalization{
     limelightTALeft= LimelightHelpers.getTA("limelight-left");
     limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
     limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
+    limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
      DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
      DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
      DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
@@ -170,10 +179,11 @@ public class LimelightLocalization{
     //   rejectMiddleData = true;
     // }
 
-    if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
-    {
-      rejectMiddleData = true;
-    }
+    // if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
+    // {
+    //   rejectMiddleData = true;
+    // }
+    rejectMiddleData = true;
     if(mt2r == null || mt2r.tagCount == 0 || disableRight)
     {
       rejectRightData = true;
@@ -199,7 +209,7 @@ public class LimelightLocalization{
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2l.pose,
           Utils.fpgaToCurrentTime(mt2l.timestampSeconds),
-          VecBuilder.fill(0.75, 0.75,9999999));
+          VecBuilder.fill(0.05, 0.05,9999999));
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
     }
 

@@ -77,7 +77,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
       case DISABLED ->
         true;
-    };
+     };
   }
 
   public void setState(ElbowState newState) {

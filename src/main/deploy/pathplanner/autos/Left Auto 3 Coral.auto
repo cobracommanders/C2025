@@ -11,13 +11,19 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "remove height cap"
+                  "name": "limelight state to auto reef"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "set drivetrain auto"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "remove height cap"
                 }
               },
               {
@@ -40,34 +46,9 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              },
-              {
-                "type": "race",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "auto reef align"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 5.0
-                      }
-                    }
-                  ]
-                }
-              },
-              {
                 "type": "named",
                 "data": {
-                  "name": "set drivetrain auto"
+                  "name": "wait for L4"
                 }
               },
               {
@@ -84,73 +65,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "J to Coral Station Top"
-                }
-              },
-              {
-                "type": "deadline",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "race",
-                            "data": {
-                              "commands": [
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 1.75
-                                  }
-                                },
-                                {
-                                  "type": "named",
-                                  "data": {
-                                    "name": "auto coral station align"
-                                  }
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.75
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "inverted intake"
-                      }
-                    }
-                  ]
-                }
-              },
-              {
                 "type": "named",
                 "data": {
-                  "name": "inverted idle"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "set drivetrain auto"
+                  "name": "limelight state to auto coral station"
                 }
               },
               {
@@ -160,13 +77,26 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Coral Station Top to K"
+                        "pathName": "J to Coral Station Top"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "L4"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "wait for inverted idle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "inverted intake"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -175,23 +105,49 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "limelight state to auto reef"
                 }
               },
               {
-                "type": "race",
+                "type": "parallel",
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "path",
                       "data": {
-                        "name": "auto reef align"
+                        "pathName": "Coral Station Top to K"
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "sequential",
                       "data": {
-                        "waitTime": 5.0
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "idle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "L4"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -200,7 +156,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "set drivetrain auto"
+                  "name": "wait for L4"
                 }
               },
               {
@@ -217,9 +173,9 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "K to Coral Station"
+                  "name": "limelight state to auto coral station"
                 }
               },
               {
@@ -227,41 +183,79 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "path",
+                      "data": {
+                        "pathName": "K to Coral Station"
+                      }
+                    },
+                    {
                       "type": "sequential",
                       "data": {
                         "commands": [
                           {
-                            "type": "race",
+                            "type": "named",
                             "data": {
-                              "commands": [
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 1.75
-                                  }
-                                },
-                                {
-                                  "type": "named",
-                                  "data": {
-                                    "name": "auto coral station align"
-                                  }
-                                }
-                              ]
+                              "name": "wait for inverted idle"
                             }
                           },
                           {
-                            "type": "wait",
+                            "type": "named",
                             "data": {
-                              "waitTime": 0.75
+                              "name": "inverted intake"
                             }
                           }
                         ]
                       }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.75
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "limelight state to auto reef"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Coral Station Top to L"
+                      }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "inverted intake"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "idle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "L4"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -270,7 +264,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "inverted idle"
+                  "name": "wait for L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "score"
                 }
               }
             ]
