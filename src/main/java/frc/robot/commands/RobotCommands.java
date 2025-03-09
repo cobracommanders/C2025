@@ -258,6 +258,10 @@ public class RobotCommands {
   }
 
   public Command coralModeCommand(){
+    if(robot.getState().inverted){
+      return alternateIdleCommand()
+      .andThen(Commands.runOnce(robot::coralModeRequest));
+    }
     return Commands.runOnce(robot::coralModeRequest); 
   }
 
