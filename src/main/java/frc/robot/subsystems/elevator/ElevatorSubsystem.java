@@ -25,6 +25,7 @@ import frc.robot.StateMachine;
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private final TalonFX leftMotor;
   private final TalonFX rightMotor;
+  private final CANcoder encoder;
   private final TalonFXConfiguration left_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private final TalonFXConfiguration right_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
@@ -38,10 +39,12 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private Follower right_motor_request = new Follower(Ports.ElevatorPorts.LMOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
   private boolean preMatchHomingOccured = false;
+  
   private double lowestSeenHeight = Double.POSITIVE_INFINITY;
 
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
+    encoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
@@ -56,6 +59,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     leftMotor.getConfigurator().apply(left_motor_config);
     rightMotor.getConfigurator().apply(right_motor_config);
+    canCoderConfig.MagnetSensor.MagnetOffset = Constants.ElevatorConstants.encoderOffset;
+    canCoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.9;
+    canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
+    encoder.getConfigurator().apply(canCoderConfig);
     tolerance = 0.1;
   }
 
