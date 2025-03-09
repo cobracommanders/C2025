@@ -98,6 +98,11 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   protected DrivetrainState getNextState(DrivetrainState currentState) {
     DrivetrainState nextState = currentState;
      switch (currentState) {
+      case BARGE_ALIGN -> {
+        if (LimelightLocalization.getInstance().getBargeAlignmentState() == AlignmentState.ALIGNED) {
+          nextState = DriverStation.isAutonomous() ? DrivetrainState.AUTO : DrivetrainState.TELEOP;
+        }
+      }
       case AUTO_CORAL_STATION_ALIGN_1 -> {
         if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose)) {
           nextState = DrivetrainState.AUTO_CORAL_STATION_ALIGN_2;
@@ -247,6 +252,9 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
           case AUTO_CORAL_STATION_ALIGN_1 -> {
             LimelightSubsystem.getInstance().setState(LimelightState.AUTO_CORAL_STATION);
           }
+          case BARGE_ALIGN -> {
+            LimelightSubsystem.getInstance().setState(LimelightState.BARGE_ALIGN);
+          }
            default -> {}
         }
     }
@@ -254,6 +262,15 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     protected void sendSwerveRequest(DrivetrainState newState) {
       switch (newState) {
       case TELEOP -> {
+        drivetrain.setControl(
+          drive
+          .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
+          .withVelocityX(teleopSpeeds.vxMetersPerSecond)
+          .withVelocityY(teleopSpeeds.vyMetersPerSecond)
+          .withRotationalRate(teleopSpeeds.omegaRadiansPerSecond)
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
+      }
+      case BARGE_ALIGN -> {
         drivetrain.setControl(
           drive
           .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
@@ -351,6 +368,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       }
     }
   }
+  
   public void setState(DrivetrainState newState) {
     setStateFromRequest(newState);
   }

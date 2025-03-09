@@ -270,14 +270,14 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
         case PREPARE_SCORE_ALGAE:
         if(isHeightCapped) {
-          nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+          nextState = RobotState.REMOVE_ALGAE_HIGH;
         } else if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.SCORE_ALGAE_WAIT;
         }
         break;
       case SCORE_ALGAE_WAIT:
         if(isHeightCapped) {
-          nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+          nextState = RobotState.REMOVE_ALGAE_HIGH;
         }
         break;
       case WAIT_REMOVE_ALGAE_LOW:
@@ -300,7 +300,6 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_INTAKE_CORAL_STATION;
         }
         break;
-
       case PREPARE_DEEP_CLIMB:
         if (elbow.atGoal() && elevator.atGoal() && wrist.atGoal()) {
           nextState = RobotState.DEEP_CLIMB_DEPLOY;

@@ -68,6 +68,17 @@ public class LimelightLocalization{
 
   }
 
+  public AlignmentState getBargeAlignmentState(){
+
+    if ((limelightTAMiddle > 6)) {
+      return AlignmentState.ALIGNED;
+    }
+    else {
+      return AlignmentState.NOT_ALIGNED;
+    }
+
+  }
+
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
     double tolerance = isAuto ? 1.75 : 3;
 

@@ -9,5 +9,6 @@ public enum DrivetrainState {
     AUTO_REEF_ALIGN_2,
     AUTO_CORAL_STATION_ALIGN_1,
     AUTO_CORAL_STATION_ALIGN_2,
+    BARGE_ALIGN,
     AUTO
 }

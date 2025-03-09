@@ -80,6 +80,11 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
             limelightLocalization.disableRight = false;
             limelightLocalization.disableMiddle = true;
           }
+          case BARGE_ALIGN -> {
+            limelightLocalization.disableLeft = true;
+            limelightLocalization.disableRight = true;
+            limelightLocalization.disableMiddle = false;
+          }
           default -> {}
           }
 

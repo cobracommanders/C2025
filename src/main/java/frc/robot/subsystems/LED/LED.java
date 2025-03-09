@@ -20,7 +20,7 @@ import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.vision.LimelightLocalization;
 
 public class LED extends SubsystemBase {
-  private final AddressableLED m_led;
+  private final AddressableLED glowjack_horseman;
   private final  RobotManager robotManager;
   private final AddressableLEDBuffer m_ledBuffer;
   private final Timer blinkTimer = new Timer();
@@ -33,18 +33,40 @@ public class LED extends SubsystemBase {
     blinkTimer.start();
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
-    m_led = new AddressableLED(0);
+    glowjack_horseman = new AddressableLED(0);
     // Reuse buffer
     // Default to a length of 60, start empty output
     // Length is expensive to set, so only set it once, then just update data
     m_ledBuffer = new AddressableLEDBuffer(150);
-    m_led.setLength(m_ledBuffer.getLength());
+    glowjack_horseman.setLength(m_ledBuffer.getLength());
     // Set the data
-    m_led.setData(m_ledBuffer);
-    m_led.start();
+    glowjack_horseman.setData(m_ledBuffer);
+    glowjack_horseman.start();
   }
   @Override
   public void periodic() {
+
+    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
+      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    }
+    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
+      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    }
+
+    if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
+      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
+        case ALIGNED:
+        LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
+        break;
+      case NOT_ALIGNED:
+        LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+        break;
+      case INVALID:
+        LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+        break;
+      }
+        }
+
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP_CORAL_STATION_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
         case ALIGNED:
@@ -122,17 +144,11 @@ public class LED extends SubsystemBase {
           break;
       }
     }
-    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
-    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
     if (DriverStation.isDisabled()) {
       LEDPattern.solid(Color.kPurple).applyTo(m_ledBuffer);
     }
 
-    m_led.setData(m_ledBuffer);
+    glowjack_horseman.setData(m_ledBuffer);
     
   }
 }
