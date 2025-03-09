@@ -27,7 +27,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Cage 3 to I"
+                        "pathName": "Cage 3 to J"
                       }
                     },
                     {
@@ -86,7 +86,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "I to Coral Station Top"
+                  "pathName": "J to Coral Station Top"
                 }
               },
               {

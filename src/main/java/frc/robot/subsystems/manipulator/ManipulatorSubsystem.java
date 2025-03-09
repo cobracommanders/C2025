@@ -39,7 +39,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
   
     public void setManipulatorPositions(double manipulatorSpeed){
       DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
-      manipulatorMotor.set(ManipulatorSpeeds.IDLE);
+      manipulatorMotor.set(manipulatorSpeed);
     }
   
       @Override

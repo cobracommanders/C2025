@@ -657,7 +657,7 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.IDLE);
             elbow.setState(ElbowState.INVERTED_IDLE);
             wrist.setState(WristState.INVERTED_IDLE);
-            manipulator.setState(ManipulatorState.INTAKE_CORAL);
+            manipulator.setState(ManipulatorState.IDLE);
             //wrist.syncEncoder();
           }
           case 

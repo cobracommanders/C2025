@@ -9,11 +9,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
+import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.vision.LimelightLocalization;
+import frc.robot.vision.LimelightState;
+import frc.robot.vision.LimelightSubsystem;
 
 import java.lang.reflect.Field;
 import java.util.Optional;
@@ -51,7 +56,10 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L2", Robot.robotCommands.L2Command());
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
+        NamedCommands.registerCommand("wait for inverted idle", robotManager.waitForState(RobotState.INVERTED_IDLE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
+        NamedCommands.registerCommand("limelight state to auto reef", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_REEF)));
+        NamedCommands.registerCommand("limelight state to auto coral station", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_CORAL_STATION)));
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
         NamedCommands.registerCommand("auto coral station align", Robot.robotCommands.autoCoralStationAlign());
         NamedCommands.registerCommand("auto reef align", Robot.robotCommands.autoReefAlign());
@@ -85,9 +93,9 @@ public class Robot extends TimedRobot{
 
     @Override
     public void teleopInit() {
-        CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand());
-        CommandScheduler.getInstance().schedule(Robot.robotCommands.setDrivetrainTeleop());
-        CommandScheduler.getInstance().schedule(Robot.robotCommands.invertIdleCommand());
+        CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand()
+            .andThen(Robot.robotCommands.setDrivetrainTeleop())
+            .andThen(Robot.robotCommands.invertIdleCommand()));
     }
 
     @Override

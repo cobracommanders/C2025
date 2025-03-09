@@ -111,7 +111,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       }
       case AUTO_REEF_ALIGN_1 -> {
         if (CommandSwerveDrivetrain.getInstance().isNear(targetReefPose)) {
-          nextState = DrivetrainState.TELEOP;
+          nextState = DrivetrainState.AUTO;
         }
       }
       case AUTO_REEF_ALIGN_2 -> {

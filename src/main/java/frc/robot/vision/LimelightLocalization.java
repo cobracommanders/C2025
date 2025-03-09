@@ -25,6 +25,7 @@ public class LimelightLocalization{
   public double limelightTAMiddle;
   public double limelightTXRight;
   public double limelightTARight;
+
   public double limelightTXLeft;
   public double limelightTALeft;
   public int limelightTagIDMiddle;
@@ -122,14 +123,13 @@ public class LimelightLocalization{
   
 
   public Pose2d getAdjustedRobotPose() {
-    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch().plus(new Transform2d(0, 0, Rotation2d.kZero));
-    Pose2d branch_to_robot = new Pose2d(-1.02, 0.08, Rotation2d.kZero);
-    return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
+    Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch();
+    return getAdjustedRobotPose(field_to_branch);
   }
 
   public Pose2d getAdjustedRobotPose(Pose2d branchPose) {
-    Pose2d field_to_branch = branchPose.plus(new Transform2d(0, 0, Rotation2d.kZero));
-    Pose2d branch_to_robot = new Pose2d(-.762, 0.08, Rotation2d.kZero);
+    Pose2d field_to_branch = branchPose;
+    Pose2d branch_to_robot = new Pose2d(-0.5, 0, Rotation2d.kZero);
     return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
   }
 
