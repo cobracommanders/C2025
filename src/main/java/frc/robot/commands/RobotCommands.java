@@ -254,14 +254,14 @@ public class RobotCommands {
   }
 
   public Command algaeModeCommand(){
-    return Commands.runOnce(robot::algaeModeRequest); 
+     if(robot.getState().inverted){
+      return alternateIdleCommand()
+      .andThen(Commands.runOnce(robot::algaeModeRequest));
+    }
+    return Commands.runOnce(robot::algaeModeRequest);
   }
 
   public Command coralModeCommand(){
-    if(robot.getState().inverted){
-      return alternateIdleCommand()
-      .andThen(Commands.runOnce(robot::coralModeRequest));
-    }
     return Commands.runOnce(robot::coralModeRequest); 
   }
 

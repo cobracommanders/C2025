@@ -45,7 +45,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
     encoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
-    
+
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
@@ -109,6 +109,22 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public boolean isIdle() {
     return getState() == ElevatorState.IDLE;
   }
+
+  public void increaseSetpoint(){
+    if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
+      ElevatorPositions.INVERTED_CORAL_STATION += 0.1;
+      leftMotor.setPosition(elevatorPosition);
+      rightMotor.setPosition(elevatorPosition);
+    }
+  }
+
+  public void decreaseSetpoint(){
+    if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
+      ElevatorPositions.INVERTED_CORAL_STATION -= 0.1;
+      leftMotor.setPosition(elevatorPosition);
+      rightMotor.setPosition(elevatorPosition);
+  }
+}
 
   // public void syncEncoder(){
   //   leftMotor.setPosition(absolutePosition);
