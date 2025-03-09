@@ -413,7 +413,7 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.PRE_L4);
+            wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
             kicker.setState(KickerState.IDLE);
           }
@@ -469,7 +469,7 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.L4);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.PREPARE_L4);
-            wrist.setState(WristState.L4_TRANSITION);
+            wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.L4);
             kicker.setState(KickerState.REMOVE_ALGAE);
           }
