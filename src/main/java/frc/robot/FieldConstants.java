@@ -43,7 +43,7 @@ public final class FieldConstants {
     new Pose2d(13.84, 3.86, Rotation2d.fromDegrees(0)), //A
   };
   public Pose2d[] coralStationPosesBlue = {
-    new Pose2d(1.235, 7.11, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(1.13, 7.07, Rotation2d.fromDegrees(-50)), // tag 13 CS
     new Pose2d(1.05, 0.91, Rotation2d.fromDegrees(50)) // tag 12 CS
   };
   public Pose2d[] coralStationPosesRed = {

@@ -106,7 +106,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       }
       case AUTO_CORAL_STATION_ALIGN_1 -> {
         if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose)) {
-          nextState = DrivetrainState.AUTO_CORAL_STATION_ALIGN_2;
+          nextState = DrivetrainState.AUTO;
         }
       }
       case AUTO_CORAL_STATION_ALIGN_2 -> {
@@ -183,7 +183,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     }
 
     if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1 || getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_2) {
-      targetCoralStationPose = FieldConstants.getInstance().closestCoralStation;
+      targetCoralStationPose = FieldConstants.getInstance().getNearestCoralStation();
       snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees(); //LimelightLocalization.getInstance().getCoralStationAngleFromTag();
       coralStationTag = limelightLocalization.limelightTagIDMiddle;
       boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);

@@ -36,6 +36,7 @@ public enum RobotState {
   INTAKE_CORAL_STATION(false, false,  new LEDState(Color.kWhite, Patterns.SOLID)),
   PREPARE_INVERTED_CORAL_STATION(false, true,  new LEDState(Color.kPurple, Patterns.FAST_BLINK)),
   INVERTED_INTAKE_CORAL_STATION(false, true,  new LEDState(Color.kWhite, Patterns.SOLID)),
+  POST_INVERTED_CORAL_STATION_INTAKE(false, true,  new LEDState(Color.kWhite, Patterns.SOLID)),
   PREPARE_INVERTED_FROM_IDLE(true, true,  new LEDState(Color.kPurple, Patterns.FAST_BLINK)),
   PREPARE_IDLE_FROM_INVERTED(true, true,  new LEDState(Color.kPurple, Patterns.FAST_BLINK)),
   HOMING_STAGE_1_ELEVATOR(false, true, new LEDState(Color.kRed, Patterns.SLOW_BLINK)),

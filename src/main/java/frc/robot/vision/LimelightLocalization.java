@@ -179,11 +179,10 @@ public class LimelightLocalization{
     //   rejectMiddleData = true;
     // }
 
-    // if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
-    // {
-    //   rejectMiddleData = true;
-    // }
-    rejectMiddleData = true;
+    if(mt2m == null || mt2m.tagCount == 0 || disableMiddle)
+    {
+      rejectMiddleData = true;
+    }
     if(mt2r == null || mt2r.tagCount == 0 || disableRight)
     {
       rejectRightData = true;

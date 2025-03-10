@@ -46,8 +46,9 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        //driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        //driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
+        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
         driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
         driver.B().onFalse(Robot.robotCommands.alternateIdleCommand());
         driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());

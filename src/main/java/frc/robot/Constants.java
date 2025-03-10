@@ -24,9 +24,9 @@ public static final class WristConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.065;
-  public static final double MotionMagicAcceleration = 30;//15
-  public static final double MotionMagicCruiseVelocity = 40;
-  public static final double MotionMagicJerk = 200;//95
+  public static final double MotionMagicAcceleration = 100;//15
+  public static final double MotionMagicCruiseVelocity = 50;
+  public static final double MotionMagicJerk = 1000;//95
 }
 public static final class ElbowConstants{
   public static final double homingStallCurrent = 10;
