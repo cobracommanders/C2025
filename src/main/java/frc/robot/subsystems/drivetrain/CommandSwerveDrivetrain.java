@@ -132,6 +132,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.03) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.03);
     }
 
+    public boolean isNear(Pose2d pose, double tolerance) {
+        Pose2d robotPose = getState().Pose;
+        return MathUtil.isNear(robotPose.getX(), pose.getX(), tolerance) && MathUtil.isNear(robotPose.getY(), pose.getY(), tolerance);
+    }
+
     public void update() {
         field.setRobotPose(this.getState().Pose);
         SmartDashboard.putData(field);

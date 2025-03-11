@@ -53,8 +53,8 @@ public class Controls {
         driver.B().onFalse(Robot.robotCommands.alternateIdleCommand());
         driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
         driver.Y().onFalse(Robot.robotCommands.alternateIdleCommand());
-        driver.POV90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
-        driver.POVMinus90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
+        driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
+        driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
 
     }
 

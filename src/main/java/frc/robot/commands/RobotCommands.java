@@ -1,9 +1,11 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.FieldConstants;
 import frc.robot.Robot;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.subsystems.climber.ClimberState;
@@ -14,7 +16,9 @@ import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elevator.ElevatorPositions;
 import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.vision.LimelightLocalization;
 
+import static edu.wpi.first.wpilibj2.command.Commands.none;
 import static edu.wpi.first.wpilibj2.command.Commands.runOnce;
 
 import java.util.List;
@@ -242,8 +246,10 @@ public class RobotCommands {
   }
 
   public Command autoReefAlign(){
-    return Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
-    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP));
+    return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
+    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    ,none()
+    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedRobotPose(), 0.5));
   }
 
   public Command setDrivetrainAuto(){
