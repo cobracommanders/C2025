@@ -26,6 +26,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       manipulatorMotor = new TalonFX(Ports.ManipulatorPorts.MANIPULATOR_MOTOR);
       motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      motor_config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.4;
       manipulatorMotor.getConfigurator().apply(motor_config);
     }
 

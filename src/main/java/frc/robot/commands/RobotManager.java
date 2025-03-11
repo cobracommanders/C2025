@@ -300,7 +300,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case INVERTED_INTAKE_CORAL_STATION:
-        if (ManipulatorSubsystem.getInstance().hasCoral()) {
+        if (ManipulatorSubsystem.getInstance().hasCoral() && DriverStation.isAutonomous()) {
           nextState = RobotState.POST_INVERTED_CORAL_STATION_INTAKE;
         }
         break;

@@ -52,12 +52,6 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.725
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "wait for L4"
@@ -165,12 +159,6 @@
                 }
               },
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.675
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "wait for L4"
@@ -275,12 +263,6 @@
                 "type": "named",
                 "data": {
                   "name": "auto reef align"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.675
                 }
               },
               {

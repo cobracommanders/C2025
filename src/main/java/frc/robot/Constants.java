@@ -13,9 +13,9 @@ public static final class ElevatorConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.5075;
-  public static final double MotionMagicAcceleration = 40; //40
-  public static final double MotionMagicCruiseVelocity = 150; //115
-  public static final double MotionMagicJerk = 300; //175
+  public static final double MotionMagicAcceleration = 48; //40
+  public static final double MotionMagicCruiseVelocity = 250; //250
+  public static final double MotionMagicJerk = 300; //300
 }
 
 public static final class WristConstants{
@@ -24,7 +24,7 @@ public static final class WristConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.065;
-  public static final double MotionMagicAcceleration = 100;//15
+  public static final double MotionMagicAcceleration = 140;//100
   public static final double MotionMagicCruiseVelocity = 50;
   public static final double MotionMagicJerk = 1000;//95
 }
@@ -34,13 +34,13 @@ public static final class ElbowConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0.205;
-  public static final double MotionMagicAcceleration = 20;
+  public static final double MotionMagicAcceleration = 56; //40
   public static final double MotionMagicCruiseVelocity = 50;
-  public static final double MotionMagicJerk = 150;
+  public static final double MotionMagicJerk = 420; //300
 }
 
 public static final class ManipulatorConstants{
-  public static final double coralStallCurrent = 45;
+  public static final double coralStallCurrent = 46;
 }
 
 
