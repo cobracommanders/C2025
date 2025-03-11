@@ -54,7 +54,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.725
                 }
               },
               {
@@ -121,9 +121,15 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 1.25
+                  "name": "wait for post intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "inverted idle"
                 }
               }
             ]
@@ -150,22 +156,9 @@
                       }
                     },
                     {
-                      "type": "sequential",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "inverted idle"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "L4"
-                            }
-                          }
-                        ]
+                        "name": "L4"
                       }
                     }
                   ]
@@ -180,7 +173,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.675
                 }
               },
               {
@@ -247,9 +240,15 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 1.25
+                  "name": "wait for post intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "inverted idle"
                 }
               }
             ]
@@ -276,22 +275,9 @@
                       }
                     },
                     {
-                      "type": "sequential",
+                      "type": "named",
                       "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "inverted idle"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "L4"
-                            }
-                          }
-                        ]
+                        "name": "L4"
                       }
                     }
                   ]
@@ -306,7 +292,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.675
                 }
               },
               {

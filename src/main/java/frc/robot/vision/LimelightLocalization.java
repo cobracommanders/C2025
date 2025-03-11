@@ -198,7 +198,7 @@ public class LimelightLocalization{
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2r.pose,
           Utils.fpgaToCurrentTime(mt2r.timestampSeconds),
-          VecBuilder.fill(0.75,0.75,9999999));
+          VecBuilder.fill(0.05,0.75,9999999));
       SmartDashboard.putNumber("mt2r", mt2r.timestampSeconds);
 
     }

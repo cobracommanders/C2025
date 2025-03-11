@@ -21,6 +21,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.subsystems.elbow.ElbowState;
 
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private final TalonFX leftMotor;
@@ -68,7 +69,12 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   }
 
   protected ElevatorState getNextState(ElevatorState currentState) {
+    if (getState() == ElevatorState.HOME_ELEVATOR && this.atGoal()) { 
+      leftMotor.setPosition(0);
+      return ElevatorState.IDLE;
+    } else {  
       return currentState;
+    }
   }
 
   public boolean atGoal() {
