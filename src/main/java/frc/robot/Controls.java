@@ -41,18 +41,21 @@ public class Controls {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.leftTrigger().and(driver.rightBumper().negate()).onTrue(Robot.robotCommands.intakeCommand());
             driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
-        driver.rightBumper().and(driver.leftTrigger()).onTrue(Robot.robotCommands.alternateIntakeCommand());
+        driver.rightBumper().onTrue(Robot.robotCommands.autoReefAlign());
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
             driver.rightTrigger().onFalse(Robot.robotCommands.invertIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
-        driver.X().onTrue(Robot.robotCommands.autoReefAlign());
-        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        // driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
-        // driver.B().onFalse(Robot.robotCommands.alternateIdleCommand());
-        // driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
-        // driver.Y().onFalse(Robot.robotCommands.alternateIdleCommand());
+        // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
+        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
+        driver.B().onFalse(Robot.robotCommands.alternateIdleCommand());
+        driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
+        driver.Y().onFalse(Robot.robotCommands.alternateIdleCommand());
+        driver.POV90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
+        driver.POVMinus90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
+
     }
 
     public void configureOperatorCommands(){
@@ -61,8 +64,6 @@ public class Controls {
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
-        operator.POV90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
-        operator.POVMinus90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2Command());
