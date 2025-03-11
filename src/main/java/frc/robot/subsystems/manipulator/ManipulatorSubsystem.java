@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 import frc.robot.subsystems.elevator.ElevatorPositions;
@@ -18,6 +19,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     public final TalonFX manipulatorMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
     private double manipulatorSpeed;
+    private double manipulatorStatorCurrent;
     
     public ManipulatorSubsystem() {
       super(ManipulatorState.IDLE);
@@ -34,15 +36,24 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     @Override
     public void collectInputs(){
       manipulatorSpeed = manipulatorMotor.get();
+      manipulatorStatorCurrent = manipulatorMotor.getStatorCurrent().getValueAsDouble();
+      DogLog.log(getName() + "/Motor Stator Current", manipulatorMotor.getStatorCurrent().getValueAsDouble());
     }
   
     public void setState(ManipulatorState newState) {
         setStateFromRequest(newState);
     }
+
+    public boolean hasCoral(){
+      if (manipulatorStatorCurrent > Constants.ManipulatorConstants.coralStallCurrent){
+        return true;
+      } else {
+        return false;
+      }
+    }
   
     public void setManipulatorPositions(double manipulatorSpeed){
       DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
-      DogLog.log(getName() + "/Motor Current", manipulatorMotor.getStatorCurrent().getValueAsDouble());
       manipulatorMotor.set(manipulatorSpeed);
     }
   
@@ -56,7 +67,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
             setManipulatorPositions(ManipulatorSpeeds.INTAKE_CORAL);
           }
           case AFTER_INTAKE -> {
-             setManipulatorPositions(ManipulatorSpeeds.AFTER_INTAKE);
+            setManipulatorPositions(ManipulatorSpeeds.AFTER_INTAKE);
           }
           case L1 -> {
             setManipulatorPositions(ManipulatorSpeeds.L1);

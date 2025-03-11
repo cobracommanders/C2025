@@ -47,11 +47,12 @@ public class WristSubsystem extends StateMachine<WristState>{
     brakeModeEnabled = false;
   }
   protected WristState getNextState(WristState currentState) {
-    // if (getState() == WristState.HOME_WRIST && this.atGoal()) {
-    //   //wristMotor.setPosition(0.38);
-    //   return WristState.INVERTED_IDLE;
-    // } else {
+    if (getState() == WristState.HOME_WRIST && this.atGoal()) {
+      wristMotor.setPosition(0.38);
+      return WristState.INVERTED_IDLE;
+    } else {
       return currentState;
+    }
     }
 
    public boolean atGoal() {

@@ -201,7 +201,6 @@ public class RobotManager extends StateMachine<RobotState> {
       case INVERTED_IDLE:
       case DEEP_CLIMB_WAIT:
       case WAIT_L3:
-      case INVERTED_INTAKE_CORAL_STATION:
         break;
 
       case DEEP_CLIMB_DEPLOY:
@@ -263,12 +262,12 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.REMOVE_ALGAE_HIGH;
         }
         break;
-        case PREPARE_REMOVE_ALGAE_LOW:
+      case PREPARE_REMOVE_ALGAE_LOW:
           if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.WAIT_REMOVE_ALGAE_LOW;
         }
         break;
-        case PREPARE_SCORE_ALGAE:
+      case PREPARE_SCORE_ALGAE:
         if(isHeightCapped) {
           nextState = RobotState.REMOVE_ALGAE_HIGH;
         } else if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
@@ -300,7 +299,12 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_INTAKE_CORAL_STATION;
         }
         break;
-        case POST_INVERTED_CORAL_STATION_INTAKE:
+      case INVERTED_INTAKE_CORAL_STATION:
+        if (ManipulatorSubsystem.getInstance().hasCoral() && DriverStation.isAutonomous()) {
+          nextState = RobotState.POST_INVERTED_CORAL_STATION_INTAKE;
+        }
+        break;
+      case POST_INVERTED_CORAL_STATION_INTAKE:
         if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.PREPARE_INVERTED_IDLE;
         }

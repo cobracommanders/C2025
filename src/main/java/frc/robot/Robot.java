@@ -48,6 +48,7 @@ public class Robot extends TimedRobot{
         controls.configureOperatorCommands();
 
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
+        LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
 
         NamedCommands.registerCommand("idle", Robot.robotCommands.alternateIdleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
         NamedCommands.registerCommand("wait for inverted idle", robotManager.waitForState(RobotState.INVERTED_IDLE));
+        NamedCommands.registerCommand("wait for post intake", robotManager.waitForState(RobotState.POST_INVERTED_CORAL_STATION_INTAKE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
         NamedCommands.registerCommand("limelight state to auto reef", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_REEF)));
         NamedCommands.registerCommand("limelight state to auto coral station", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_CORAL_STATION)));
@@ -87,12 +89,14 @@ public class Robot extends TimedRobot{
 
     @Override
     public void disabledPeriodic() {
+        LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
         alliance = DriverStation.getAlliance();
     }
 
 
     @Override
     public void teleopInit() {
+        LimelightSubsystem.getInstance().setState(LimelightState.DRIVE);
         CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand()
             .andThen(Robot.robotCommands.setDrivetrainTeleop())
             .andThen(Robot.robotCommands.invertIdleCommand()));
@@ -115,6 +119,7 @@ public class Robot extends TimedRobot{
     
     @Override
     public void autonomousInit() {
+        
         if (autoChooser.getSelected() != null)
             autoChooser.getSelected().schedule();
             DogLog.log("Selected Auto", autoChooser.getSelected().getName());
