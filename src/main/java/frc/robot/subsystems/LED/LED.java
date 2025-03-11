@@ -55,7 +55,7 @@ public class LED extends SubsystemBase {
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
-        case ALIGNED:
+      case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
       case NOT_ALIGNED:
@@ -87,6 +87,9 @@ public class LED extends SubsystemBase {
             break;
           case NOT_ALIGNED:
             LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+            break;
+          case NOT_ALIGNED_FORWARD:
+            LEDPattern.solid(Color.kOrange).applyTo(m_ledBuffer);
             break;
           case INVALID:
             LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);

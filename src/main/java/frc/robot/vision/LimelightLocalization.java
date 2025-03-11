@@ -56,8 +56,9 @@ public class LimelightLocalization{
 
     if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;
-    }
-    else {
+    } else if( !(limelightTARight > 14.6) || !(limelightTALeft > 14.3)){
+      return AlignmentState.NOT_ALIGNED_FORWARD;
+    } else {
       return AlignmentState.NOT_ALIGNED;
     }
 
@@ -79,8 +80,9 @@ public class LimelightLocalization{
 
     if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;
-    }
-    else{
+    } else if( !(limelightTAMiddle > 3.9)) {
+      return AlignmentState.NOT_ALIGNED_FORWARD;
+    } else {
       return AlignmentState.NOT_ALIGNED;
     }
   }
