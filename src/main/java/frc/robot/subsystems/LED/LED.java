@@ -46,12 +46,12 @@ public class LED extends SubsystemBase {
   @Override
   public void periodic() {
 
-    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
-    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
+    // if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
+    //   LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    // }
+    // if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
+    //   LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    // }
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {

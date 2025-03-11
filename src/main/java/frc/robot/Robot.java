@@ -58,6 +58,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
         NamedCommands.registerCommand("wait for inverted idle", robotManager.waitForState(RobotState.INVERTED_IDLE));
+        NamedCommands.registerCommand("wait for prepare inverted idle", robotManager.waitForState(RobotState.PREPARE_INVERTED_IDLE));
         NamedCommands.registerCommand("wait for post intake", robotManager.waitForState(RobotState.POST_INVERTED_CORAL_STATION_INTAKE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
         NamedCommands.registerCommand("limelight state to auto reef", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_REEF)));
