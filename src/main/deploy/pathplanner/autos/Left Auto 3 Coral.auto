@@ -115,9 +115,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for post intake"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for post intake"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.5
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -150,7 +163,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "wait for prepare inverted idle"
+                              "name": "wait for inverted idle"
                             }
                           },
                           {
@@ -235,9 +248,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for post intake"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for post intake"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.5
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -270,7 +296,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "wait for prepare inverted idle"
+                              "name": "wait for inverted idle"
                             }
                           },
                           {

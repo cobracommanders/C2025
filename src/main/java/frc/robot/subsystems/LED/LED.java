@@ -136,13 +136,12 @@ public class LED extends SubsystemBase {
     }
 
     else{
-      state = robotManager.getState().ledState;
-      switch (RobotMode.getInstance().currentGameMode) {
+      switch (RobotManager.getInstance().currentGameMode) {
         case CORAL:
             LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
           break;
         case ALGAE:
-           LEDPattern.solid(Color.kAquamarine).applyTo(m_ledBuffer);
+           LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
           break;
         default:
           break;

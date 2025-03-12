@@ -34,6 +34,7 @@ public class WristSubsystem extends StateMachine<WristState>{
   private boolean brakeModeEnabled;
   private final DutyCycle encoder;
   private double absolutePosition;
+  private boolean isSynced;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
@@ -48,6 +49,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     wristMotor.getConfigurator().apply(motor_config);
     tolerance = 0.04;
     brakeModeEnabled = false;
+    isSynced = false;
   }
   protected WristState getNextState(WristState currentState) {
     if (getState() == WristState.HOME_WRIST && this.atGoal()) {
@@ -114,7 +116,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput() - 0.01128;
+    absolutePosition = encoder.getOutput() - 0.01128 - 0.107;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);
@@ -137,9 +139,13 @@ public class WristSubsystem extends StateMachine<WristState>{
         wristMotor.getConfigurator().apply(motor_config);
         brakeModeEnabled = true;
       }
-      // if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1)) {
-      //   syncEncoder();
-      // }
+      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
+        syncEncoder();
+        isSynced = true;
+      }
+      else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
+        isSynced = false;
+      }
   }
 
   public void setWristPosition(double position){

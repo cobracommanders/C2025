@@ -231,7 +231,7 @@ public class LimelightLocalization{
       SmartDashboard.putNumber("mt2r", mt2r.timestampSeconds);
       if (DriverStation.isDisabled()) {
         CommandSwerveDrivetrain.getInstance().resetPose(mt2r.pose);
-        double angle = mt2r.pose.getRotation().getDegrees();
+        double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
         CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
     }
@@ -245,7 +245,7 @@ public class LimelightLocalization{
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
       if (DriverStation.isDisabled()) {
         CommandSwerveDrivetrain.getInstance().resetPose(mt2l.pose);
-        double angle = mt2l.pose.getRotation().getDegrees();
+        double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
         CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
     }

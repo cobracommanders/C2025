@@ -150,6 +150,9 @@ public class RobotManager extends StateMachine<RobotState> {
           else if (currentState == RobotState.REMOVE_ALGAE_LOW){
             nextState = RobotState.WAIT_REMOVE_ALGAE_LOW;
           }
+          else if(currentState == RobotState.SCORE_ALGAE){
+            nextState = RobotState.WAIT_REMOVE_ALGAE_HIGH;
+          }
           break;
         case ALGAE_HIGH:
         if (!currentState.ignoreRequests && !currentState.inverted) {
