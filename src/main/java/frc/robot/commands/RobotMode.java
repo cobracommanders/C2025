@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 public class RobotMode {
-    private GameMode currentGameMode = GameMode.CORAL;
+    public GameMode currentGameMode = GameMode.CORAL;
 
     public enum GameMode {CORAL, ALGAE}
 

@@ -17,9 +17,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycle;
 import frc.robot.Ports;
+import frc.robot.Robot;
 import frc.robot.StateMachine;
 import frc.robot.Constants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotState;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
@@ -83,6 +86,8 @@ public class WristSubsystem extends StateMachine<WristState>{
         MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
       case INVERTED_CORAL_STATION ->
         MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
+      case PRE_ALGAE_SCORE ->
+        MathUtil.isNear(WristPositions.PRE_ALGAE_SCORE, wristPosition, tolerance);
       case SCORE_ALGAE ->
         MathUtil.isNear(WristPositions.ALGAE_SCORE, wristPosition, tolerance);
       case INTAKE_ALGAE ->
@@ -102,14 +107,14 @@ public class WristSubsystem extends StateMachine<WristState>{
     return getState() == WristState.INVERTED_IDLE;
   }
 
-  // public void syncEncoder(){
-  //   wristMotor.setPosition(absolutePosition);
-  // }
+  public void syncEncoder(){
+    wristMotor.setPosition(absolutePosition);
+  }
 
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput();
+    absolutePosition = encoder.getOutput() - 0.01128;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);
@@ -132,6 +137,9 @@ public class WristSubsystem extends StateMachine<WristState>{
         wristMotor.getConfigurator().apply(motor_config);
         brakeModeEnabled = true;
       }
+      // if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1)) {
+      //   syncEncoder();
+      // }
   }
 
   public void setWristPosition(double position){
@@ -180,6 +188,9 @@ public class WristSubsystem extends StateMachine<WristState>{
         }
         case L4_WRIST -> {
           setWristPosition(WristPositions.L4_WRIST);
+        }
+        case PRE_ALGAE_SCORE -> {
+          setWristPosition(WristPositions.PRE_ALGAE_SCORE);
         }
         case INTAKE_ALGAE -> {
           setWristPosition(WristPositions.ALGAE_INTAKE);

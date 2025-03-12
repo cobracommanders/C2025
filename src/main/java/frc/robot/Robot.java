@@ -50,7 +50,7 @@ public class Robot extends TimedRobot{
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
 
-        NamedCommands.registerCommand("idle", Robot.robotCommands.alternateIdleCommand());
+        NamedCommands.registerCommand("idle", Robot.robotCommands.algaeIdleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());
         NamedCommands.registerCommand("score", Robot.robotCommands.scoreCommand());
         NamedCommands.registerCommand("L1", Robot.robotCommands.L1Command());
@@ -77,6 +77,7 @@ public class Robot extends TimedRobot{
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);
         FieldConstants.getInstance().logBranches();
+        FieldConstants.getInstance().logAlgae();
     }
 
     @Override

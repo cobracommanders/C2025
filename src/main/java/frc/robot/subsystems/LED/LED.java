@@ -26,7 +26,7 @@ public class LED extends SubsystemBase {
   private final Timer blinkTimer = new Timer();
   private static final double FAST_BLINK_DURATION = 0.08;
   private static final double SLOW_BLINK_DURATION = 0.25;
-  private LEDState state = new LEDState(Color.kBlue, Patterns.SOLID);
+  private LEDState state = new LEDState(Color.kBlue);
 
   public LED(RobotManager robotManager) {
     this.robotManager = robotManager;
@@ -46,12 +46,12 @@ public class LED extends SubsystemBase {
   @Override
   public void periodic() {
 
-    // if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
-    //   LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    // }
-    // if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
-    //   LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    // }
+    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
+      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    }
+    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
+      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+    }
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
@@ -137,23 +137,12 @@ public class LED extends SubsystemBase {
 
     else{
       state = robotManager.getState().ledState;
-      switch (state.patterns()) {
-        case SOLID:
-            LEDPattern.solid(state.color()).applyTo(m_ledBuffer);
+      switch (RobotMode.getInstance().currentGameMode) {
+        case CORAL:
+            LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
           break;
-        case SLOW_BLINK:
-          if (blinkTimer.get() % (SLOW_BLINK_DURATION * 2) < SLOW_BLINK_DURATION) {
-            LEDPattern.solid(state.color()).applyTo(m_ledBuffer);
-          } else {
-            LEDPattern.solid(Color.kBlack).applyTo(m_ledBuffer);
-          }
-          break;
-        case FAST_BLINK:
-          if (blinkTimer.get() % (FAST_BLINK_DURATION * 2) < FAST_BLINK_DURATION) {
-            LEDPattern.solid(state.color()).applyTo(m_ledBuffer);
-          } else {
-            LEDPattern.solid(Color.kBlack).applyTo(m_ledBuffer);
-          }
+        case ALGAE:
+           LEDPattern.solid(Color.kAquamarine).applyTo(m_ledBuffer);
           break;
         default:
           break;

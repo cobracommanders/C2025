@@ -60,8 +60,8 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
             limelightLocalization.disableMiddle = false;
           }
           case DISABLED -> {
-            limelightLocalization.disableLeft = true;
-            limelightLocalization.disableRight = true;
+            limelightLocalization.disableLeft = false;
+            limelightLocalization.disableRight = false;
             limelightLocalization.disableMiddle = true;
           }
           case AUTO -> {

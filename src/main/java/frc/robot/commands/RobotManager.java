@@ -143,7 +143,7 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           break;
 
-          case STOP_INTAKE_ALGAE:
+        case STOP_INTAKE_ALGAE:
           if (currentState == RobotState.REMOVE_ALGAE_HIGH){
             nextState = RobotState.WAIT_REMOVE_ALGAE_HIGH;
           }
@@ -340,7 +340,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L4:
-        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.5) && DriverStation.isAutonomous())) {
+        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.4) && DriverStation.isAutonomous())) {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
@@ -355,7 +355,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_ALGAE:
-        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.5) && DriverStation.isAutonomous())) {
+        if ((timeout(3) && DriverStation.isTeleop())) {
           nextState = RobotState.PREPARE_IDLE;
         }
         break;
@@ -611,40 +611,56 @@ public class RobotManager extends StateMachine<RobotState> {
             elbow.setState(ElbowState.INVERTED_IDLE);
           }
           case PREPARE_REMOVE_ALGAE_HIGH -> {
-            elevator.setState(ElevatorState.IDLE);
+            elevator.setState(ElevatorState.HIGH_ALGAE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
-            elbow.setState(ElbowState.L3);
+            elbow.setState(ElbowState.HIGH_ALGAE);
           }
           case PREPARE_REMOVE_ALGAE_LOW -> {
-            elevator.setState(ElevatorState.L3);
+            elevator.setState(ElevatorState.LOW_ALGAE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
-            elbow.setState(ElbowState.IDLE);
+            elbow.setState(ElbowState.LOW_ALGAE);
           }
+
+          case WAIT_REMOVE_ALGAE_HIGH -> {
+            elevator.setState(ElevatorState.HIGH_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            elbow.setState(ElbowState.HIGH_ALGAE);
+            wrist.setState(WristState.INTAKE_ALGAE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+          }
+          case WAIT_REMOVE_ALGAE_LOW -> {
+            elevator.setState(ElevatorState.LOW_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            elbow.setState(ElbowState.LOW_ALGAE);
+            wrist.setState(WristState.INTAKE_ALGAE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+          }
+
           case REMOVE_ALGAE_HIGH -> {
-            elevator.setState(ElevatorState.L4);
+            elevator.setState(ElevatorState.HIGH_ALGAE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
-            elbow.setState(ElbowState.L3);
+            elbow.setState(ElbowState.HIGH_ALGAE);
           }
           case REMOVE_ALGAE_LOW -> {
-            elevator.setState(ElevatorState.L3);
+            elevator.setState(ElevatorState.LOW_ALGAE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
-            elbow.setState(ElbowState.L3);
+            elbow.setState(ElbowState.LOW_ALGAE);
           }
 
           case PREPARE_SCORE_ALGAE -> {
             elevator.setState(ElevatorState.L4);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
-            wrist.setState(WristState.SCORE_ALGAE);
-            elbow.setState(ElbowState.L4);
+            wrist.setState(WristState.PRE_ALGAE_SCORE);
+            elbow.setState(ElbowState.PRE_SCORE_ALGAE);
           }
 
           case SCORE_ALGAE_WAIT -> {
@@ -699,8 +715,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case 
             WAIT_IDLE, 
             WAIT_L1,
-            WAIT_REMOVE_ALGAE_LOW,
-            WAIT_REMOVE_ALGAE_HIGH,
+            PRE_HEIGHT_L4,
             PREPARE_HOMING -> {}
           }
       }
@@ -769,6 +784,10 @@ public class RobotManager extends StateMachine<RobotState> {
     flags.check(RobotFlag.SCORE);
   }
 
+  public void algaeScoreRequest() {
+    flags.check(RobotFlag.SCORE);
+  }
+
   public void climbRequest(){
     flags.check(RobotFlag.DEEP_CLIMB);
   }
@@ -803,6 +822,10 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void autoReefAlignRequest(){
     DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_REEF_ALIGN_1);
+  }
+
+  public void autoAlgaeAlignRequest(){
+    DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_ALGAE_ALIGN);
   }
 
   public void autoCoralStationAlignRequest(){

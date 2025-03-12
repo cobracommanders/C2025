@@ -41,6 +41,7 @@ public static final class ElbowConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 46;
+  public static final double algaeStallCurrent = 30; //needs to be tuned
 }
 
 

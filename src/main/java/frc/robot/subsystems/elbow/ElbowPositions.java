@@ -7,6 +7,9 @@ public class ElbowPositions {
     public static final double L2 = 0.248;
     public static final double L3 = 0.248;
     public static final double L4 = 0.244; //0.195
+    public static final double HIGH_ALGAE = 0.25; //0.195
+    public static final double LOW_ALGAE = 0.25; //0.195
+    public static final double PRE_SCORE_ALGAE = 0.25;
     public static final double CAPPED_L3 = 0.225;
     public static final double CAPPED_L4 = 0.225;
     public static final double L4_ELBOW = 0.18; //0.21

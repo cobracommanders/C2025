@@ -4,10 +4,12 @@ import java.util.List;
 import com.ctre.phoenix6.Utils;
 
 import dev.doglog.DogLog;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -25,12 +27,13 @@ public class LimelightLocalization{
   public double limelightTAMiddle;
   public double limelightTXRight;
   public double limelightTARight;
-
   public double limelightTXLeft;
   public double limelightTALeft;
+  public double robotOffsetForBarge;
   public int limelightTagIDMiddle;
   public int limelightTagIDRight;
   public int limelightTagIDLeft;
+  public int tagCountMiddle;
   public Pose2d[] branchPosesBlue = FieldConstants.getInstance().branchPosesBlue;
   public Pose2d[] branchPosesRed = FieldConstants.getInstance().branchPosesRed;
   public Pose2d[] coralStationPosesBlue = FieldConstants.getInstance().coralStationPosesBlue;
@@ -56,7 +59,7 @@ public class LimelightLocalization{
 
     if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;
-    } else if( !(limelightTARight > 14.6) || !(limelightTALeft > 14.3)){
+    } else if((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight <= 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft <= 14.3)){
       return AlignmentState.NOT_ALIGNED_FORWARD;
     } else {
       return AlignmentState.NOT_ALIGNED;
@@ -65,11 +68,15 @@ public class LimelightLocalization{
   }
 
   public AlignmentState getBargeAlignmentState(){
-
-    if ((limelightTAMiddle > 6)) {
-      return AlignmentState.ALIGNED;
+    double tolerance = 0.05;
+    double bargeOffset = 1.394;
+    if (tagCountMiddle == 0) {
+      return AlignmentState.INVALID;
     }
-    else {
+    else if (MathUtil.isNear(CommandSwerveDrivetrain.getInstance().getState().Pose.getX(), FieldConstants.getInstance().bargeCoordinate + bargeOffset, tolerance) 
+          || MathUtil.isNear(CommandSwerveDrivetrain.getInstance().getState().Pose.getX(), FieldConstants.getInstance().bargeCoordinate - bargeOffset, tolerance)) {
+      return AlignmentState.ALIGNED;
+    } else {
       return AlignmentState.NOT_ALIGNED;
     }
 
@@ -80,7 +87,7 @@ public class LimelightLocalization{
 
     if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;
-    } else if( !(limelightTAMiddle > 3.9)) {
+    } else if(Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle < 3.9) {
       return AlignmentState.NOT_ALIGNED_FORWARD;
     } else {
       return AlignmentState.NOT_ALIGNED;
@@ -135,15 +142,32 @@ public class LimelightLocalization{
 
   
 
-  public Pose2d getAdjustedRobotPose() {
+  public Pose2d getAdjustedBranchPose() {
     Pose2d field_to_branch = FieldConstants.getInstance().getNearestBranch();
-    return getAdjustedRobotPose(field_to_branch);
+    return getAdjustedBranchPose(field_to_branch);
+  }
+  public Pose2d getAdjustedAlgaePose() {
+    Pose2d field_to_algae = FieldConstants.getInstance().getNearestAlgae();
+    return getAdjustedAlgaePose(field_to_algae);
   }
 
-  public Pose2d getAdjustedRobotPose(Pose2d branchPose) {
+  public Pose2d getAdjustedBranchPose(Pose2d branchPose) {
     Pose2d field_to_branch = branchPose;
     Pose2d branch_to_robot = new Pose2d(-0.5, 0, Rotation2d.kZero);
     return field_to_branch.plus(branch_to_robot.minus(new Pose2d()));
+  }
+  public Pose2d getAdjustedAlgaePose(Pose2d algaePose) {
+    Pose2d field_to_algae = algaePose;
+    Pose2d algae_to_robot = new Pose2d(-0.75, 0, Rotation2d.kZero);
+    return field_to_algae.plus(algae_to_robot.minus(new Pose2d()));
+  }
+
+  public double getBargeSnapAngle() {
+    if (Robot.alliance.get() == Alliance.Red) {
+      return ((CommandSwerveDrivetrain.getInstance().getState().Pose.getX() > FieldConstants.getInstance().bargeCoordinate) ? 180 : 0);
+    } else {
+      return ((CommandSwerveDrivetrain.getInstance().getState().Pose.getX() < FieldConstants.getInstance().bargeCoordinate) ? 180 : 0);
+    }
   }
 
   public void collectInputs(){
@@ -156,10 +180,13 @@ public class LimelightLocalization{
     limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
     limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
     limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
+    robotOffsetForBarge = CommandSwerveDrivetrain.getInstance().getState().Pose.getX() - FieldConstants.getInstance().bargeCoordinate;
+    tagCountMiddle = LimelightHelpers.getTargetCount("limelight-middle");
      DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
      DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
      DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
      DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
+     DogLog.log("LimelightLocalization/Robot Offset for Barge", robotOffsetForBarge);
   }
 
   public void update(){
@@ -202,7 +229,11 @@ public class LimelightLocalization{
           Utils.fpgaToCurrentTime(mt2r.timestampSeconds),
           VecBuilder.fill(0.05,0.75,9999999));
       SmartDashboard.putNumber("mt2r", mt2r.timestampSeconds);
-
+      if (DriverStation.isDisabled()) {
+        CommandSwerveDrivetrain.getInstance().resetPose(mt2r.pose);
+        double angle = mt2r.pose.getRotation().getDegrees();
+        CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
+      }
     }
 
     if(!rejectLeftData)
@@ -212,6 +243,11 @@ public class LimelightLocalization{
           Utils.fpgaToCurrentTime(mt2l.timestampSeconds),
           VecBuilder.fill(0.05, 0.05,9999999));
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
+      if (DriverStation.isDisabled()) {
+        CommandSwerveDrivetrain.getInstance().resetPose(mt2l.pose);
+        double angle = mt2l.pose.getRotation().getDegrees();
+        CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
+      }
     }
 
     if(!rejectMiddleData)
@@ -222,7 +258,6 @@ public class LimelightLocalization{
           Utils.fpgaToCurrentTime(mt2m.timestampSeconds),
           VecBuilder.fill(0.05, 0.05,9999999));
           SmartDashboard.putNumber("mt2m", mt2m.timestampSeconds);
-
     }
   }
 

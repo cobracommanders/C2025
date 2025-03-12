@@ -13,6 +13,7 @@ import frc.robot.vision.LimelightLocalization;
 public final class FieldConstants {
   public Pose2d closestBranch;
   public Pose2d closestCoralStation;
+  public Pose2d closestAlgae;
   
   public Pose2d[] branchPosesBlue = {
     new Pose2d(3.96, 4.62, Rotation2d.fromDegrees(-60)), //L
@@ -42,6 +43,24 @@ public final class FieldConstants {
     new Pose2d(13.84, 4.19, Rotation2d.fromDegrees(180)), //B
     new Pose2d(13.84, 3.86, Rotation2d.fromDegrees(180)), //A
   };
+
+  public Pose2d[] algaePosesBlue = {
+    new Pose2d(4.1, 4.7, Rotation2d.fromDegrees(-60)), //L + K
+    new Pose2d(4.88, 4.86, Rotation2d.fromDegrees(-120)), //J + I
+    new Pose2d(5.27, 3.925, Rotation2d.fromDegrees(180)), //H + G
+    new Pose2d(4.88, 3.35, Rotation2d.fromDegrees(120)), //F + E
+    new Pose2d(4.1, 3.35, Rotation2d.fromDegrees(60)), //D + C
+    new Pose2d(3.71, 3.925, Rotation2d.fromDegrees(0)), //B + A
+  };
+  public Pose2d[] algaePosesRed = {
+    new Pose2d(13.45, 3.35, Rotation2d.fromDegrees(120)), //L + K
+    new Pose2d(12.67, 3.35, Rotation2d.fromDegrees(60)), //J + I
+    new Pose2d(12.29, 3.925, Rotation2d.fromDegrees(0)), //H + G
+    new Pose2d(12.67, 4.7, Rotation2d.fromDegrees(-60)), //F + E
+    new Pose2d(13.45, 4.7, Rotation2d.fromDegrees(-120)), //D + C
+    new Pose2d(13.84, 3.925, Rotation2d.fromDegrees(180)), //B + A
+  };
+
   public Pose2d[] coralStationPosesBlue = {
     new Pose2d(1.13, 7.07, Rotation2d.fromDegrees(-50)), // tag 13 CS
     new Pose2d(1.05, 0.91, Rotation2d.fromDegrees(50)) // tag 12 CS
@@ -51,31 +70,49 @@ public final class FieldConstants {
     new Pose2d(16.28, 7.58, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
 
+  public double bargeCoordinate = 8.775;
+
+
   public Pose2d[] getCoralStationPoses() {
     return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
   }
   public Pose2d[] getReefPoses(){
-    // return branchPoses;
     return Robot.alliance.get() == Alliance.Red ? branchPosesRed : branchPosesBlue;
+  }
+  public Pose2d[] getAlgaePoses() {
+    return Robot.alliance.get() == Alliance.Red ? algaePosesRed : algaePosesBlue;
   }
 
   public Pose2d getNearestBranch() {
       closestBranch = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(FieldConstants.getInstance().getReefPoses()));
       return closestBranch;
   }
-
   public Pose2d getNearestCoralStation() {
       closestCoralStation = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(FieldConstants.getInstance().getCoralStationPoses()));
       return closestCoralStation;
   }
+  public Pose2d getNearestAlgae() {
+    closestAlgae = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(FieldConstants.getInstance().getAlgaePoses()));
+    return closestAlgae;
+}
 
   public void logBranches() {
     int i = 0;
     for (Pose2d pose : branchPosesRed) {
       i++;
       DogLog.log("FieldConstants/branch pose " + i, pose);
-      Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedRobotPose(pose);
+      Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedBranchPose(pose);
       DogLog.log("FieldConstants/branch pose offset " + i, offsetPose);
+    }
+  }
+
+  public void logAlgae() {
+    int i = 0;
+    for (Pose2d pose : algaePosesRed) {
+      i++;
+      DogLog.log("FieldConstants/algae pose " + i, pose);
+      Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedAlgaePose(pose);
+      DogLog.log("FieldConstants/algae pose offset " + i, offsetPose);
     }
   }
 

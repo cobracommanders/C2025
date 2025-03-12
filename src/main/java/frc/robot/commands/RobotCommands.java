@@ -35,10 +35,15 @@ public class RobotCommands {
     var requirementsList = List.of(robot.elevator, robot.climber, robot.wrist, robot.elbow, robot.manipulator);
     requirements = requirementsList.toArray(Subsystem[]::new);
   }
-
+  
   public Command scoreCommand() {
     return Commands.runOnce(robot::scoreRequest, requirements)
         .andThen(robot.waitForState(RobotState.PREPARE_INVERTED_FROM_IDLE));
+  }
+
+  public Command algaeScoreCommand() {
+    return Commands.runOnce(robot::algaeScoreRequest, requirements)
+        .andThen(robot.waitForState(RobotState.IDLE));
   }
 
   public Command L4ScoreCommand() {
@@ -51,6 +56,9 @@ public class RobotCommands {
     .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
   }
 
+  public Command L1MultiCommand() {
+    return new ConditionalCommand(L1Command(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
   public Command L1Command() {
     return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::prepareL1Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L1)), Commands.runOnce(robot::prepareL1Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L1)), () -> !robot.getState().inverted);
     // if (!robot.getState().inverted) {
@@ -63,8 +71,11 @@ public class RobotCommands {
     // }
   }
   
+  public Command L2MultiCommand() {
+    return new ConditionalCommand(L2Command(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
   public Command L2Command() {
-    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL2Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L2)), Commands.runOnce(robot::prepareL2Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L2)), () -> robot.getState().inverted);
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareL2Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L2)), Commands.runOnce(robot::prepareL2Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L2)), () -> robot.getState().inverted);
     //if (robot.getState().inverted) {
     //   return alternateIdleCommand()
     //     .andThen(Commands.runOnce(robot::prepareL2Request, requirements))
@@ -76,7 +87,7 @@ public class RobotCommands {
   }
 
   public Command L3Command() {
-    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL3Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L3)), Commands.runOnce(robot::prepareL3Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L3)), () -> robot.getState().inverted);
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareL3Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L3)), Commands.runOnce(robot::prepareL3Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L3)), () -> robot.getState().inverted);
     // if (robot.getState().inverted) {
     //   return alternateIdleCommand()
     //     .andThen(Commands.runOnce(robot::prepareL3Request, requirements))
@@ -87,7 +98,7 @@ public class RobotCommands {
     // }
   }
   public Command L4Command() {
-    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::prepareL4Request, requirements)), Commands.runOnce(robot::prepareL4Request, requirements), () -> robot.getState().inverted);
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareL4Request, requirements)), Commands.runOnce(robot::prepareL4Request, requirements), () -> robot.getState().inverted);
     // if (robot.getState().inverted) {
     //   return alternateIdleCommand()
     //   .andThen(Commands.runOnce(robot::prepareL4Request, requirements));
@@ -99,7 +110,7 @@ public class RobotCommands {
   }
   public Command lowAlgaeCommand() {
     if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
+      return algaeIdleCommand() // go to non-inverted idle
       .andThen(Commands.runOnce(robot::prepareAlgaeLowRequest, requirements)); // Prepare CS (non-inverted)
       // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
     } else {
@@ -109,7 +120,7 @@ public class RobotCommands {
   }
   public Command highAlgaeCommand() {
     if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
+      return algaeIdleCommand() // go to non-inverted idle
       .andThen(Commands.runOnce(robot::prepareAlgaeHighRequest, requirements)); // Prepare CS (non-inverted)
       // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
     } else {
@@ -149,7 +160,7 @@ public class RobotCommands {
   //   }
   // }
 
-  public Command alternateIdleCommand() {
+  public Command algaeIdleCommand() {
     return Commands.runOnce(robot::prepareIdleRequest, requirements)
         .andThen(robot.waitForState(RobotState.IDLE));
   }
@@ -165,7 +176,7 @@ public class RobotCommands {
 
   public Command climbCommand() {
     // if (robot.getState().inverted) {
-      return alternateIdleCommand()
+      return algaeIdleCommand()
       .andThen(Commands.runOnce(robot::climbRequest, requirements))
       .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
     // } else{
@@ -202,7 +213,7 @@ public class RobotCommands {
 
   public Command alternateIntakeCommand() {
     if (robot.getState().inverted) {
-      return alternateIdleCommand() // go to non-inverted idle
+      return algaeIdleCommand() // go to non-inverted idle
         .andThen(Commands.runOnce(robot::prepareCoralStationRequest, requirements)) // Prepare CS (non-inverted)
         .andThen(robot.waitForState(RobotState.IDLE)); // Goes back to idle when we're done intaking
     }else {
@@ -245,11 +256,22 @@ public class RobotCommands {
     .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP));
   }
 
+  public Command autoAlignCommand(){
+    return new ConditionalCommand(autoReefAlign(), autoAlgaeAlign(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
+  
   public Command autoReefAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
-    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedRobotPose(), 0.5));
+    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedBranchPose(), 0.5));
+  }
+
+  public Command autoAlgaeAlign(){
+    return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
+    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    ,none()
+    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));
   }
 
   public Command setDrivetrainAuto(){
@@ -266,11 +288,11 @@ public class RobotCommands {
   }
 
   public Command algaeModeCommand(){
-    return new ConditionalCommand(alternateIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest)), Commands.runOnce(robot::algaeModeRequest), () -> robot.getState().inverted);
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest)), Commands.runOnce(robot::algaeModeRequest), () -> robot.getState().inverted);
   }
 
   public Command coralModeCommand(){
-    return Commands.runOnce(robot::coralModeRequest); 
+    return new ConditionalCommand(idleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted);
   }
 
   // public Command climberRetract(){

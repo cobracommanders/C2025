@@ -87,6 +87,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.L2, elevatorPosition, tolerance);
         case L3 ->
           MathUtil.isNear(ElevatorPositions.L3, elevatorPosition, tolerance);
+        case LOW_ALGAE ->
+          MathUtil.isNear(ElevatorPositions.LOW_ALGAE, elevatorPosition, tolerance);
+        case HIGH_ALGAE ->
+          MathUtil.isNear(ElevatorPositions.HIGH_ALGAE, elevatorPosition, tolerance);
         case CAPPED_L3 ->
           MathUtil.isNear(ElevatorPositions.CAPPED_L3, elevatorPosition, tolerance);
         case CAPPED_L4 ->
@@ -167,6 +171,12 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         }
         case L3 -> {
           setElevatorPosition(ElevatorPositions.L3);
+        }
+        case LOW_ALGAE -> {
+          setElevatorPosition(ElevatorPositions.LOW_ALGAE);
+        }
+        case HIGH_ALGAE -> {
+          setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
         }
         case CAPPED_L3 -> {
           setElevatorPosition(ElevatorPositions.CAPPED_L3);

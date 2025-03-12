@@ -117,7 +117,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for prepare inverted idle"
+                  "name": "wait for post intake"
                 }
               }
             ]
@@ -144,9 +144,22 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "L4"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "wait for prepare inverted idle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "L4"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -224,7 +237,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for prepare inverted idle"
+                  "name": "wait for post intake"
                 }
               }
             ]
@@ -251,9 +264,22 @@
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "L4"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "wait for prepare inverted idle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "L4"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -283,7 +309,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

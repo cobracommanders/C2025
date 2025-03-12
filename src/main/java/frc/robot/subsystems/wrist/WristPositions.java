@@ -13,7 +13,8 @@ public class WristPositions {
     public static final double CORAL_STATION = 0.125;
     public static final double INVERTED_IDLE = 0.339;//0.224
     public static final double INVERTED_CORAL_STATION = 0.055;
+    public static final double PRE_ALGAE_SCORE = 0.3;
     public static final double ALGAE_FLICK = 0.085;
     public static final double ALGAE_SCORE = 0.085;
-    public static final double ALGAE_INTAKE = 0.445;
+    public static final double ALGAE_INTAKE = 0.375;
 }
