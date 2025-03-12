@@ -9,21 +9,28 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "limelight state to auto reef"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "set drivetrain auto"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "remove height cap"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "limelight state to auto reef"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "set drivetrain auto"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "remove height cap"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -127,13 +134,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "wait for inverted idle"
+                        "name": "wait for prepare inverted idle"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "inverted idle"
+                        "name": "wait for inverted idle"
                       }
                     }
                   ]
@@ -266,13 +273,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "wait for inverted idle"
+                        "name": "wait for prepare inverted idle"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "inverted idle"
+                        "name": "wait for inverted idle"
                       }
                     }
                   ]

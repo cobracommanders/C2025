@@ -127,13 +127,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "wait for inverted idle"
+                        "name": "wait for prepare inverted idle"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "inverted idle"
+                        "name": "wait for inverted idle"
                       }
                     }
                   ]
@@ -266,13 +266,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "wait for inverted idle"
+                        "name": "wait for prepare inverted idle"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "inverted idle"
+                        "name": "wait for inverted idle"
                       }
                     }
                   ]
