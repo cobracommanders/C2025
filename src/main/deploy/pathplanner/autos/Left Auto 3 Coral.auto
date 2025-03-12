@@ -48,13 +48,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "auto reef align"
+                  "name": "wait for L4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for L4"
+                  "name": "auto reef align"
                 }
               },
               {
@@ -125,9 +125,15 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.5
+                        "name": "wait for inverted idle"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "inverted idle"
                       }
                     }
                   ]
@@ -181,13 +187,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "auto reef align"
+                  "name": "wait for L4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for L4"
+                  "name": "auto reef align"
                 }
               },
               {
@@ -258,9 +264,15 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.5
+                        "name": "wait for inverted idle"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "inverted idle"
                       }
                     }
                   ]
@@ -314,13 +326,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "auto reef align"
+                  "name": "wait for L4"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for L4"
+                  "name": "auto reef align"
                 }
               },
               {
