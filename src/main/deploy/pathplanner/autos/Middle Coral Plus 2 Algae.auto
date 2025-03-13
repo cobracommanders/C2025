@@ -69,6 +69,12 @@
                 "data": {
                   "name": "score"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "apply height cap"
+                }
               }
             ]
           }
@@ -92,13 +98,134 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "auto algae align"
+                  "name": "low algae intake"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "auto algae align"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "GH to Barge"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "remove height cap"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "score"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Barge to JI "
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "apply height cap"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "auto algae align"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "JI to Barge"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "remove height cap"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "score"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "idle"
                 }
               }
             ]
