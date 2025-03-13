@@ -151,6 +151,11 @@ public class LimelightLocalization{
     return getAdjustedAlgaePose(field_to_algae);
   }
 
+  public Pose2d getAdjustedCoralStationPose(){
+    Pose2d field_to_coral_station = FieldConstants.getInstance().getNearestCoralStation();
+    return getAdjustedCoralStationPose(field_to_coral_station);
+  }
+
   public Pose2d getAdjustedBranchPose(Pose2d branchPose) {
     Pose2d field_to_branch = branchPose;
     Pose2d branch_to_robot = new Pose2d(-0.5, 0, Rotation2d.kZero);
@@ -160,6 +165,12 @@ public class LimelightLocalization{
     Pose2d field_to_algae = algaePose;
     Pose2d algae_to_robot = new Pose2d(-0.75, 0, Rotation2d.kZero);
     return field_to_algae.plus(algae_to_robot.minus(new Pose2d()));
+  }
+
+  public Pose2d getAdjustedCoralStationPose(Pose2d coralStationPose) {
+    Pose2d field_to_coral_station = coralStationPose;
+    Pose2d coral_station_to_robot = new Pose2d(-0.75, 0, Rotation2d.kZero);
+    return field_to_coral_station.plus(coral_station_to_robot.minus(new Pose2d()));
   }
 
   public double getBargeSnapAngle() {
