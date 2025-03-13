@@ -62,12 +62,12 @@ public final class FieldConstants {
   };
 
   public Pose2d[] coralStationPosesBlue = {
-    new Pose2d(0.907, 7.4, Rotation2d.fromDegrees(-50)), // tag 13 CS
-    new Pose2d(0.848, 0.63, Rotation2d.fromDegrees(50)) // tag 12 CS
+    new Pose2d(1.06, 7.11, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(1.05, 0.91, Rotation2d.fromDegrees(50)) // tag 12 CS
   };
   public Pose2d[] coralStationPosesRed = {
-    new Pose2d(16.732, 0.67, Rotation2d.fromDegrees(130)), // tag 1 CS
-    new Pose2d(16.653, 7.38, Rotation2d.fromDegrees(-130)) // tag 2 CS
+    new Pose2d(16.50, 0.95, Rotation2d.fromDegrees(130)), // tag 1 CS
+    new Pose2d(16.49, 7.12, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
 
   public double bargeCoordinate = 8.775;

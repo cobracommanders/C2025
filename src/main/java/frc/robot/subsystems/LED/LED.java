@@ -54,7 +54,7 @@ public class LED extends SubsystemBase {
     }
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
-      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState()) {
+      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
       case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
@@ -71,7 +71,7 @@ public class LED extends SubsystemBase {
         }
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP_CORAL_STATION_ALIGN){
-      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState()) {
+      switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
       case ALIGNED:
         LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
         break;
@@ -87,7 +87,7 @@ public class LED extends SubsystemBase {
       }
         }
         else if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1){
-          switch (LimelightLocalization.getInstance().getCoralStationAlignmentState()) {
+          switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(true)) {
           case ALIGNED:
             LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
             break;
