@@ -64,15 +64,19 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("limelight state to auto reef", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_REEF)));
         NamedCommands.registerCommand("limelight state to auto coral station", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_CORAL_STATION)));
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
+        NamedCommands.registerCommand("apply height cap", Robot.robotCommands.applyHeightCapCommand());
         NamedCommands.registerCommand("auto coral station align", Robot.robotCommands.autoCoralStationAlign());
         NamedCommands.registerCommand("auto reef align", Robot.robotCommands.autoReefAlign());
-        NamedCommands.registerCommand("apply height cap", Robot.robotCommands.applyHeightCapCommand());
+        NamedCommands.registerCommand("auto algae align", Robot.robotCommands.autoAlgaeAlign());
         NamedCommands.registerCommand("climb", Robot.robotCommands.climbCommand());
         NamedCommands.registerCommand("intake", Robot.robotCommands.intakeCommand());
         NamedCommands.registerCommand("inverted intake", Robot.robotCommands.invertedIntakeCommand());
         NamedCommands.registerCommand("home", Robot.robotCommands.homeCommand());
-        NamedCommands.registerCommand("apply height cap", Robot.robotCommands.applyHeightCapCommand());
         NamedCommands.registerCommand("set drivetrain auto", Robot.robotCommands.setDrivetrainAuto());
+        NamedCommands.registerCommand("set coral mode", Robot.robotCommands.coralModeCommand());
+        NamedCommands.registerCommand("set algae mode", Robot.robotCommands.algaeModeCommand());
+        NamedCommands.registerCommand("low algae intake", Robot.robotCommands.lowAlgaeCommand());
+        NamedCommands.registerCommand("high algae intake", Robot.robotCommands.highAlgaeCommand());
 
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);

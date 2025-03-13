@@ -85,9 +85,9 @@ public class LimelightLocalization{
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
     double tolerance = isAuto ? 1.75 : 3;
 
-    if (Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle > 3.9) {
+    if (Math.abs(limelightTXMiddle + 3.1) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;
-    } else if(Math.abs(limelightTXMiddle + 2.2) < tolerance && limelightTAMiddle < 3.9) {
+    } else if(Math.abs(limelightTXMiddle + 3.1) < tolerance && limelightTAMiddle < 3.9) {
       return AlignmentState.NOT_ALIGNED_FORWARD;
     } else {
       return AlignmentState.NOT_ALIGNED;
