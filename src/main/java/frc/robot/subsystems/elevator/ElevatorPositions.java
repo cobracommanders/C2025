@@ -4,8 +4,8 @@ public class ElevatorPositions {
     public static double manualSetpoint;
         public static final double IDLE = 0.1;
         public static final double L1 = 0.6;
-        public static final double L2 = 1.5;
-        public static final double L3 = 3.25;
+        public static final double L2 = 1.354;
+        public static final double L3 = 2.926;
         public static final double L4 = 5.7;
         public static final double L4_MAX = 5.89;
         public static final double LOW_ALGAE = 1.6;

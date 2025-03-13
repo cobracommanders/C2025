@@ -27,6 +27,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       motor_config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.4;
+      motor_config.CurrentLimits.StatorCurrentLimit = 100;
       manipulatorMotor.getConfigurator().apply(motor_config);
     }
 

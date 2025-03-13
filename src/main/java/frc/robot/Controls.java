@@ -4,6 +4,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.drivers.Xbox;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorPositions;
@@ -49,17 +51,17 @@ public class Controls {
         // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
         // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
-        driver.B().onFalse(Robot.robotCommands.algaeIdleCommand());
-        driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
-        driver.Y().onFalse(Robot.robotCommands.algaeIdleCommand());
+        driver.B().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_UNWIND)));
+        driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
+        driver.Y().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
+        driver.Y().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
 
     }
 
     public void configureOperatorCommands(){
-        operator.leftBumper().onTrue(Robot.robotCommands.invertIdleCommand());
+        operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.rightBumper().onTrue(Robot.robotCommands.algaeIdleCommand());
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
