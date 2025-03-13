@@ -186,7 +186,7 @@ public class RobotCommands {
   }
 
   public Command climbUnwindCommand() {
-    if (robot.climber.getState() == ClimberState.DEEP_CLIMB_WAIT) {
+    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
       return Commands.runOnce(robot::climbUnwindRequest, requirements)
       .andThen(robot.waitForState(RobotState.DEEP_CLIMB_UNWIND));
     } else {
@@ -195,7 +195,7 @@ public class RobotCommands {
   }
 
   public Command climbRetractCommand() {
-    if (robot.climber.getState() == ClimberState.DEEP_CLIMB_WAIT) {
+    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
       return Commands.runOnce(robot::climbRetractRequest, requirements)
       .andThen(robot.waitForState(RobotState.DEEP_CLIMB_RETRACT));
     } else {
@@ -269,7 +269,9 @@ public class RobotCommands {
 
   public Command autoAlgaeAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
-    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    .andThen(Commands.waitUntil((
+      
+    )-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));
   }
@@ -292,7 +294,7 @@ public class RobotCommands {
   }
 
   public Command coralModeCommand(){
-    return new ConditionalCommand(idleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted);
+    return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted);
   }
 
   // public Command climberRetract(){
