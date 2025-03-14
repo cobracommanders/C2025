@@ -234,6 +234,7 @@ public class LimelightLocalization{
         double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
         CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
+      DogLog.log("LimelightLocalization/Right Limelight Tags", mt2r.tagSpan);
     }
 
     if(!rejectLeftData)
@@ -248,6 +249,7 @@ public class LimelightLocalization{
         double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
         CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
+      DogLog.log("LimelightLocalization/Left Limelight Tags", mt2l.tagSpan);
     }
 
     if(!rejectMiddleData)

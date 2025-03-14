@@ -13,7 +13,6 @@ public enum RobotState {
   DEEP_CLIMB_DEPLOY(true, false,  new LEDState(Color.kYellow)),
   DEEP_CLIMB_RETRACT(true, false,  new LEDState(Color.kYellowGreen)),
   DEEP_CLIMB_UNWIND(true, false,  new LEDState(Color.kYellowGreen)),
-  POST_DEEP_CLIMB_DEPLOY(true, false,  new LEDState(Color.kYellowGreen)),
   DEEP_CLIMB_WAIT(true, false, new LEDState (Color.kGreen)),
   PREPARE_DEEP_CLIMB(true, false, new LEDState(Color.kYellowGreen)),
   PREPARE_L1(false, true,  new LEDState(Color.kPurple)),

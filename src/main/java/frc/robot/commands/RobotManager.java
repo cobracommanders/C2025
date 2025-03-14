@@ -208,11 +208,6 @@ public class RobotManager extends StateMachine<RobotState> {
 
       case DEEP_CLIMB_DEPLOY:
         if(timeout(0.1)){
-          nextState = RobotState.POST_DEEP_CLIMB_DEPLOY;
-        } 
-        break;
-      case POST_DEEP_CLIMB_DEPLOY:
-        if(timeout(0.1873)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         } 
         break;
@@ -393,12 +388,12 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case DEEP_CLIMB_RETRACT:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(3)){
+        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(5)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
         break;
       case DEEP_CLIMB_UNWIND:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(3)){
+        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(5)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
         break;
@@ -529,14 +524,6 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
-            manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
-          }
-
-          case POST_DEEP_CLIMB_DEPLOY -> {
-            elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
