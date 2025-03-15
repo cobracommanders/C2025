@@ -114,7 +114,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
       }
       case AUTO_CORAL_STATION_ALIGN_1 -> {
-        if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose)) {
+        if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose) || timeout(1)) {
           nextState = DrivetrainState.AUTO;
         }
       }

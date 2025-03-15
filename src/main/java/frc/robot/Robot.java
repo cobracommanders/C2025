@@ -61,6 +61,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("wait for prepare inverted idle", robotManager.waitForState(RobotState.PREPARE_INVERTED_IDLE));
         NamedCommands.registerCommand("wait for post intake", robotManager.waitForState(RobotState.POST_INVERTED_CORAL_STATION_INTAKE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
+        NamedCommands.registerCommand("wait for L4 elbow", robotManager.waitForState(RobotState.L4_ELBOW));
         NamedCommands.registerCommand("limelight state to auto reef", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_REEF)));
         NamedCommands.registerCommand("limelight state to auto coral station", Commands.runOnce(() -> LimelightSubsystem.getInstance().setStateFromRequest(LimelightState.AUTO_CORAL_STATION)));
         NamedCommands.registerCommand("remove height cap", Robot.robotCommands.removeHeightCapCommand());
@@ -104,8 +105,7 @@ public class Robot extends TimedRobot{
     public void teleopInit() {
         LimelightSubsystem.getInstance().setState(LimelightState.DRIVE);
         CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand()
-            .andThen(Robot.robotCommands.setDrivetrainTeleop())
-            .andThen(Robot.robotCommands.invertIdleCommand()));
+            .andThen(Robot.robotCommands.setDrivetrainTeleop()));
     }
 
     @Override

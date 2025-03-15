@@ -96,6 +96,8 @@ public class WristSubsystem extends StateMachine<WristState>{
         MathUtil.isNear(WristPositions.ALGAE_INTAKE, wristPosition, tolerance);
       case ALGAE_FLICK ->
         MathUtil.isNear(WristPositions.ALGAE_FLICK, wristPosition, tolerance);
+      case CAGE_FLIP ->
+        MathUtil.isNear(WristPositions.CAGE_FLIP, wristPosition, tolerance);
       case DISABLED->
         true;
     };
@@ -206,6 +208,9 @@ public class WristSubsystem extends StateMachine<WristState>{
         }
         case ALGAE_FLICK -> {
           setWristPosition(WristPositions.ALGAE_FLICK);
+        }
+        case CAGE_FLIP -> {
+          setWristPosition(WristPositions.CAGE_FLIP);
         }
         default -> {}
       }

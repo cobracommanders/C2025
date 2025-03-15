@@ -517,40 +517,40 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
           }
 
           case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
-          }
-
-          case DEEP_CLIMB_RETRACT -> {
-            elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
-            manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
-          }
-
-          case DEEP_CLIMB_UNWIND -> {
-            elevator.setState(ElevatorState.IDLE);
-            climber.setState(ClimberState.DEEP_CLIMB_UNWIND);
-            manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
           }
 
           case DEEP_CLIMB_WAIT -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_WAIT);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.IDLE);
-            elbow.setState(ElbowState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
+          }
+
+          case DEEP_CLIMB_RETRACT -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
+          }
+
+          case DEEP_CLIMB_UNWIND -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_UNWIND);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
           }
 
           case CAPPED_L4 -> {

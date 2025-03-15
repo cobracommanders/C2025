@@ -81,6 +81,8 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         MathUtil.isNear(ElbowPositions.CAPPED_L3, elbowPosition, tolerance);
       case L4_ELBOW ->
         MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
+      case CAGE_FLIP ->
+        MathUtil.isNear(ElbowPositions.CAGE_FLIP, elbowPosition, tolerance);
       case DISABLED ->
         true;
      };
@@ -186,6 +188,9 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         }
         case HOME_ELBOW -> {
           motor.setControl(new VoltageOut(-0.38));
+        }
+        case CAGE_FLIP -> {
+          setElbowPosition(ElbowPositions.CAGE_FLIP);
         }
         case DISABLED -> {
           motor.setControl(new VoltageOut(0));

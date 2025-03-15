@@ -18,5 +18,6 @@ public enum WristState {
     PRE_ALGAE_SCORE,
     INTAKE_ALGAE,
     ALGAE_FLICK,
-    SCORE_ALGAE
+    SCORE_ALGAE,
+    CAGE_FLIP
 }

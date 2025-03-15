@@ -270,7 +270,7 @@ public class RobotCommands {
   public Command autoAlgaeAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil((
-      
+
     )-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));
@@ -290,11 +290,11 @@ public class RobotCommands {
   }
 
   public Command algaeModeCommand(){
-    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest)), Commands.runOnce(robot::algaeModeRequest), () -> robot.getState().inverted);
+    return new ConditionalCommand(Commands.runOnce(robot::algaeModeRequest).andThen(algaeIdleCommand()), Commands.runOnce(robot::algaeModeRequest), () -> false);
   }
 
-  public Command coralModeCommand(){
-    return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted);
+  public Command coralModeCommand(){ 
+    return new ConditionalCommand(Commands.runOnce(robot::coralModeRequest).andThen(invertIdleCommand()), Commands.runOnce(robot::coralModeRequest), () -> false);
   }
 
   // public Command climberRetract(){

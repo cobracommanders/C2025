@@ -53,9 +53,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -192,9 +205,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -331,9 +357,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
