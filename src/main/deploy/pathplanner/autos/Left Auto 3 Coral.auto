@@ -386,6 +386,12 @@
                 "data": {
                   "name": "score"
                 }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "L to Coral Station Top"
+                }
               }
             ]
           }

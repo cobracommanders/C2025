@@ -104,8 +104,7 @@ public class Robot extends TimedRobot{
     @Override
     public void teleopInit() {
         LimelightSubsystem.getInstance().setState(LimelightState.DRIVE);
-        CommandScheduler.getInstance().schedule(Robot.robotCommands.applyHeightCapCommand()
-            .andThen(Robot.robotCommands.setDrivetrainTeleop()));
+        CommandScheduler.getInstance().schedule(Robot.robotCommands.setDrivetrainTeleop());
     }
 
     @Override

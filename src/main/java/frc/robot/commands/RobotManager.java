@@ -119,7 +119,7 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           break;
         case DEEP_CLIMB:
-          if (!currentState.ignoreRequests && !currentState.inverted) {
+          if (!currentState.ignoreRequests) {
             nextState = RobotState.PREPARE_DEEP_CLIMB;
           }
           break;
@@ -517,8 +517,8 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
-            wrist.setState(WristState.CAGE_FLIP);
-            elbow.setState(ElbowState.CAGE_FLIP);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
           }
 
           case DEEP_CLIMB_DEPLOY -> {
