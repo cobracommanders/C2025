@@ -17,5 +17,6 @@ public class WristPositions {
     public static final double ALGAE_FLICK = 0.085;
     public static final double ALGAE_SCORE = 0.085;
     public static final double ALGAE_INTAKE = 0.375;
+    public static final double PROCESSOR = 0.2;
     public static final double CAGE_FLIP = 0.566;
 }

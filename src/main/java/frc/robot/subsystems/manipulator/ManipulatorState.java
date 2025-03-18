@@ -14,5 +14,6 @@ public enum ManipulatorState {
     PREPARE_L4,
     PRE_SCORE,
     AFTER_INTAKE,
-    SCORE_ALGAE
+    SCORE_ALGAE,
+    SCORE_PROCESSOR
 }

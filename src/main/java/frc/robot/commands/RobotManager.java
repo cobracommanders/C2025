@@ -4,7 +4,6 @@ import static edu.wpi.first.wpilibj2.command.Commands.none;
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.Controls;
 import frc.robot.FlagManager;
@@ -123,16 +122,20 @@ public class RobotManager extends StateMachine<RobotState> {
             nextState = RobotState.PREPARE_DEEP_CLIMB;
           }
           break;
+        case PROCESSOR:
+          if (!currentState.ignoreRequests) {
+            nextState = RobotState.PREPARE_PROCESSOR;
+          }
+          break;
         case CLIMB_UNWIND:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT) {
           nextState = RobotState.DEEP_CLIMB_UNWIND;
-        }
-        break;
+          break;
+        case CLIMB_IDLE:
+          nextState = RobotState.DEEP_CLIMB_WAIT;
+          break;
         case CLIMB_RETRACT:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT) {
           nextState = RobotState.DEEP_CLIMB_RETRACT;
-        }
-        break;
+          break;
 
         case INTAKE_ALGAE:
           if (currentState == RobotState.WAIT_REMOVE_ALGAE_HIGH){
@@ -151,7 +154,7 @@ public class RobotManager extends StateMachine<RobotState> {
             nextState = RobotState.WAIT_REMOVE_ALGAE_LOW;
           }
           else if(currentState == RobotState.SCORE_ALGAE){
-            nextState = RobotState.WAIT_REMOVE_ALGAE_HIGH;
+            nextState = RobotState.IDLE; 
           }
           break;
         case ALGAE_HIGH:
@@ -190,6 +193,9 @@ public class RobotManager extends StateMachine<RobotState> {
             case SCORE_ALGAE_WAIT:
               nextState = RobotState.SCORE_ALGAE;
               break;
+            case WAIT_PROCESSOR:
+              nextState = RobotState.SCORE_PROCESSOR;
+              break;
             default:
               break;
           }
@@ -204,6 +210,8 @@ public class RobotManager extends StateMachine<RobotState> {
       case INVERTED_IDLE:
       case DEEP_CLIMB_WAIT:
       case WAIT_L3:
+      case PRE_HEIGHT_L4:
+      case WAIT_PROCESSOR:
         break;
 
       case DEEP_CLIMB_DEPLOY:
@@ -261,8 +269,13 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case PREPARE_REMOVE_ALGAE_LOW:
-          if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.WAIT_REMOVE_ALGAE_LOW;
+        }
+        break;
+      case PREPARE_PROCESSOR:
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+          nextState = RobotState.WAIT_PROCESSOR;
         }
         break;
       case PREPARE_SCORE_ALGAE:
@@ -353,7 +366,12 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_ALGAE:
-        if ((timeout(3) && DriverStation.isTeleop())) {
+        if ((timeout(3) && DriverStation.isTeleop() || (timeout(1.5) && DriverStation.isAutonomous()))) {
+          nextState = RobotState.PREPARE_IDLE;
+        }
+        break;
+      case SCORE_PROCESSOR:
+        if ((timeout(3) && DriverStation.isTeleop() || (timeout(1.) && DriverStation.isAutonomous()))) {
           nextState = RobotState.PREPARE_IDLE;
         }
         break;
@@ -388,14 +406,15 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case DEEP_CLIMB_RETRACT:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(5)){
+        if (timeout(5)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
         break;
       case DEEP_CLIMB_UNWIND:
-        if (currentState == RobotState.DEEP_CLIMB_WAIT && timeout(5)){
+        if (timeout(5)){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         }
+
         break;
     }
     DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
@@ -614,6 +633,13 @@ public class RobotManager extends StateMachine<RobotState> {
             wrist.setState(WristState.INTAKE_ALGAE);
             elbow.setState(ElbowState.LOW_ALGAE);
           }
+          case PREPARE_PROCESSOR -> {
+            elevator.setState(ElevatorState.PROCESSOR);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.PROCESSOR);
+            elbow.setState(ElbowState.PROCESSOR);
+          }
 
           case WAIT_REMOVE_ALGAE_HIGH -> {
             elevator.setState(ElevatorState.HIGH_ALGAE);
@@ -627,6 +653,13 @@ public class RobotManager extends StateMachine<RobotState> {
             climber.setState(ClimberState.IDLE);
             elbow.setState(ElbowState.LOW_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+          }
+          case WAIT_PROCESSOR -> {
+            elevator.setState(ElevatorState.PROCESSOR);
+            climber.setState(ClimberState.IDLE);
+            elbow.setState(ElbowState.PROCESSOR);
+            wrist.setState(WristState.PROCESSOR);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
           }
 
@@ -643,6 +676,13 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.INTAKE_ALGAE);
             elbow.setState(ElbowState.LOW_ALGAE);
+          }
+          case SCORE_PROCESSOR -> {
+            elevator.setState(ElevatorState.PROCESSOR);
+            climber.setState(ClimberState.IDLE);
+            elbow.setState(ElbowState.PROCESSOR);
+            wrist.setState(WristState.PROCESSOR);
+            manipulator.setState(ManipulatorState.SCORE_PROCESSOR);
           }
 
           case PREPARE_SCORE_ALGAE -> {
@@ -754,6 +794,10 @@ public class RobotManager extends StateMachine<RobotState> {
     flags.check(RobotFlag.DEEP_CLIMB);
   }
 
+  public void setProcessorRequest() {
+    flags.check(RobotFlag.PROCESSOR);
+  }
+
   public void prepareCoralStationRequest() {
     flags.check(RobotFlag.CORAL_STATION);
   }
@@ -784,6 +828,10 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void climbUnwindRequest(){
     flags.check(RobotFlag.CLIMB_UNWIND);
+  }
+
+  public void climbIdleRequest(){
+    flags.check(RobotFlag.CLIMB_IDLE);
   }
 
   public void climbRetractRequest(){

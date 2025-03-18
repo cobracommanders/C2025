@@ -103,12 +103,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.CORAL_STATION, elevatorPosition, tolerance);
         case HOME_ELEVATOR ->
           (motorCurrent > ElevatorConstants.homingStallCurrent);
-        // case MANUAL_UP ->
-        //   true;
-        // case MANUAL_DOWN ->
-        //   true;
         case INVERTED_CORAL_STATION ->
           MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
+        case PROCESSOR ->
+          MathUtil.isNear(ElevatorPositions.PROCESSOR, elevatorPosition, tolerance);
       };
   }
 
@@ -121,17 +119,93 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   }
 
   public void increaseSetpoint(){
-    if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
-      ElevatorPositions.INVERTED_CORAL_STATION += 0.1;
-      setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
+    switch (getState()) {
+      case L1 -> {
+        ElevatorPositions.L1 += 0.1;
+        setElevatorPosition(ElevatorPositions.L1);
+        break;
+      }
+      case L2 -> {
+        ElevatorPositions.L2 += 0.1;
+        setElevatorPosition(ElevatorPositions.L2);
+        break;
+      }
+      case L3 -> {
+        ElevatorPositions.L3 += 0.1;
+        setElevatorPosition(ElevatorPositions.L3);
+        break;
+      }
+      case LOW_ALGAE -> {
+        ElevatorPositions.LOW_ALGAE += 0.1;
+        setElevatorPosition(ElevatorPositions.LOW_ALGAE);
+        break;
+      }
+      case HIGH_ALGAE -> {
+        ElevatorPositions.HIGH_ALGAE += 0.1;
+        setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
+        break;
+      }
+      case L4_MAX -> {
+        ElevatorPositions.L4_MAX += 0.1;
+        setElevatorPosition(ElevatorPositions.L4_MAX);
+        break;
+      }
+      case INVERTED_CORAL_STATION -> {
+        ElevatorPositions.INVERTED_CORAL_STATION += 0.1;
+        setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
+        break;
+      }
+      case PROCESSOR -> {
+        ElevatorPositions.PROCESSOR += 0.1;
+        setElevatorPosition(ElevatorPositions.PROCESSOR);
+        break;
+      }
     }
   }
 
   public void decreaseSetpoint(){
-    if (getState() == ElevatorState.INVERTED_CORAL_STATION) {
-      ElevatorPositions.INVERTED_CORAL_STATION -= 0.1;
-      setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
-  }
+    switch (getState()) {
+      case L1 -> {
+        ElevatorPositions.L1 -= 0.1;
+        setElevatorPosition(ElevatorPositions.L1);
+        break;
+      }
+      case L2 -> {
+        ElevatorPositions.L2 -= 0.1;
+        setElevatorPosition(ElevatorPositions.L2);
+        break;
+      }
+      case L3 -> {
+        ElevatorPositions.L3 -= 0.1;
+        setElevatorPosition(ElevatorPositions.L3);
+        break;
+      }
+      case LOW_ALGAE -> {
+        ElevatorPositions.LOW_ALGAE -= 0.1;
+        setElevatorPosition(ElevatorPositions.LOW_ALGAE);
+        break;
+      }
+      case HIGH_ALGAE -> {
+        ElevatorPositions.HIGH_ALGAE -= 0.1;
+        setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
+        break;
+      }
+      case L4_MAX -> {
+        ElevatorPositions.L4_MAX -= 0.1;
+        setElevatorPosition(ElevatorPositions.L4_MAX);
+        break;
+      }
+      case INVERTED_CORAL_STATION -> {
+        ElevatorPositions.INVERTED_CORAL_STATION -= 0.1;
+        setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
+        break;
+      }
+      case PROCESSOR -> {
+        ElevatorPositions.PROCESSOR -= 0.1;
+        setElevatorPosition(ElevatorPositions.PROCESSOR);
+        break;
+      }
+    }
 }
 
   // public void syncEncoder(){
@@ -194,17 +268,14 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           rightMotor.setControl(new VoltageOut(-0.7));
           leftMotor.setControl(new VoltageOut(-0.7));
         }
-        // case MANUAL_UP -> {
-        //   rightMotor.setControl(new VoltageOut(0.7));
-        // }
-        // case MANUAL_DOWN -> {
-        //   rightMotor.setControl(new VoltageOut(-0.7));
-        // }
         case CORAL_STATION -> {
           setElevatorPosition(ElevatorPositions.CORAL_STATION);
         }
         case INVERTED_CORAL_STATION -> {
           setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
+        }
+        case PROCESSOR -> {
+          setElevatorPosition(ElevatorPositions.PROCESSOR);
         }
       }
     }

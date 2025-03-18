@@ -92,6 +92,9 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
           case SCORE_ALGAE -> {
             setManipulatorPositions(ManipulatorSpeeds.SCORE_ALGAE);
           }
+          case SCORE_PROCESSOR -> {
+            setManipulatorPositions(ManipulatorSpeeds.SCORE_PROCESSOR);
+          }
           default -> {}
         }
       }

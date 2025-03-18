@@ -10,6 +10,7 @@ public enum ElevatorState {
     L4_MAX,
     LOW_ALGAE,
     HIGH_ALGAE,
+    PROCESSOR,
     // MANUAL_UP,
     // MANUAL_DOWN,
     CAPPED_L3,

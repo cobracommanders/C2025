@@ -70,10 +70,7 @@ public class RobotCommands {
       //   .andThen(robot.waitForState(RobotState.WAIT_L1));
     // }
   }
-  
-  public Command L2MultiCommand() {
-    return new ConditionalCommand(L2Command(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
-  }
+
   public Command L2Command() {
     return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareL2Request, requirements)).andThen(robot.waitForState(RobotState.WAIT_L2)), Commands.runOnce(robot::prepareL2Request, requirements).andThen(robot.waitForState(RobotState.WAIT_L2)), () -> robot.getState().inverted);
     //if (robot.getState().inverted) {
@@ -109,26 +106,29 @@ public class RobotCommands {
     // }
   }
   public Command lowAlgaeCommand() {
-    if (robot.getState().inverted) {
-      return algaeIdleCommand() // go to non-inverted idle
-      .andThen(Commands.runOnce(robot::prepareAlgaeLowRequest, requirements)); // Prepare CS (non-inverted)
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareAlgaeLowRequest, requirements);
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4));
-    }
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareAlgaeLowRequest, requirements)), Commands.runOnce(robot::prepareAlgaeLowRequest, requirements), () -> robot.getState().inverted);
+    // if (robot.getState().inverted) {
+    //   return algaeIdleCommand() // go to non-inverted idle
+    //   .andThen(Commands.runOnce(robot::prepareAlgaeLowRequest, requirements)); // Prepare CS (non-inverted)
+    //   // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
+    // } else {
+    //   return Commands.runOnce(robot::prepareAlgaeLowRequest, requirements);
+    //   // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4));
+    // }
   }
   public Command highAlgaeCommand() {
-    if (robot.getState().inverted) {
-      return algaeIdleCommand() // go to non-inverted idle
-      .andThen(Commands.runOnce(robot::prepareAlgaeHighRequest, requirements)); // Prepare CS (non-inverted)
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4)); // Goes back to idle when we're done intaking
-    } else {
-      return Commands.runOnce(robot::prepareAlgaeHighRequest, requirements);
-      // .andThen(robot.waitForState(RobotManager.getInstance().isHeightCapped == true ? RobotState.CAPPED_L4 : RobotState.WAIT_L4));
-    }
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::prepareAlgaeHighRequest, requirements)), Commands.runOnce(robot::prepareAlgaeHighRequest, requirements), () -> robot.getState().inverted);
   }
 
+  public Command setProcessorCommand() {
+    return Commands.runOnce(robot::setProcessorRequest, requirements);
+    //return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::setProcessorRequest, requirements)), Commands.runOnce(robot::setProcessorRequest, requirements), () -> robot.getState().inverted);
+  }
+
+  public Command ProcessorCommand() {
+    return new ConditionalCommand(L2Command(), setProcessorCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
+  
   public Command LowReefCommand() {
     DogLog.log("coral mode", RobotManager.getInstance().currentGameMode == GameMode.CORAL);
     return new ConditionalCommand(L3Command(), lowAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
@@ -187,8 +187,15 @@ public class RobotCommands {
 
   public Command climbUnwindCommand() {
     if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
-      return Commands.runOnce(robot::climbUnwindRequest, requirements)
-      .andThen(robot.waitForState(RobotState.DEEP_CLIMB_UNWIND));
+      return Commands.runOnce(robot::climbUnwindRequest);
+    } else {
+      return climbCommand();
+    }
+  }
+
+  public Command climbIdleCommand() {
+    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_UNWIND) {
+      return Commands.runOnce(robot::climbIdleRequest);
     } else {
       return climbCommand();
     }
@@ -196,8 +203,7 @@ public class RobotCommands {
 
   public Command climbRetractCommand() {
     if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
-      return Commands.runOnce(robot::climbRetractRequest, requirements)
-      .andThen(robot.waitForState(RobotState.DEEP_CLIMB_RETRACT));
+      return Commands.runOnce(robot::climbRetractRequest);
     } else {
       return climbCommand();
     }
@@ -290,11 +296,11 @@ public class RobotCommands {
   }
 
   public Command algaeModeCommand(){
-    return new ConditionalCommand(Commands.runOnce(robot::algaeModeRequest).andThen(algaeIdleCommand()), Commands.runOnce(robot::algaeModeRequest), () -> false);
+    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest)), Commands.runOnce(robot::algaeModeRequest), () -> robot.getState().inverted);
   }
 
   public Command coralModeCommand(){ 
-    return new ConditionalCommand(Commands.runOnce(robot::coralModeRequest).andThen(invertIdleCommand()), Commands.runOnce(robot::coralModeRequest), () -> false);
+    return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted || RobotManager.getInstance().getState() == RobotState.INVERTED_INTAKE_CORAL_STATION);
   }
 
   // public Command climberRetract(){

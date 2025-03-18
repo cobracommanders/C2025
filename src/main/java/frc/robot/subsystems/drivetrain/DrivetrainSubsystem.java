@@ -210,7 +210,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     }
 
     if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1 || getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_2) {
-      targetCoralStationPose = FieldConstants.getInstance().getNearestCoralStation();
+      targetCoralStationPose = LimelightLocalization.getInstance().getAdjustedCoralStationPose();
       snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees(); //LimelightLocalization.getInstance().getCoralStationAngleFromTag();
       coralStationTag = limelightLocalization.limelightTagIDMiddle;
       boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);
