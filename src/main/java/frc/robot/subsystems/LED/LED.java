@@ -53,6 +53,10 @@ public class LED extends SubsystemBase {
       LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
     }
 
+    if (RobotManager.getInstance().getState() == RobotState.PREPARE_HOMING || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_1_ELEVATOR || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_2_ELBOW || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_3_WRIST) {
+      LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+    }
+    
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
       case ALIGNED:

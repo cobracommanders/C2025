@@ -41,7 +41,7 @@ public enum RobotState {
   HOMING_STAGE_1_ELEVATOR(false, true, new LEDState(Color.kRed)),
   HOMING_STAGE_2_ELBOW(true, true, new LEDState(Color.kRed)),
   HOMING_STAGE_3_WRIST(true, true,  new LEDState(Color.kRed)),
-  PREPARE_HOMING(true, true, new LEDState(Color.kPurple)),
+  PREPARE_HOMING(true, true, new LEDState(Color.kRed)),
   PREPARE_REMOVE_ALGAE_LOW(true, false, new LEDState(Color.kBlue)),
   WAIT_REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue)),
   REMOVE_ALGAE_LOW(false, false, new LEDState(Color.kBlue)),

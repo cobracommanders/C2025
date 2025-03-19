@@ -55,7 +55,9 @@ public class RobotCommands {
     return Commands.runOnce(()-> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT), requirements)
     .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
   }
-
+  public Command L2MultiCommand() {
+    return new ConditionalCommand(L2Command(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
   public Command L1MultiCommand() {
     return new ConditionalCommand(L1Command(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
@@ -126,7 +128,7 @@ public class RobotCommands {
   }
 
   public Command ProcessorCommand() {
-    return new ConditionalCommand(L2Command(), setProcessorCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(L1Command(), setProcessorCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
   
   public Command LowReefCommand() {

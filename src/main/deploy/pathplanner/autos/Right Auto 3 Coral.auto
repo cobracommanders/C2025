@@ -9,21 +9,28 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "limelight state to auto reef"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "set drivetrain auto"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "remove height cap"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "limelight state to auto reef"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "set drivetrain auto"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "remove height cap"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -46,9 +53,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -185,9 +205,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -324,9 +357,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4 elbow"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for L4"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -339,6 +385,12 @@
                 "type": "named",
                 "data": {
                   "name": "score"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C to Coral Station Bottom"
                 }
               }
             ]

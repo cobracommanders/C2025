@@ -72,8 +72,8 @@ public class Controls {
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
-        operator.X().onTrue(Robot.robotCommands.ProcessorCommand());
-        operator.A().onTrue(Robot.robotCommands.L1MultiCommand());
+        operator.X().onTrue(Robot.robotCommands.L2MultiCommand());
+        operator.A().onTrue(Robot.robotCommands.ProcessorCommand());
         operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
     }
 
