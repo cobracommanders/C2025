@@ -48,17 +48,17 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
+        // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
-        driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
+        // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
         // driver.B().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_UNWIND)));
         // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
         // driver.Y().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
         // driver.Y().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        // driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
-        // driver.B().onFalse(Robot.robotCommands.climbIdleCommand());
-        // driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
-        // driver.Y().onFalse(Robot.robotCommands.climbIdleCommand());
+        driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
+        driver.B().onFalse(Robot.robotCommands.climbIdleCommand());
+        driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
+        driver.Y().onFalse(Robot.robotCommands.climbIdleCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
 

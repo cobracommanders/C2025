@@ -136,7 +136,6 @@ public class RobotManager extends StateMachine<RobotState> {
         case CLIMB_RETRACT:
           nextState = RobotState.DEEP_CLIMB_RETRACT;
           break;
-
         case INTAKE_ALGAE:
           if (currentState == RobotState.WAIT_REMOVE_ALGAE_HIGH){
             nextState = RobotState.REMOVE_ALGAE_HIGH;
@@ -154,7 +153,7 @@ public class RobotManager extends StateMachine<RobotState> {
             nextState = RobotState.WAIT_REMOVE_ALGAE_LOW;
           }
           else if(currentState == RobotState.SCORE_ALGAE){
-            nextState = RobotState.IDLE; 
+            nextState = RobotState.WAIT_REMOVE_ALGAE_HIGH; 
           }
           break;
         case ALGAE_HIGH:
@@ -371,7 +370,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_PROCESSOR:
-        if ((timeout(3) && DriverStation.isTeleop() || (timeout(1.) && DriverStation.isAutonomous()))) {
+        if ((timeout(3) && DriverStation.isTeleop() || (timeout(1) && DriverStation.isAutonomous()))) {
           nextState = RobotState.PREPARE_IDLE;
         }
         break;

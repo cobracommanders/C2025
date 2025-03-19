@@ -186,27 +186,15 @@ public class RobotCommands {
   }
 
   public Command climbUnwindCommand() {
-    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
-      return Commands.runOnce(robot::climbUnwindRequest);
-    } else {
-      return climbCommand();
-    }
+    return new ConditionalCommand(Commands.runOnce(robot::climbUnwindRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT);
   }
 
   public Command climbIdleCommand() {
-    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_UNWIND) {
-      return Commands.runOnce(robot::climbIdleRequest);
-    } else {
-      return climbCommand();
-    }
+    return new ConditionalCommand(Commands.runOnce(robot::climbIdleRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT || RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_UNWIND);
   }
 
   public Command climbRetractCommand() {
-    if (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) {
-      return Commands.runOnce(robot::climbRetractRequest);
-    } else {
-      return climbCommand();
-    }
+    return new ConditionalCommand(Commands.runOnce(robot::climbRetractRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT);
   }
 
   public Command removeHeightCapCommand() {
@@ -302,6 +290,7 @@ public class RobotCommands {
   public Command coralModeCommand(){ 
     return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted || RobotManager.getInstance().getState() == RobotState.INVERTED_INTAKE_CORAL_STATION);
   }
+
 
   // public Command climberRetract(){
   //   if()

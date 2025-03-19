@@ -47,7 +47,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     motor_config.MotionMagic.MotionMagicAcceleration = WristConstants.MotionMagicAcceleration;
     motor_config.MotionMagic.MotionMagicJerk = WristConstants.MotionMagicJerk;
     wristMotor.getConfigurator().apply(motor_config);
-    tolerance = 0.04;
+    tolerance = 0.02;
     brakeModeEnabled = false;
     isSynced = false;
   }
@@ -120,7 +120,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput() - 0.01128 - 0.107;
+    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);

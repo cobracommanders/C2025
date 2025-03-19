@@ -6,9 +6,11 @@ import dev.doglog.DogLog;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elbow.ElbowSubsystem;
 import frc.robot.vision.LimelightLocalization;
+
 
 public final class FieldConstants {
   public Pose2d closestBranch;
@@ -45,27 +47,27 @@ public final class FieldConstants {
   };
 
   public Pose2d[] algaePosesBlue = {
-    new Pose2d(4.1, 4.7, Rotation2d.fromDegrees(-60)), //L + K
-    new Pose2d(4.88, 4.86, Rotation2d.fromDegrees(-120)), //J + I
-    new Pose2d(5.27, 3.925, Rotation2d.fromDegrees(180)), //H + G
-    new Pose2d(4.88, 3.35, Rotation2d.fromDegrees(120)), //F + E
-    new Pose2d(4.1, 3.35, Rotation2d.fromDegrees(60)), //D + C
-    new Pose2d(3.71, 3.925, Rotation2d.fromDegrees(0)), //B + A
+    new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K
+    new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I
+    new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G
+    new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E
+    new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C
+    new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A
   };
   public Pose2d[] algaePosesRed = {
-    new Pose2d(13.45, 3.35, Rotation2d.fromDegrees(120)), //L + K
-    new Pose2d(12.67, 3.35, Rotation2d.fromDegrees(60)), //J + I
-    new Pose2d(12.29, 3.925, Rotation2d.fromDegrees(0)), //H + G
-    new Pose2d(12.67, 4.7, Rotation2d.fromDegrees(-60)), //F + E
-    new Pose2d(13.45, 4.7, Rotation2d.fromDegrees(-120)), //D + C
-    new Pose2d(13.84, 3.925, Rotation2d.fromDegrees(180)), //B + A
+    new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K
+    new Pose2d(12.643, 3.307, Rotation2d.fromDegrees(60)), //J + I
+    new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0)), //H + G
+    new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(-60)), //F + E
+    new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(-120)), //D + C
+    new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A
   };
 
   public Pose2d[] coralStationPosesBlue = {
     // new Pose2d(1.129, 7.122, Rotation2d.fromDegrees(-50)), // tag 13 CS
     // new Pose2d(1.199, 0.974, Rotation2d.fromDegrees(50)) // tag 12 CS
-    new Pose2d(0.8512, 0.655, Rotation2d.fromDegrees(-50)), // tag 13 CS
-    new Pose2d(0.8512, 7.396, Rotation2d.fromDegrees(50)) // tag 12 CS
+    new Pose2d(0.8512, 7.396, Rotation2d.fromDegrees(-50)), // tag 13 CS
+    new Pose2d(0.8512, 0.655, Rotation2d.fromDegrees(50)) // tag 12 CS
   };
   public Pose2d[] coralStationPosesRed = {
     // new Pose2d(16.46, 0.93, Rotation2d.fromDegrees(130)), // tag 1 CS
@@ -117,6 +119,16 @@ public final class FieldConstants {
       DogLog.log("FieldConstants/algae pose " + i, pose);
       Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedAlgaePose(pose);
       DogLog.log("FieldConstants/algae pose offset " + i, offsetPose);
+    }
+  }
+
+  public void logCoralStation() {
+    int i = 0;
+    for (Pose2d pose : coralStationPosesBlue) {
+      i++;
+      DogLog.log("FieldConstants/coral station id pose " + i, pose);
+      Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedCoralStationPose(pose);
+      DogLog.log("FieldConstants/coral station pose offset " + i, offsetPose);
     }
   }
 

@@ -58,6 +58,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
         NamedCommands.registerCommand("wait for inverted idle", robotManager.waitForState(RobotState.INVERTED_IDLE));
+        NamedCommands.registerCommand("wait for idle", robotManager.waitForState(RobotState.IDLE));
         NamedCommands.registerCommand("wait for prepare inverted idle", robotManager.waitForState(RobotState.PREPARE_INVERTED_IDLE));
         NamedCommands.registerCommand("wait for post intake", robotManager.waitForState(RobotState.POST_INVERTED_CORAL_STATION_INTAKE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
@@ -78,11 +79,15 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("set algae mode", Robot.robotCommands.algaeModeCommand());
         NamedCommands.registerCommand("low algae intake", Robot.robotCommands.lowAlgaeCommand());
         NamedCommands.registerCommand("high algae intake", Robot.robotCommands.highAlgaeCommand());
+        NamedCommands.registerCommand("wait for low algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_LOW));
+        NamedCommands.registerCommand("wait for high algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_HIGH));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);
         FieldConstants.getInstance().logBranches();
         FieldConstants.getInstance().logAlgae();
+        FieldConstants.getInstance().logCoralStation();
+        
     }
 
     @Override
