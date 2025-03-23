@@ -47,7 +47,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     motor_config.MotionMagic.MotionMagicAcceleration = WristConstants.MotionMagicAcceleration;
     motor_config.MotionMagic.MotionMagicJerk = WristConstants.MotionMagicJerk;
     wristMotor.getConfigurator().apply(motor_config);
-    tolerance = 0.02;
+    tolerance = 0.04;
     brakeModeEnabled = false;
     isSynced = false;
   }

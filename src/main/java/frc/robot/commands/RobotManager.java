@@ -310,7 +310,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case INVERTED_INTAKE_CORAL_STATION:
-        if (ManipulatorSubsystem.getInstance().hasCoral() && DriverStation.isAutonomous()) {
+        if (ManipulatorSubsystem.getInstance().hasCoral() && timeout(0.6) && DriverStation.isAutonomous()) {
           nextState = RobotState.POST_INVERTED_CORAL_STATION_INTAKE;
         }
         break;
@@ -350,7 +350,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L4:
-        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.4) && DriverStation.isAutonomous())) {
+        if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
@@ -636,8 +636,8 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.PROCESSOR);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
-            wrist.setState(WristState.PROCESSOR);
-            elbow.setState(ElbowState.PROCESSOR);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
           }
 
           case WAIT_REMOVE_ALGAE_HIGH -> {

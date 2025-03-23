@@ -15,6 +15,7 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightLocalization;
 import frc.robot.vision.LimelightState;
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot{
 
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
+        // ElevatorSubsystem.getInstance().setTeleopConfig();
 
         NamedCommands.registerCommand("idle", Robot.robotCommands.algaeIdleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());
@@ -81,6 +83,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("high algae intake", Robot.robotCommands.highAlgaeCommand());
         NamedCommands.registerCommand("wait for low algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_LOW));
         NamedCommands.registerCommand("wait for high algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_HIGH));
+        NamedCommands.registerCommand("wait for algae score", robotManager.waitForState(RobotState.SCORE_ALGAE_WAIT));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);
@@ -97,6 +100,9 @@ public class Robot extends TimedRobot{
         if (alliance.isEmpty()) {
             alliance = DriverStation.getAlliance();
         }
+        DogLog.log("Robot/Is autonomous", DriverStation.isAutonomous());
+        DogLog.log("Robot/Is disabled", DriverStation.isDisabled());
+        DogLog.log("Robot/Is teleop", DriverStation.isTeleop());
     }
 
     @Override
@@ -134,7 +140,10 @@ public class Robot extends TimedRobot{
             autoChooser.getSelected().schedule();
             DogLog.log("Selected Auto", autoChooser.getSelected().getName());
     }
-
+    @Override
+    public void autonomousExit() {
+        ElevatorSubsystem.getInstance().setTeleopConfig();
+    }
     @Override
   public void autonomousPeriodic() {}
 

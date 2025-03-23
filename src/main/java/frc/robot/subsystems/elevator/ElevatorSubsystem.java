@@ -50,10 +50,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
+    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
     left_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
+    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
     right_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     leftMotor = new TalonFX(Ports.ElevatorPorts.LMOTOR);
     rightMotor = new TalonFX(Ports.ElevatorPorts.RMOTOR);
@@ -67,7 +67,18 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     encoder.getConfigurator().apply(canCoderConfig);
     tolerance = 0.1;
   }
-
+  public void setTeleopConfig() {
+    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
+    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
+    leftMotor.getConfigurator().apply(left_motor_config);
+    rightMotor.getConfigurator().apply(right_motor_config);
+  }
+  public void setAutoConfig() {
+    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    leftMotor.getConfigurator().apply(left_motor_config);
+    rightMotor.getConfigurator().apply(right_motor_config);
+  }
   protected ElevatorState getNextState(ElevatorState currentState) {
     if (getState() == ElevatorState.HOME_ELEVATOR && this.atGoal()) { 
       leftMotor.setPosition(0);

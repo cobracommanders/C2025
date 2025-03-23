@@ -124,7 +124,7 @@ public final class FieldConstants {
 
   public void logCoralStation() {
     int i = 0;
-    for (Pose2d pose : coralStationPosesBlue) {
+    for (Pose2d pose : coralStationPosesRed) {
       i++;
       DogLog.log("FieldConstants/coral station id pose " + i, pose);
       Pose2d offsetPose = LimelightLocalization.getInstance().getAdjustedCoralStationPose(pose);

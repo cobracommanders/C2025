@@ -357,8 +357,8 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
             driveToAngle
             .withVelocityX(teleopSpeeds.vxMetersPerSecond)
             .withVelocityY(teleopSpeeds.vyMetersPerSecond)
-            .withForwardPerspective(ForwardPerspectiveValue.BlueAlliance)
-            .withTargetDirection(targetReefPose.getRotation())
+            .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
+            .withTargetDirection((Robot.alliance.get() == Alliance.Red) ? targetReefPose.getRotation().plus(Rotation2d.fromDegrees(180)) : targetReefPose.getRotation()) 
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
         }
 

@@ -286,11 +286,11 @@ public class RobotCommands {
   }
 
   public Command algaeModeCommand(){
-    return new ConditionalCommand(algaeIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest)), Commands.runOnce(robot::algaeModeRequest), () -> robot.getState().inverted);
+    return algaeIdleCommand().andThen(Commands.runOnce(robot::algaeModeRequest));
   }
 
   public Command coralModeCommand(){ 
-    return new ConditionalCommand(invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest)), Commands.runOnce(robot::coralModeRequest), () -> !robot.getState().inverted || RobotManager.getInstance().getState() == RobotState.INVERTED_INTAKE_CORAL_STATION);
+    return invertIdleCommand().andThen(Commands.runOnce(robot::coralModeRequest));
   }
 
 
