@@ -41,10 +41,23 @@ public static final class ElbowConstants{
   public static final double MotionMagicJerk = 420; //300
 }
 
+public static final class IntakeConstants{
+  public static final double P = 5; //40
+  public static final double I = 0;
+  public static final double D = 0;
+  public static final double G = 0;
+  public static final double MotionMagicAcceleration = 5; //40
+  public static final double MotionMagicCruiseVelocity = 3;
+  public static final double MotionMagicJerk = 50; //300
+}
+
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
 }
 
+public static final class RollerConstants{
+  public static final double algaeStallCurrent = 25;
+}
 
 public static final class OIConstants {
     public static final int DRIVER_CONTROLLER_ID = 0;

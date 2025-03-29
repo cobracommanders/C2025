@@ -236,8 +236,20 @@ public class RobotCommands {
     return runOnce(robot::stopIntakeAlgaeRequest, requirements);
   }
 
+  public Command intakeGroundAlgaeCommand() {
+    return runOnce(robot::intakeGroundAlgaeRequest, requirements);
+  }
+
+  public Command stopIntakeGroundAlgaeCommand() {
+    return runOnce(robot::stopIntakeGroundAlgaeRequest, requirements);
+  }
+
+  public Command outtakeGroundAlgaeCommand() {
+    return runOnce(robot::outtakeGroundAlgaeRequest, requirements);
+  }
+
   public Command intakeCommand() {
-    return new ConditionalCommand(invertedIntakeCommand(), intakeAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(invertedIntakeCommand(), intakeGroundAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
     // if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
     //   return invertedIntakeCommand();
     // } else {
@@ -266,7 +278,6 @@ public class RobotCommands {
   public Command autoAlgaeAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil((
-
     )-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));

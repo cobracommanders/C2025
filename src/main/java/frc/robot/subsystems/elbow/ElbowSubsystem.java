@@ -31,7 +31,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   public ElbowSubsystem() {
     super(ElbowState.HOME_ELBOW);
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motor = new TalonFX(Ports.ElbowPorts.MOTOR);
+    motor = new TalonFX(Ports.ElbowPorts.ELBOW_MOTOR);
     motor.getConfigurator().apply(motor_config);
     motor_config.MotionMagic.MotionMagicCruiseVelocity = ElbowConstants.MotionMagicCruiseVelocity;
     motor_config.MotionMagic.MotionMagicAcceleration = ElbowConstants.MotionMagicAcceleration;

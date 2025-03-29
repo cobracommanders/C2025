@@ -8,11 +8,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.subsystems.elevator.ElevatorPositions;
 
 
 

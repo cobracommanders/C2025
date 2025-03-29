@@ -20,6 +20,8 @@ import frc.robot.subsystems.manipulator.ManipulatorState;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.wrist.WristState;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.subsystems.intakerollers.RollerState;
+import frc.robot.subsystems.intakerollers.RollerSubsystem;
 
 public class RobotManager extends StateMachine<RobotState> {
   public final ElevatorSubsystem elevator;
@@ -27,6 +29,7 @@ public class RobotManager extends StateMachine<RobotState> {
   public final ManipulatorSubsystem manipulator;
   public final WristSubsystem wrist;
   public final ElbowSubsystem elbow;
+  public final RollerSubsystem rollers;
   public final DrivetrainSubsystem drivetrain;
 
   public boolean isHeightCapped = true;
@@ -43,6 +46,7 @@ public class RobotManager extends StateMachine<RobotState> {
     this.manipulator = ManipulatorSubsystem.getInstance();
     this.wrist = WristSubsystem.getInstance();
     this.elbow = ElbowSubsystem.getInstance();
+    this.rollers = RollerSubsystem.getInstance();
     this.drivetrain = DrivetrainSubsystem.getInstance();
   }
 
@@ -806,10 +810,22 @@ public class RobotManager extends StateMachine<RobotState> {
   }
 
   public void intakeAlgaeRequest(){
-    flags.check(RobotFlag.INTAKE_ALGAE);
+    flags.check(RobotFlag.GROUND_ALGAE_INTAKE);
   }
 
   public void stopIntakeAlgaeRequest(){
+    flags.check(RobotFlag.STOP_INTAKE_ALGAE);
+  }
+
+  public void intakeGroundAlgaeRequest(){
+    flags.check(RobotFlag.GROUND_ALGAE_INTAKE);
+  }
+
+  public void outtakeGroundAlgaeRequest(){
+    flags.check(RobotFlag.OUTTAKE_ALGAE);
+  }
+
+  public void stopIntakeGroundAlgaeRequest(){
     flags.check(RobotFlag.STOP_INTAKE_ALGAE);
   }
 
