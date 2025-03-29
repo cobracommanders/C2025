@@ -11,9 +11,6 @@ public enum ElevatorState {
     LOW_ALGAE,
     HIGH_ALGAE,
     PROCESSOR,
-    // MANUAL_UP,
-    // MANUAL_DOWN,
-    CAPPED_L3,
     HOME_ELEVATOR,
     CORAL_STATION,
     INVERTED_CORAL_STATION;

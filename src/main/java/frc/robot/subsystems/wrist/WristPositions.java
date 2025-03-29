@@ -7,7 +7,6 @@ public class WristPositions {
     public static final double L2 = 0.465;
     public static final double L3 = 0.465;
     public static final double L4_WRIST = 0.475; //44
-    public static final double CAPPED_L3 = 0.1;
     public static final double CAPPED_L4 = 0.1;
     public static final double L4_TRANSITION = 0.1;
     public static final double CORAL_STATION = 0.125;

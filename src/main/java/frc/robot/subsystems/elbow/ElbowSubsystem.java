@@ -77,8 +77,6 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         motorCurrent > ElbowConstants.homingStallCurrent;
       case INVERTED_CORAL_STATION ->
         MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
-      case CAPPED_L3 ->
-        MathUtil.isNear(ElbowPositions.CAPPED_L3, elbowPosition, tolerance);
       case L4_ELBOW ->
         MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
       case CAGE_FLIP ->
@@ -160,9 +158,6 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         }
         case L3 -> {
           setElbowPosition(ElbowPositions.L3);
-        }
-        case CAPPED_L3 -> {
-          setElbowPosition(ElbowPositions.CAPPED_L3);
         }
         case CAPPED_L4 -> {
           setElbowPosition(ElbowPositions.CAPPED_L4);

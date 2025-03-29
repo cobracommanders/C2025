@@ -74,8 +74,6 @@ public class WristSubsystem extends StateMachine<WristState>{
         MathUtil.isNear(WristPositions.L2, wristPosition, tolerance);
       case L3 ->
         MathUtil.isNear(WristPositions.L3, wristPosition, tolerance);
-      case CAPPED_L3 ->
-        MathUtil.isNear(WristPositions.CAPPED_L3, wristPosition, tolerance);
       case CAPPED_L4 ->
         MathUtil.isNear(WristPositions.CAPPED_L4, wristPosition, tolerance);
       case L4_TRANSITION ->

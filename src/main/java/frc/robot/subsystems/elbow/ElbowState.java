@@ -13,7 +13,6 @@ public enum ElbowState {
     PRE_SCORE_ALGAE,
     CAPPED_L4,
     CORAL_STATION,
-    CAPPED_L3,
     HOME_ELBOW,
     DISABLED,
     L4_ELBOW,
