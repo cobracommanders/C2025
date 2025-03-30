@@ -16,6 +16,7 @@ public enum WristState {
     DISABLED,
     PRE_ALGAE_SCORE,
     INTAKE_ALGAE,
+    GROUND_ALGAE_INTAKE,
     ALGAE_FLICK,
     PROCESSOR,
     SCORE_ALGAE,

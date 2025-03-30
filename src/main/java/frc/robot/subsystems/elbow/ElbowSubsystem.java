@@ -71,6 +71,8 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         MathUtil.isNear(ElbowPositions.LOW_ALGAE, elbowPosition, tolerance);
       case PRE_SCORE_ALGAE ->
         MathUtil.isNear(ElbowPositions.PRE_SCORE_ALGAE, elbowPosition, tolerance);
+      case GROUND_ALGAE_INTAKE ->
+        MathUtil.isNear(ElbowPositions.GROUND_ALGAE_INTAKE, elbowPosition, tolerance);
       case CORAL_STATION ->
         MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
       case HOME_ELBOW ->
@@ -170,6 +172,9 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         }
         case PRE_SCORE_ALGAE -> {
           setElbowPosition(ElbowPositions.PRE_SCORE_ALGAE);
+        }
+        case GROUND_ALGAE_INTAKE -> {
+          setElbowPosition(ElbowPositions.GROUND_ALGAE_INTAKE);
         }
         case L4 -> {
           setElbowPosition(ElbowPositions.L4);

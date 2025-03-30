@@ -22,6 +22,8 @@ import frc.robot.subsystems.wrist.WristState;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.subsystems.intakerollers.RollerState;
 import frc.robot.subsystems.intakerollers.RollerSubsystem;
+import frc.robot.subsystems.intake.IntakeState;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 
 public class RobotManager extends StateMachine<RobotState> {
   public final ElevatorSubsystem elevator;
@@ -30,6 +32,7 @@ public class RobotManager extends StateMachine<RobotState> {
   public final WristSubsystem wrist;
   public final ElbowSubsystem elbow;
   public final RollerSubsystem rollers;
+  public final IntakeSubsystem intake;
   public final DrivetrainSubsystem drivetrain;
 
   public boolean isHeightCapped = true;
@@ -47,6 +50,7 @@ public class RobotManager extends StateMachine<RobotState> {
     this.wrist = WristSubsystem.getInstance();
     this.elbow = ElbowSubsystem.getInstance();
     this.rollers = RollerSubsystem.getInstance();
+    this.intake = IntakeSubsystem.getInstance();
     this.drivetrain = DrivetrainSubsystem.getInstance();
   }
 
@@ -77,7 +81,15 @@ public class RobotManager extends StateMachine<RobotState> {
           break;
         case IDLE:
           if (!currentState.ignoreRequests) {
-            nextState = (!currentState.inverted) ? RobotState.PREPARE_IDLE : RobotState.PREPARE_IDLE_FROM_INVERTED;
+            if (RobotMode.getInstance().inAlgaeMode()) {
+              if (currentState == RobotState.GROUND_ALGAE_INTAKE) {
+                nextState = RobotState.POST_GROUND_ALGAE_INTAKE;
+              } else if (currentState == RobotState.GROUND_ALGAE_OUTTAKE) {
+                nextState = RobotState.PREPARE_IDLE;
+              } else {
+                nextState = (!currentState.inverted) ? RobotState.PREPARE_IDLE : RobotState.PREPARE_IDLE_FROM_INVERTED;
+              }
+            }
           }
           break;
         case INVERTED_IDLE:
@@ -148,6 +160,12 @@ public class RobotManager extends StateMachine<RobotState> {
             nextState = RobotState.REMOVE_ALGAE_LOW;
           }
           break;
+        case GROUND_ALGAE_INTAKE:
+          if (currentState == RobotState.IDLE){
+            nextState = RobotState.PREPARE_GROUND_ALGAE_INTAKE;
+          } else if (currentState == RobotState.POST_GROUND_ALGAE_INTAKE) {
+            nextState = RobotState.PREPARE_GROUND_ALGAE_OUTTAKE;
+          }
 
         case STOP_INTAKE_ALGAE:
           if (currentState == RobotState.REMOVE_ALGAE_HIGH){
@@ -318,6 +336,16 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.POST_INVERTED_CORAL_STATION_INTAKE;
         }
         break;
+      case PREPARE_GROUND_ALGAE_INTAKE:
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && intake.atGoal()) {
+          nextState = RobotState.GROUND_ALGAE_INTAKE;
+        }
+        break;
+      case PREPARE_GROUND_ALGAE_OUTTAKE:
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && intake.atGoal()) {
+          nextState = RobotState.GROUND_ALGAE_OUTTAKE;
+        }
+        break;
       case POST_INVERTED_CORAL_STATION_INTAKE:
         if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
           nextState = RobotState.PREPARE_INVERTED_IDLE;
@@ -364,6 +392,11 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case REMOVE_ALGAE_LOW:
+        if(!isHeightCapped) {
+          nextState = RobotState.PREPARE_SCORE_ALGAE;
+        }
+        break;
+      case POST_GROUND_ALGAE_INTAKE:
         if(!isHeightCapped) {
           nextState = RobotState.PREPARE_SCORE_ALGAE;
         }
@@ -436,6 +469,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
+            intake.setState(IntakeState.INTAKE);
+            rollers.setState(RollerState.IDLE);
           }
           case PRE_L4 -> {
             elevator.setState(ElevatorState.IDLE);
@@ -528,12 +563,46 @@ public class RobotManager extends StateMachine<RobotState> {
             wrist.setState(WristState.INVERTED_CORAL_STATION);
             elbow.setState(ElbowState.INVERTED_CORAL_STATION);
           }
+          case PREPARE_GROUND_ALGAE_INTAKE -> {
+            elevator.setState(ElevatorState.GROUND_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.GROUND_ALGAE_INTAKE);
+            elbow.setState(ElbowState.GROUND_ALGAE_INTAKE);
+            intake.setState(IntakeState.INTAKE);
+            rollers.setState(RollerState.IDLE);
+          }
+          case PREPARE_GROUND_ALGAE_OUTTAKE -> {
+            elevator.setState(ElevatorState.GROUND_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.GROUND_ALGAE_INTAKE);
+            elbow.setState(ElbowState.GROUND_ALGAE_INTAKE);
+            intake.setState(IntakeState.OUTTAKE);
+            rollers.setState(RollerState.IDLE);
+          }
           case INVERTED_INTAKE_CORAL_STATION -> {
             elevator.setState(ElevatorState.INVERTED_CORAL_STATION);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_CORAL);
             wrist.setState(WristState.INVERTED_CORAL_STATION);
             elbow.setState(ElbowState.INVERTED_CORAL_STATION);
+          }
+          case GROUND_ALGAE_INTAKE -> {
+            elevator.setState(ElevatorState.GROUND_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            wrist.setState(WristState.GROUND_ALGAE_INTAKE);
+            elbow.setState(ElbowState.GROUND_ALGAE_INTAKE);
+            intake.setState(IntakeState.INTAKE);
+            rollers.setState(RollerState.INTAKE);
+          }
+          case GROUND_ALGAE_OUTTAKE -> {
+            elevator.setState(ElevatorState.GROUND_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            wrist.setState(WristState.GROUND_ALGAE_INTAKE);
+            elbow.setState(ElbowState.GROUND_ALGAE_INTAKE);
+            intake.setState(IntakeState.OUTTAKE);
+            rollers.setState(RollerState.OUTTAKE);
           }
           case PREPARE_DEEP_CLIMB -> {
             elevator.setState(ElevatorState.IDLE);
@@ -549,6 +618,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
+            intake.setState(IntakeState.CAGE_FLIP);
+            rollers.setState(RollerState.IDLE);
           }
 
           case DEEP_CLIMB_WAIT -> {
@@ -557,6 +628,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
+            intake.setState(IntakeState.CAGE_FLIP);
+            rollers.setState(RollerState.IDLE);
           }
 
           case DEEP_CLIMB_RETRACT -> {
@@ -565,6 +638,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
+            intake.setState(IntakeState.CAGE_FLIP);
+            rollers.setState(RollerState.IDLE);
           }
 
           case DEEP_CLIMB_UNWIND -> {
@@ -573,6 +648,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
+            intake.setState(IntakeState.CAGE_FLIP);
+            rollers.setState(RollerState.IDLE);
           }
 
           case CAPPED_L4 -> {
@@ -597,6 +674,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
+            intake.setState(IntakeState.IDLE);
+            rollers.setState(RollerState.IDLE);
           }
 
           case PREPARE_IDLE_FROM_INVERTED -> {
@@ -613,6 +692,8 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
+            intake.setState(IntakeState.IDLE);
+            rollers.setState(RollerState.IDLE);
           }
 
           case PREPARE_INVERTED_IDLE -> {
@@ -688,6 +769,16 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.SCORE_PROCESSOR);
           }
 
+          case POST_GROUND_ALGAE_INTAKE -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.IDLE);
+            wrist.setState(WristState.IDLE);
+            elbow.setState(ElbowState.IDLE);
+            intake.setState(IntakeState.INTAKE);
+            rollers.setState(RollerState.IDLE);
+          }
+
           case PREPARE_SCORE_ALGAE -> {
             elevator.setState(ElevatorState.L4);
             climber.setState(ClimberState.IDLE);
@@ -701,13 +792,17 @@ public class RobotManager extends StateMachine<RobotState> {
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
             wrist.setState(WristState.SCORE_ALGAE);
+            wrist.setState(WristState.SCORE_ALGAE);
             elbow.setState(ElbowState.L4);
           }
+          
           
 
           case SCORE_ALGAE -> {
             elevator.setState(ElevatorState.L4_MAX);
             climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.SCORE_ALGAE);
+            wrist.setState(WristState.ALGAE_FLICK);
             manipulator.setState(ManipulatorState.SCORE_ALGAE);
             wrist.setState(WristState.ALGAE_FLICK);
             elbow.setState(ElbowState.L4);

@@ -52,6 +52,11 @@ public enum RobotState {
   WAIT_REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue)),
   REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue)),
   PREPARE_SCORE_ALGAE(false, false, new LEDState(Color.kBlue)),
+  PREPARE_GROUND_ALGAE_INTAKE(true, false, new LEDState(Color.kBlue)),
+  GROUND_ALGAE_INTAKE(false, false, new LEDState(Color.kBlue)),
+  POST_GROUND_ALGAE_INTAKE(false, false, new LEDState(Color.kBlue)),
+  PREPARE_GROUND_ALGAE_OUTTAKE(true, false, new LEDState(Color.kBlue)),
+  GROUND_ALGAE_OUTTAKE(false, false, new LEDState(Color.kBlue)),
   SCORE_ALGAE_WAIT(false, false, new LEDState(Color.kBlue)),
   SCORE_ALGAE(false, false, new LEDState(Color.kBlue));
 
