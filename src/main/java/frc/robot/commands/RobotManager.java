@@ -696,16 +696,16 @@ public class RobotManager extends StateMachine<RobotState> {
             elevator.setState(ElevatorState.L4_MAX);
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.INTAKE_ALGAE);
-            wrist.setState(WristState.SCORE_ALGAE);
+            wrist.setState(WristState.PRE_ALGAE_SCORE);
             elbow.setState(ElbowState.L4);
           }
-          
+
 
           case SCORE_ALGAE -> {
             elevator.setState(ElevatorState.L4_MAX);
             climber.setState(ClimberState.IDLE);
-            manipulator.setState(ManipulatorState.SCORE_ALGAE);
-            wrist.setState(WristState.ALGAE_FLICK);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.SCORE_ALGAE);
             elbow.setState(ElbowState.L4);
           }
           
@@ -754,6 +754,9 @@ public class RobotManager extends StateMachine<RobotState> {
     super.periodic(); 
     DogLog.log(getName() + "/is Coral Mode", RobotMode.getInstance().inCoralMode());
     DogLog.log(getName() + "/Is capped", isHeightCapped);
+    if (RobotManager.getInstance().getState() == RobotState.SCORE_ALGAE && timeout(0.20)) {
+      manipulator.setState(ManipulatorState.SCORE_ALGAE);
+    }
     //DogLog.log(getName() + "Active Command", elevator.getCurrentCommand().toString());
   }
 
