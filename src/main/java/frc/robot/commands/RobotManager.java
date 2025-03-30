@@ -4,6 +4,7 @@ import static edu.wpi.first.wpilibj2.command.Commands.none;
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.Controls;
 import frc.robot.FlagManager;
@@ -31,6 +32,7 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public boolean isHeightCapped = true;
   public GameMode currentGameMode = GameMode.CORAL;
+  public CycleMode currentCycleMode = CycleMode.REGULAR_CYCLE;
   public boolean isInverted = false;
   public Timer timer = new Timer();
 
@@ -64,6 +66,12 @@ public class RobotManager extends StateMachine<RobotState> {
           break;
         case CORAL_MODE:
           currentGameMode = GameMode.CORAL;
+          break;
+        case SUPERCYCLE:
+          currentCycleMode = CycleMode.SUPERCYCLE;
+          break;
+        case REGULAR_CYCLE:
+          currentCycleMode = CycleMode.REGULAR_CYCLE;
           break;
         case APPLY_HEIGHT_CAP:
           isHeightCapped = true;
@@ -858,6 +866,14 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void coralModeRequest(){
     flags.check(RobotFlag.CORAL_MODE);
+  }
+
+  public void supercycleRequest(){
+    flags.check(RobotFlag.SUPERCYCLE);
+  }
+
+  public void regularCycleRequest(){
+    flags.check(RobotFlag.REGULAR_CYCLE);
   }
 
   public void autoReefAlignRequest(){

@@ -45,7 +45,7 @@ public class Controls {
             driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
         driver.rightBumper().onTrue(Robot.robotCommands.autoAlignCommand());
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
-            driver.rightTrigger().onFalse(Robot.robotCommands.idleCommand());
+            driver.rightTrigger().onFalse(Robot.robotCommands.scoreIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
         // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
@@ -70,6 +70,7 @@ public class Controls {
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
+        operator.POV90().onTrue(Robot.robotCommands.cycleModeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2MultiCommand());

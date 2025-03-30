@@ -9,6 +9,14 @@ public class RobotMode {
     public boolean inAlgaeMode() {return currentGameMode == GameMode.ALGAE;}
     public boolean inCoralMode() {return currentGameMode == GameMode.CORAL;}
 
+    public CycleMode currentCycleMode = CycleMode.REGULAR_CYCLE;
+    
+    public enum CycleMode {SUPERCYCLE, REGULAR_CYCLE}
+    
+    public void setCurrentCycleMode(CycleMode cycleMode) {currentCycleMode = cycleMode;}
+    public boolean inSupercycleMode() {return currentCycleMode == CycleMode.SUPERCYCLE;}
+    public boolean inRegularCycleMode() {return currentCycleMode == CycleMode.REGULAR_CYCLE;}
+    
     private static RobotMode instance;
 
   public static RobotMode getInstance() {
