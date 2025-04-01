@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.commands.RobotMode;
+import frc.robot.subsystems.elevator.ElevatorPositions;
 
 public class ElbowSubsystem extends StateMachine<ElbowState>{
     
@@ -46,6 +48,14 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       return ElbowState.INVERTED_IDLE;
     } else {
       return currentState;
+    }
+  }
+
+  public void setL1Row() {
+    if (RobotMode.getInstance().inHighL1Mode()) {
+      ElbowPositions.L1 = ElbowPositions.L1_ROW2;
+    } else {
+      ElbowPositions.L1 = 0;
     }
   }
 

@@ -22,7 +22,9 @@ import frc.robot.StateMachine;
 import frc.robot.Constants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
+import frc.robot.subsystems.elbow.ElbowPositions;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
@@ -58,7 +60,15 @@ public class WristSubsystem extends StateMachine<WristState>{
     } else {
       return currentState;
     }
+  }
+
+  public void setL1Row() {
+    if (RobotMode.getInstance().inHighL1Mode()) {
+      WristPositions.L1 = WristPositions.L1_ROW2;
+    } else {
+      WristPositions.L1 = 0.05;
     }
+  }
 
    public boolean atGoal() {
     return switch (getState()) {

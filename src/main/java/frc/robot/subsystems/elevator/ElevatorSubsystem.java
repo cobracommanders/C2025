@@ -18,6 +18,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.commands.RobotMode;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
@@ -88,6 +89,14 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     }
   }
 
+  public void setL1Row() {
+    if (RobotMode.getInstance().inHighL1Mode()) {
+      ElevatorPositions.L1 = ElevatorPositions.L1_ROW2;
+    } else {
+      ElevatorPositions.L1 = 0.1;
+    }
+  }
+
   public boolean atGoal() {
     return switch (getState()) {
         case IDLE -> 
@@ -120,8 +129,8 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   }
 
   public void setState(ElevatorState newState) {
-      setStateFromRequest(newState);
-    }
+    setStateFromRequest(newState);
+  }
 
   public boolean isIdle() {
     return getState() == ElevatorState.IDLE;
@@ -130,7 +139,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void increaseSetpoint(){
     switch (getState()) {
       case L1 -> {
-        ElevatorPositions.L1 += 0.1;
+        if (RobotMode.getInstance().inHighL1Mode()) {
+          ElevatorPositions.L1_ROW2 += 0.1;
+        } else {
+          ElevatorPositions.L1 += 0.1;
+        }
         setElevatorPosition(ElevatorPositions.L1);
         break;
       }
@@ -175,7 +188,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void decreaseSetpoint(){
     switch (getState()) {
       case L1 -> {
-        ElevatorPositions.L1 -= 0.1;
+        if (RobotMode.getInstance().inHighL1Mode()) {
+          ElevatorPositions.L1_ROW2 -= 0.1;
+        } else {
+          ElevatorPositions.L1 -= 0.1;
+        }
         setElevatorPosition(ElevatorPositions.L1);
         break;
       }

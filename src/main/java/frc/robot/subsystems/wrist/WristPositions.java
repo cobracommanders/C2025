@@ -3,7 +3,8 @@ package frc.robot.subsystems.wrist;
 public class WristPositions {
     public static final double IDLE = 0.471;
     public static final double PRE_L4 = 0.1;
-    public static final double L1 = 0.1;
+    public static double L1 = 0.05;
+    public static double L1_ROW2 = 0.05;
     public static final double L2 = 0.465;
     public static final double L3 = 0.465;
     public static final double L4_WRIST = 0.475; //44
