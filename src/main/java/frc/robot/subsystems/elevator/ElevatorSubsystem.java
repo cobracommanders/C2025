@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import org.opencv.features2d.FastFeatureDetector;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -21,6 +23,8 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotState;
 import frc.robot.subsystems.elbow.ElbowState;
 
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
@@ -36,6 +40,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private double leftMotorPosition;
   private double rightMotorPosition;
   private double motorCurrent;
+  private boolean isSynced;
   private final double tolerance;
   private Follower right_motor_request = new Follower(Ports.ElevatorPorts.LMOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
@@ -46,7 +51,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
     encoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
-
+    isSynced = false;
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
@@ -217,9 +222,9 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     }
 }
 
-  // public void syncEncoder(){
-  //   leftMotor.setPosition(absolutePosition);
-  // }
+  public void syncEncoder(){
+    leftMotor.setPosition(absolutePosition);
+  }
 
   @Override
   public void collectInputs(){
@@ -232,6 +237,19 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     DogLog.log(getName() + "/Elevator Current", leftMotor.getStatorCurrent().getValueAsDouble());
     DogLog.log(getName() + "/left motor voltage", leftMotor.getMotorVoltage().getValueAsDouble());
     DogLog.log(getName() + "/right Motor voltage", rightMotor.getMotorVoltage().getValueAsDouble());
+  }
+
+  @Override
+  public void periodic() {
+      super.periodic();
+
+      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
+        syncEncoder();
+        isSynced = true;
+      }
+      else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
+        isSynced = false;
+      }
   }
 
   public void setElevatorPosition(double elevatorSetpoint){

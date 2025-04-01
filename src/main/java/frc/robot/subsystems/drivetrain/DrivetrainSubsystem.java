@@ -42,6 +42,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   public final CommandSwerveDrivetrain drivetrain;
   private LimelightLocalization limelightLocalization = LimelightLocalization.getInstance();
   private double snapCoralStationAngle;
+  public boolean crescendoModeEnabled;
   private double snapReefAngle;
   private double snapAlgaeAngle;
   private double snapBargeAngle;
