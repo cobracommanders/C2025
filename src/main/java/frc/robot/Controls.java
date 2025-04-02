@@ -4,13 +4,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.drivers.Xbox;
-import frc.robot.subsystems.climber.ClimberState;
-import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.drivetrain.TunerConstants;
-import frc.robot.subsystems.elevator.ElevatorPositions;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
