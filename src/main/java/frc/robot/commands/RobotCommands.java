@@ -185,7 +185,9 @@ public class RobotCommands {
     return Commands.runOnce(robot::algaeModeRequest, requirements)
       .andThen(Robot.robotCommands.supercycleAlgaeCommand())
       .andThen(Commands.waitUntil(() -> 
-        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW));
+        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW))
+      .andThen(Robot.robotCommands.autoAlgaeAlign()
+      .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP)));
   }
 
   public Command supercycleAlgaeCommand() {
@@ -277,8 +279,8 @@ public class RobotCommands {
 
 
   public Command autoCoralStationAlign(){
-    return Commands.runOnce(robot::autoCoralStationAlignRequest, CommandSwerveDrivetrain.getInstance())
-    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP));
+    return new ConditionalCommand(Commands.runOnce(robot::autoCoralStationAlignRequest, CommandSwerveDrivetrain.getInstance())
+    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
   }
 
   public Command autoAlignCommand(){
