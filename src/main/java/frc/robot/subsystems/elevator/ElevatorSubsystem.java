@@ -93,7 +93,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     if (RobotMode.getInstance().inHighL1Mode()) {
       ElevatorPositions.L1 = ElevatorPositions.L1_ROW2;
     } else {
-      ElevatorPositions.L1 = 0.1;
+      ElevatorPositions.L1 = 1.32;
     }
   }
 
