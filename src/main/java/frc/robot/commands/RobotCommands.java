@@ -276,11 +276,9 @@ public class RobotCommands {
     return new ConditionalCommand(invertedIntakeCommand(), intakeAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
 
-
-
   public Command autoCoralStationAlign(){
-    return new ConditionalCommand(Commands.runOnce(robot::autoCoralStationAlignRequest, CommandSwerveDrivetrain.getInstance())
-    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    return Commands.runOnce(robot::autoCoralStationAlignRequest, CommandSwerveDrivetrain.getInstance())
+    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP));
   }
 
   public Command autoAlignCommand(){

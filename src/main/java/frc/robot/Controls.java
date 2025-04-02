@@ -7,6 +7,8 @@ import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
+import frc.robot.subsystems.drivetrain.DrivetrainState;
+import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorPositions;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -61,7 +63,8 @@ public class Controls {
         driver.Y().onFalse(Robot.robotCommands.climbIdleCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
-
+        driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().teleopReefSnap = true));
+        driver.POVMinus90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().teleopReefSnap = false));
     }
 
     public void configureOperatorCommands(){
