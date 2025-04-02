@@ -66,7 +66,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     if (RobotMode.getInstance().inHighL1Mode()) {
       WristPositions.L1 = WristPositions.L1_ROW2;
     } else {
-      WristPositions.L1 = -0.02;
+      WristPositions.L1 = WristPositions.L1_ROW1;
     }
   }
 

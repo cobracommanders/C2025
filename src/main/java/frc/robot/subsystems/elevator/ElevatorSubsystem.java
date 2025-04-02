@@ -93,7 +93,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     if (RobotMode.getInstance().inHighL1Mode()) {
       ElevatorPositions.L1 = ElevatorPositions.L1_ROW2;
     } else {
-      ElevatorPositions.L1 = 1.32;
+      ElevatorPositions.L1 = ElevatorPositions.L1_ROW1;
     }
   }
 
@@ -139,11 +139,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void increaseSetpoint(){
     switch (getState()) {
       case L1 -> {
-        if (RobotMode.getInstance().inHighL1Mode()) {
-          ElevatorPositions.L1_ROW2 += 0.1;
-        } else {
-          ElevatorPositions.L1 += 0.1;
-        }
+        ElevatorPositions.L1 += 0.1;
         setElevatorPosition(ElevatorPositions.L1);
         break;
       }
@@ -188,11 +184,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void decreaseSetpoint(){
     switch (getState()) {
       case L1 -> {
-        if (RobotMode.getInstance().inHighL1Mode()) {
-          ElevatorPositions.L1_ROW2 -= 0.1;
-        } else {
-          ElevatorPositions.L1 -= 0.1;
-        }
+        ElevatorPositions.L1 -= 0.1;
         setElevatorPosition(ElevatorPositions.L1);
         break;
       }

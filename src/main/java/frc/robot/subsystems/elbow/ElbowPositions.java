@@ -4,6 +4,7 @@ public class ElbowPositions {
     public static final double IDLE = 0.225;
     public static final double INVERTED_IDLE = 0;
     public static double L1 = 0;
+    public static double L1_ROW1 = 0;
     public static double L1_ROW2 = 0;
     public static final double L2 = 0.236;
     public static final double L3 = 0.236;

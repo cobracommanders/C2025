@@ -55,7 +55,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
     if (RobotMode.getInstance().inHighL1Mode()) {
       ElbowPositions.L1 = ElbowPositions.L1_ROW2;
     } else {
-      ElbowPositions.L1 = 0;
+      ElbowPositions.L1 = ElbowPositions.L1_ROW1;
     }
   }
 
