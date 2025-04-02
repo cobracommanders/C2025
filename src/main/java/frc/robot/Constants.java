@@ -45,6 +45,10 @@ public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
 }
 
+public static final class ClimberWheelConstants{
+  public static final double cageStallCurrent = 0;
+}
+
 
 public static final class OIConstants {
     public static final int DRIVER_CONTROLLER_ID = 0;

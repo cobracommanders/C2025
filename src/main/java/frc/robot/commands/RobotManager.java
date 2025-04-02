@@ -10,6 +10,8 @@ import frc.robot.FlagManager;
 import frc.robot.StateMachine;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.climberwheel.ClimberWheelState;
+import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elbow.ElbowState;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 public class RobotManager extends StateMachine<RobotState> {
   public final ElevatorSubsystem elevator;
   public final ClimberSubsystem climber;
+  public final ClimberWheelSubsystem climberwheels;
   public final ManipulatorSubsystem manipulator;
   public final WristSubsystem wrist;
   public final ElbowSubsystem elbow;
@@ -40,6 +43,7 @@ public class RobotManager extends StateMachine<RobotState> {
     super(RobotState.INVERTED_IDLE);
     this.elevator = ElevatorSubsystem.getInstance();
     this.climber = ClimberSubsystem.getInstance();
+    this.climberwheels = ClimberWheelSubsystem.getInstance();
     this.manipulator = ManipulatorSubsystem.getInstance();
     this.wrist = WristSubsystem.getInstance();
     this.elbow = ElbowSubsystem.getInstance();
@@ -194,6 +198,9 @@ public class RobotManager extends StateMachine<RobotState> {
               break;
             case WAIT_PROCESSOR:
               nextState = RobotState.SCORE_PROCESSOR;
+              break;
+            case INTAKE_CAGE:
+              nextState = RobotState.IDLE;
               break;
             default:
               break;

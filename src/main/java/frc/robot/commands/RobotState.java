@@ -53,7 +53,8 @@ public enum RobotState {
   REMOVE_ALGAE_HIGH(false, false, new LEDState(Color.kBlue)),
   PREPARE_SCORE_ALGAE(false, false, new LEDState(Color.kBlue)),
   SCORE_ALGAE_WAIT(false, false, new LEDState(Color.kBlue)),
-  SCORE_ALGAE(false, false, new LEDState(Color.kBlue));
+  SCORE_ALGAE(false, false, new LEDState(Color.kBlue)),
+  INTAKE_CAGE(false, false, new LEDState(Color.kYellowGreen));
 
 
   public final boolean ignoreRequests;
