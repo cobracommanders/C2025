@@ -185,9 +185,7 @@ public class RobotCommands {
     return Commands.runOnce(robot::algaeModeRequest, requirements)
       .andThen(Robot.robotCommands.supercycleAlgaeCommand())
       .andThen(Commands.waitUntil(() -> 
-        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW))
-      .andThen(Robot.robotCommands.autoAlgaeAlign()
-      .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP)));
+        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW));
   }
 
   public Command supercycleAlgaeCommand() {

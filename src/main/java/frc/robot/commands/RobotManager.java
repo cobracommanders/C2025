@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.Controls;
+import frc.robot.FieldConstants;
 import frc.robot.FlagManager;
 import frc.robot.StateMachine;
 import frc.robot.subsystems.climber.ClimberState;
@@ -343,23 +344,49 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L1:
-        if (timeout(1)) {
-          nextState = RobotState.PREPARE_INVERTED_IDLE;
+        if (RobotMode.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (FieldConstants.getInstance().isNearHighAlgae()) {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+          } else {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+          }
+        } else {
+          nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
       case SCORE_L2:
-        if (timeout(1)) {
+        if (RobotMode.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (FieldConstants.getInstance().isNearHighAlgae()) {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+          } else {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+          }
+        } else {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
       case SCORE_L3:
-        if (timeout(1)) {
+        if (RobotMode.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (FieldConstants.getInstance().isNearHighAlgae()) {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+          } else {
+            nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+          }
+        } else {
           nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
         }
         break;
       case SCORE_L4:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
+          if (RobotMode.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) {
+            if (FieldConstants.getInstance().isNearHighAlgae()) {
+              nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+            } else {
+              nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+            }
+          } else {
+            nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
+          }
         }
         break;
       case REMOVE_ALGAE_HIGH:
