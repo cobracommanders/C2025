@@ -17,6 +17,14 @@ public class RobotMode {
     public boolean inLowL1Mode() {return currentL1Row == L1Row.LOWTROUGH;}
     public boolean inHighL1Mode() {return currentL1Row == L1Row.HIGHTROUGH;}
 
+    public CycleMode currentCycleMode = CycleMode.REGULAR_CYCLE;
+    
+    public enum CycleMode {SUPERCYCLE, REGULAR_CYCLE}
+    
+    public void setCurrentCycleMode(CycleMode cycleMode) {currentCycleMode = cycleMode;}
+    public boolean inSupercycleMode() {return currentCycleMode == CycleMode.SUPERCYCLE;}
+    public boolean inRegularCycleMode() {return currentCycleMode == CycleMode.REGULAR_CYCLE;}
+    
     private static RobotMode instance;
 
   public static RobotMode getInstance() {
