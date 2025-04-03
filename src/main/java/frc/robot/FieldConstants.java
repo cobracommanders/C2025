@@ -65,24 +65,22 @@ public final class FieldConstants {
     new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A high
   };
 
-  public Pose2d[] lowAlgaePoses = {
-    new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K blue
-    new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G blue
-    new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C blue
-    
-    new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K red 
-    new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0)), //H + G red
-    new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(-120)), //D + C red
-  };
-  public Pose2d[] highAlgaePoses = {
-    new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I blue
-    new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E blue
-    new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A blue
-    
-    new Pose2d(12.643, 3.307, Rotation2d.fromDegrees(60)), //J + I red
-    new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(-60)), //F + E red 
-    new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A red
-  };
+  // public Pose2d[] lowAlgaePoses = {
+  //   new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K blue
+  //   new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G blue
+  //   new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C blue
+  //   new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K red 
+  //   new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0)), //H + G red
+  //   new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(-120)), //D + C red
+  // };
+  // public Pose2d[] highAlgaePoses = {
+  //   new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I blue
+  //   new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E blue
+  //   new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A blue
+  //   new Pose2d(12.643, 3.307, Rotation2d.fromDegrees(60)), //J + I red
+  //   new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(-60)), //F + E red 
+  //   new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A red
+  // };
 
   public Pose2d[] coralStationPosesBlue = {
     // new Pose2d(1.129, 7.122, Rotation2d.fromDegrees(-50)), // tag 13 CS
@@ -124,8 +122,8 @@ public final class FieldConstants {
   }
 
   public boolean isNearHighAlgae() {
-    if (getNearestAlgae() == highAlgaePoses[0] || getNearestAlgae() == highAlgaePoses[1] || getNearestAlgae() == highAlgaePoses[2] ||
-        getNearestAlgae() == highAlgaePoses[3] || getNearestAlgae() == highAlgaePoses[4] || getNearestAlgae() == highAlgaePoses[5]) {
+    if (getNearestAlgae() == algaePosesBlue[1] || getNearestAlgae() == algaePosesBlue[3] || getNearestAlgae() == algaePosesBlue[5] ||
+        getNearestAlgae() == algaePosesRed[1] || getNearestAlgae() == algaePosesRed[3] || getNearestAlgae() == algaePosesRed[5]) {
       return true;
     } else {
       return false;

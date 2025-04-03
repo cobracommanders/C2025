@@ -103,6 +103,7 @@ public class Robot extends TimedRobot{
         DogLog.log("Robot/Is autonomous", DriverStation.isAutonomous());
         DogLog.log("Robot/Is disabled", DriverStation.isDisabled());
         DogLog.log("Robot/Is teleop", DriverStation.isTeleop());
+        DogLog.log("Robot/Is near high algae", FieldConstants.getInstance().isNearHighAlgae());
     }
 
     @Override
