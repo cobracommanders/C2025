@@ -71,7 +71,8 @@ public class Controls {
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
-        operator.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP)));
+        //operator.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP)));
+        operator.POV90().onTrue(Robot.robotCommands.cycleModeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2MultiCommand());
