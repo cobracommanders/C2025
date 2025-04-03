@@ -7,15 +7,19 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
+import frc.robot.Constants.ElbowConstants;
 import frc.robot.commands.RobotMode.GameMode;
+import frc.robot.commands.RobotMode.L1Row;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
+import frc.robot.subsystems.elbow.ElbowSubsystem;
 import frc.robot.subsystems.elevator.ElevatorPositions;
 import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightLocalization;
 
 import static edu.wpi.first.wpilibj2.command.Commands.none;
@@ -71,6 +75,13 @@ public class RobotCommands {
       // return Commands.runOnce(robot::prepareL1Request, requirements)
       //   .andThen(robot.waitForState(RobotState.WAIT_L1));
     // }
+  }
+
+  public Command L1ToggleCommand() {
+    return new ConditionalCommand(Commands.runOnce(() -> RobotMode.getInstance().setCurrentL1Mode(L1Row.HIGHTROUGH)), Commands.runOnce(() -> RobotMode.getInstance().setCurrentL1Mode(L1Row.LOWTROUGH)), () -> RobotMode.getInstance().inLowL1Mode())
+    .andThen(Commands.runOnce(() -> ElevatorSubsystem.getInstance().setL1Row())
+    .andThen(Commands.runOnce(() -> ElbowSubsystem.getInstance().setL1Row()))
+    .andThen(Commands.runOnce(() -> WristSubsystem.getInstance().setL1Row())));
   }
 
   public Command L2Command() {
@@ -212,7 +223,7 @@ public class RobotCommands {
       return algaeIdleCommand() // go to non-inverted idle
         .andThen(Commands.runOnce(robot::prepareCoralStationRequest, requirements)) // Prepare CS (non-inverted)
         .andThen(robot.waitForState(RobotState.IDLE)); // Goes back to idle when we're done intaking
-    }else {
+    } else {
       return Commands.runOnce(robot::prepareCoralStationRequest, requirements)
           .andThen(robot.waitForState(RobotState.IDLE));
     }

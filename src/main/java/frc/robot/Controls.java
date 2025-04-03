@@ -71,6 +71,7 @@ public class Controls {
         operator.rightBumper().onTrue(Robot.robotCommands.algaeIdleCommand());
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
+        operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
         operator.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP)));
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
