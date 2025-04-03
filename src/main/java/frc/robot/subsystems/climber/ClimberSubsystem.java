@@ -3,8 +3,11 @@ package frc.robot.subsystems.climber;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.math.MathUtil;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.subsystems.elbow.ElbowPositions;
 
 public class ClimberSubsystem extends StateMachine<ClimberState>{
     
@@ -14,6 +17,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   private ClimberState currentState;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
   private double GEAR_RATIO = 224.0/16200.0;
+  private double climberPosition;
   
   public ClimberSubsystem() {
       super(ClimberState.IDLE);
@@ -28,8 +32,12 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   }
 
   public void setState(ClimberState newState) {
-      setStateFromRequest(newState);
-    }
+    setStateFromRequest(newState);
+  }
+
+  public boolean climberDeployed() {
+    return MathUtil.isNear(ClimberPositions.DEPLOYED, climberPosition, 0.04);
+  }
 
     @Override
     protected void afterTransition(ClimberState newState) {
@@ -43,16 +51,16 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
           rMotor.set(0.0);
         }
         case DEEP_CLIMB_RETRACT -> {
-          lMotor.set(1);
-          rMotor.set(-1);
+          lMotor.set(0.1);
+          rMotor.set(-0.1);
         }
         case DEEP_CLIMB_DEPLOY -> {
-          lMotor.set(-1);
-          rMotor.set(1);
+          lMotor.set(-0.1);
+          rMotor.set(0.1);
         }
         case DEEP_CLIMB_UNWIND -> {
-          lMotor.set(-1);
-          rMotor.set(1);
+          lMotor.set(-0.1);
+          rMotor.set(0.1);
         }
         default -> {}
       }
@@ -60,7 +68,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
 
   @Override
   public void periodic() {
-
+    climberPosition = lMotor.getPosition().getValueAsDouble();
   }
 
   public boolean atGoal(){

@@ -46,7 +46,7 @@ public static final class ManipulatorConstants{
 }
 
 public static final class ClimberWheelConstants{
-  public static final double cageStallCurrent = 0;
+  public static final double cageStallCurrent = 100;
 }
 
 

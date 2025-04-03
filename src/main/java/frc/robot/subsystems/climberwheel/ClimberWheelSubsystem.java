@@ -9,7 +9,10 @@ import dev.doglog.DogLog;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotState;
 import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.manipulator.ManipulatorState;
 
 
 public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
@@ -28,23 +31,26 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
         climberWheelMotor.getConfigurator().apply(motor_config);
       }
 
-      protected ClimberWheelState getNextState(ClimberWheelState currentState) {
+    protected ClimberWheelState getNextState(ClimberWheelState currentState) {
       return currentState;
+    }
+
+    public void setState(ClimberWheelState newState) {
+        setStateFromRequest(newState);
     }
 
     @Override
     public void collectInputs(){
       climberWheelSpeed = climberWheelMotor.get();
       climberWheelStatorCurrent = climberWheelMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Motor Stator Current", climberWheelStatorCurrent);
+      DogLog.log(getName() + "/Climber wheel motor stator Current", climberWheelStatorCurrent);
+      DogLog.log(getName() + "/Climber wheel motor speed", climberWheelSpeed);
     }
 
-        public boolean hasCage(){
+    public void hasCage(){
       if (climberWheelStatorCurrent > Constants.ClimberWheelConstants.cageStallCurrent){
-        return true;
-      } else {
-        return false;
-      }
+        ClimberWheelSpeeds.INTAKE_CAGE = ClimberWheelSpeeds.IDLE;
+      } 
     }
 
       public void setClimberWheelPositions(double climberWheelSpeed) {
