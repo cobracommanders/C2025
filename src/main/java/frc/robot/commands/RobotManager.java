@@ -350,14 +350,17 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L2:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             } else {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             }
+          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+            nextState = RobotState.IDLE;
+            currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -365,14 +368,17 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L3:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             } else {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             }
+          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+            nextState = RobotState.IDLE;
+            currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -380,14 +386,17 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L4:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             } else {
               nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
-              currentCycleMode = CycleMode.SUPERCYCLE;
+              currentGameMode = GameMode.ALGAE;
             }
+          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+            nextState = RobotState.IDLE;
+            currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
