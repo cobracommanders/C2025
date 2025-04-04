@@ -240,13 +240,7 @@ public class RobotCommands {
     return runOnce(robot::intakeGroundAlgaeRequest, requirements);
   }
 
-  public Command stopIntakeGroundAlgaeCommand() {
-    return runOnce(robot::stopIntakeGroundAlgaeRequest, requirements);
-  }
 
-  public Command outtakeGroundAlgaeCommand() {
-    return runOnce(robot::outtakeGroundAlgaeRequest, requirements);
-  }
 
   public Command intakeCommand() {
     return new ConditionalCommand(invertedIntakeCommand(), intakeGroundAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);

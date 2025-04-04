@@ -53,6 +53,14 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
         return false;
       }
     }
+
+    public boolean hasAlgae(){
+      if (manipulatorStatorCurrent > Constants.ManipulatorConstants.coralStallCurrent){
+        return true;
+      } else {
+        return false;
+      }
+    }
   
     public void setManipulatorPositions(double manipulatorSpeed){
       DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
@@ -67,6 +75,9 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
           }
           case INTAKE_CORAL -> {
             setManipulatorPositions(ManipulatorSpeeds.INTAKE_CORAL);
+          }
+          case INTAKE_GROUND_ALGAE -> {
+            setManipulatorPositions(ManipulatorSpeeds.INTAKE_GROUND_ALGAE);
           }
           case AFTER_INTAKE -> {
             setManipulatorPositions(ManipulatorSpeeds.AFTER_INTAKE);
@@ -91,6 +102,9 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
           }
           case SCORE_ALGAE -> {
             setManipulatorPositions(ManipulatorSpeeds.SCORE_ALGAE);
+          }
+          case OUTTAKE_ALGAE -> {
+            setManipulatorPositions(ManipulatorSpeeds.OUTTAKE_ALGAE);
           }
           case SCORE_PROCESSOR -> {
             setManipulatorPositions(ManipulatorSpeeds.SCORE_PROCESSOR);

@@ -45,14 +45,6 @@ public class RollerSubsystem extends StateMachine<RollerState>{
     public void setState(RollerState newState) {
         setStateFromRequest(newState);
     }
-
-    public boolean hasAlgae(){
-      if (rollerStatorCurrent > Constants.RollerConstants.algaeStallCurrent){
-        return true;
-      } else {
-        return false;
-      }
-    }
   
     public void setRollerPositions(double rollerSpeed){
       DogLog.log(getName() + "/Roller speed", rollerSpeed);

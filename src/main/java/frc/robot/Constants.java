@@ -53,10 +53,7 @@ public static final class IntakeConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
-}
-
-public static final class RollerConstants{
-  public static final double algaeStallCurrent = 25;
+  public static final double algaeStallCurrent = 100;
 }
 
 public static final class OIConstants {
