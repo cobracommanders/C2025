@@ -927,15 +927,21 @@ public class RobotManager extends StateMachine<RobotState> {
   }
 
   public void autoReefAlignRequest(){
+    if(DrivetrainSubsystem.getInstance().crescendoModeEnabled){
     DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_REEF_ALIGN_1);
+    }
   }
 
   public void autoAlgaeAlignRequest(){
+    if(DrivetrainSubsystem.getInstance().crescendoModeEnabled){
     DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_ALGAE_ALIGN);
+    }
   }
 
   public void autoCoralStationAlignRequest(){
+    if(DrivetrainSubsystem.getInstance().crescendoModeEnabled){
     DrivetrainSubsystem.getInstance().setState(DrivetrainState.AUTO_CORAL_STATION_ALIGN_1);
+    }
   }
 
   public void stopScoringRequest() {

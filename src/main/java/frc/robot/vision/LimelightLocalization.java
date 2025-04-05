@@ -55,7 +55,7 @@ public class LimelightLocalization{
 
 
   public AlignmentState getReefAlignmentState(){
-    double tolerance = 5.5;
+    double tolerance = 6;
 
     if ((Math.abs(limelightTXRight + 19.67) < tolerance && limelightTARight > 14.6) || (Math.abs(limelightTXLeft - 16.70) < tolerance && limelightTALeft > 14.3)) {
       return AlignmentState.ALIGNED;
@@ -68,7 +68,7 @@ public class LimelightLocalization{
   }
 
   public AlignmentState getBargeAlignmentState(){
-    double tolerance = 0.05;
+    double tolerance = 0.1;
     double bargeOffset = 1.394;
     if (tagCountMiddle == 0) {
       return AlignmentState.INVALID;
@@ -83,7 +83,7 @@ public class LimelightLocalization{
   }
 
   public AlignmentState getCoralStationAlignmentState(boolean isAuto){
-    double tolerance = isAuto ? 1.75 : 3;
+    double tolerance = isAuto ? 1.75 : 3.5;
 
     if (Math.abs(limelightTXMiddle + 3.1) < tolerance && limelightTAMiddle > 3.9) {
       return AlignmentState.ALIGNED;

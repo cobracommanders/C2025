@@ -60,8 +60,8 @@ public class Controls {
         driver.Y().onFalse(Robot.robotCommands.climbIdleCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
-        driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().teleopReefSnap = true));
-        driver.POVMinus90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().teleopReefSnap = false));
+        driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = true));
+        driver.POVMinus90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = false));
     }
 
     public void configureOperatorCommands(){
