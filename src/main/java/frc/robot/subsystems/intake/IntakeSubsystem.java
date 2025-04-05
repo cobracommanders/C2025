@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
@@ -30,6 +31,7 @@ public class IntakeSubsystem extends StateMachine<IntakeState>{
   public IntakeSubsystem() {
     super(IntakeState.IDLE);
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     intakeMotor = new TalonFX(Ports.IntakePorts.INTAKE_MOTOR);
     intakeMotor.getConfigurator().apply(motor_config);
     motor_config.MotionMagic.MotionMagicCruiseVelocity = IntakeConstants.MotionMagicCruiseVelocity;

@@ -785,6 +785,16 @@ public class RobotManager extends StateMachine<RobotState> {
             wrist.setState(WristState.PROCESSOR);
             manipulator.setState(ManipulatorState.SCORE_PROCESSOR);
           }
+          
+          case PREPARE_POST_GROUND_ALGAE_INTAKE -> {
+            elevator.setState(ElevatorState.LOW_ALGAE);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.INTAKE_ALGAE);
+            elbow.setState(ElbowState.LOW_ALGAE);
+            intake.setState(IntakeState.INTAKE);
+            rollers.setState(RollerState.IDLE);
+          }
 
           case POST_GROUND_ALGAE_INTAKE -> {
             elevator.setState(ElevatorState.LOW_ALGAE);

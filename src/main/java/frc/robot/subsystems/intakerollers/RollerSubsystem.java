@@ -24,7 +24,7 @@ public class RollerSubsystem extends StateMachine<RollerState>{
     public RollerSubsystem() {
       super(RollerState.IDLE);
       rollerMotor = new TalonFX(Ports.IntakeRollerPorts.INTAKE_ROLLER_MOTOR);
-      motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       motor_config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.8;
       motor_config.CurrentLimits.StatorCurrentLimit = 100;
