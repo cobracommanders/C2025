@@ -237,7 +237,7 @@ public class RobotCommands {
   }
 
   public Command intakeGroundAlgaeCommand() {
-    return runOnce(robot::intakeGroundAlgaeRequest, requirements);
+    return algaeIdleCommand().andThen(runOnce(robot::intakeGroundAlgaeRequest, requirements));
   }
 
 
