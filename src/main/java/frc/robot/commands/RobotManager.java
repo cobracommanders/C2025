@@ -220,8 +220,13 @@ public class RobotManager extends StateMachine<RobotState> {
       case WAIT_PROCESSOR:
         break;
 
-      case DEEP_CLIMB_DEPLOY:
+      case DEEP_CLIMB_UNLATCH:
         if(timeout(0.1)){
+          nextState = RobotState.DEEP_CLIMB_DEPLOY;
+        } 
+        break;
+      case DEEP_CLIMB_DEPLOY:
+        if(ClimberSubsystem.getInstance().climberDeployed()){
           nextState = RobotState.DEEP_CLIMB_WAIT;
         } 
         break;
@@ -557,10 +562,19 @@ public class RobotManager extends StateMachine<RobotState> {
             elbow.setState(ElbowState.IDLE);
           }
 
+          case DEEP_CLIMB_UNLATCH -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_UNLATCH);
+            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
+          }
+          
           case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
             climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
+            manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
           }
