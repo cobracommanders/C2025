@@ -42,7 +42,6 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   public final CommandSwerveDrivetrain drivetrain;
   private LimelightLocalization limelightLocalization = LimelightLocalization.getInstance();
   private double snapCoralStationAngle;
-  public boolean teleopReefSnap;
   public boolean crescendoModeEnabled;
   private double snapReefAngle;
   private double snapAlgaeAngle;
@@ -82,7 +81,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
 
   public DrivetrainSubsystem() {
     super(DrivetrainState.TELEOP);
-    teleopReefSnap = true;
+    crescendoModeEnabled = true;
     LimelightSubsystem.getInstance();
     drivetrain = CommandSwerveDrivetrain.getInstance();
     driveToAngle.HeadingController.setPID(6, 0, 0);
@@ -131,7 +130,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
           if (DriverStation.isAutonomous()) {
             nextState = DrivetrainState.AUTO;
           }
-          else {
+          else{
             nextState = DrivetrainState.TELEOP;
           }
         }
@@ -157,7 +156,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
             nextState = DrivetrainState.TELEOP;
           }
           case PREPARE_L1, PREPARE_L2, PREPARE_L3, PREPARE_L4, WAIT_L1, WAIT_L2, WAIT_L3, WAIT_L4, SCORE_L1, SCORE_L2, SCORE_L3, SCORE_L4, CAPPED_L4-> {
-            if (!RobotManager.getInstance().isHeightCapped && teleopReefSnap) {
+            if (!RobotManager.getInstance().isHeightCapped && crescendoModeEnabled) {
               nextState = DrivetrainState.TELEOP_REEF_SNAP;
             } 
             if (RobotManager.getInstance().isHeightCapped) {
