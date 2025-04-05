@@ -352,15 +352,15 @@ public class RobotManager extends StateMachine<RobotState> {
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
           if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+              nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
             } else {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+              nextState = RobotState.PRE_SUPERCYCLE_LOW_ALGAE;
               currentGameMode = GameMode.ALGAE;
             }
-          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
-            nextState = RobotState.IDLE;
-            currentGameMode = GameMode.ALGAE;
+          // } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+          //   nextState = RobotState.IDLE;
+          //   currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -370,15 +370,15 @@ public class RobotManager extends StateMachine<RobotState> {
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
           if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+              nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
             } else {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+              nextState = RobotState.PRE_SUPERCYCLE_LOW_ALGAE;
               currentGameMode = GameMode.ALGAE;
             }
-          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
-            nextState = RobotState.IDLE;
-            currentGameMode = GameMode.ALGAE;
+          // } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+          //   nextState = RobotState.IDLE;
+          //   currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -388,15 +388,15 @@ public class RobotManager extends StateMachine<RobotState> {
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
           if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+              nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
             } else {
-              nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+              nextState = RobotState.PRE_SUPERCYCLE_LOW_ALGAE;
               currentGameMode = GameMode.ALGAE;
             }
-          } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
-            nextState = RobotState.IDLE;
-            currentGameMode = GameMode.ALGAE;
+          // } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
+          //   nextState = RobotState.IDLE;
+          //   currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -420,6 +420,16 @@ public class RobotManager extends StateMachine<RobotState> {
       case SCORE_PROCESSOR:
         if ((timeout(3) && DriverStation.isTeleop() || (timeout(1) && DriverStation.isAutonomous()))) {
           nextState = RobotState.PREPARE_IDLE;
+        }
+        break;
+      case PRE_SUPERCYCLE_HIGH_ALGAE:
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+          nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+        }
+        break;
+      case PRE_SUPERCYCLE_LOW_ALGAE:
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+          nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
         }
         break;
       case PREPARE_INVERTED_FROM_IDLE:

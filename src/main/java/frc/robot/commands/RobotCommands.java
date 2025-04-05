@@ -185,7 +185,7 @@ public class RobotCommands {
   }
 
   public Command scoreIdleCommand() {
-    return new ConditionalCommand(supercycleCommand(), idleCommand(), () -> RobotManager.getInstance().currentCycleMode == CycleMode.SUPERCYCLE && RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(supercycleCommand(), idleCommand(), () -> (RobotManager.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) && (RobotManager.getInstance().currentGameMode == GameMode.CORAL) && !(RobotManager.getInstance().getState() == RobotState.SCORE_L1));
   }
 
   public Command idleCommand() {
