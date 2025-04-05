@@ -45,14 +45,6 @@ public class LED extends SubsystemBase {
   }
   @Override
   public void periodic() {
-
-    if (RobotManager.getInstance().currentGameMode == GameMode.ALGAE) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
-    if (RobotManager.getInstance().currentGameMode == GameMode.CORAL) {
-      LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-    }
-
     if (RobotManager.getInstance().getState() == RobotState.PREPARE_HOMING || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_1_ELEVATOR || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_2_ELBOW || RobotManager.getInstance().getState() == RobotState.HOMING_STAGE_3_WRIST) {
       LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
     }
@@ -142,10 +134,10 @@ public class LED extends SubsystemBase {
     else{
       switch (RobotManager.getInstance().currentGameMode) {
         case CORAL:
-            LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
+          LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
           break;
         case ALGAE:
-           LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+          LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
           break;
         default:
           break;
