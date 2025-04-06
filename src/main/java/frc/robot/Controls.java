@@ -4,6 +4,8 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.drivers.Xbox;
+import frc.robot.subsystems.climberwheel.ClimberWheelState;
+import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
@@ -50,14 +52,16 @@ public class Controls {
         // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
         // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
-        // driver.B().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_UNWIND)));
-        // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        // driver.Y().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.DEEP_CLIMB_RETRACT)));
-        // driver.Y().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)));
-        driver.B().onTrue(Robot.robotCommands.climbUnwindCommand());
-        driver.B().onFalse(Robot.robotCommands.climbIdleCommand());
-        driver.Y().onTrue(Robot.robotCommands.climbRetractCommand());
-        driver.Y().onFalse(Robot.robotCommands.climbIdleCommand());
+        // driver.X().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.PID_DEEP_CLIMB_RETRACT)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.INTAKE_CAGE))));
+        // driver.X().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
+
+        // driver.Y().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.MANUAL_DEEP_CLIMB_UNWIND)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.INTAKE_CAGE))));
+        // driver.Y().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
+        // driver.B().onTrue(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.MANUAL_DEEP_CLIMB_RETRACT)));
+        // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
+        
+        driver.B().onTrue(Robot.robotCommands.climbRetractCommand());
+        driver.Y().onTrue(Robot.robotCommands.climbUnwindCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
         driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = true));

@@ -21,4 +21,7 @@ public class Ports {
         public static final int LEFT_CLIMBER_MOTOR = 26;
         public static final int RIGHT_CLIMBER_MOTOR = 27;
     }
+    public static class ClimberWheelPorts{
+        public static final int CLIMBER_WHEEL_MOTOR = 30;
+    }
 }

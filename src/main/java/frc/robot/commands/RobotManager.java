@@ -12,6 +12,9 @@ import frc.robot.FlagManager;
 import frc.robot.StateMachine;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.climberwheel.ClimberWheelSpeeds;
+import frc.robot.subsystems.climberwheel.ClimberWheelState;
+import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elbow.ElbowState;
@@ -26,6 +29,7 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 public class RobotManager extends StateMachine<RobotState> {
   public final ElevatorSubsystem elevator;
   public final ClimberSubsystem climber;
+  public final ClimberWheelSubsystem climberwheels;
   public final ManipulatorSubsystem manipulator;
   public final WristSubsystem wrist;
   public final ElbowSubsystem elbow;
@@ -43,6 +47,7 @@ public class RobotManager extends StateMachine<RobotState> {
     super(RobotState.INVERTED_IDLE);
     this.elevator = ElevatorSubsystem.getInstance();
     this.climber = ClimberSubsystem.getInstance();
+    this.climberwheels = ClimberWheelSubsystem.getInstance();
     this.manipulator = ManipulatorSubsystem.getInstance();
     this.wrist = WristSubsystem.getInstance();
     this.elbow = ElbowSubsystem.getInstance();
@@ -216,15 +221,23 @@ public class RobotManager extends StateMachine<RobotState> {
       case WAIT_L1:
       case INTAKE_CORAL_STATION:
       case INVERTED_IDLE:
-      case DEEP_CLIMB_WAIT:
       case WAIT_L3:
       case PRE_HEIGHT_L4:
+      case DEEP_CLIMB_RETRACT:
+      case DEEP_CLIMB_UNWIND:
       case WAIT_PROCESSOR:
         break;
 
+      case DEEP_CLIMB_UNLATCH:
+        if(timeout(1)){
+          nextState = RobotState.DEEP_CLIMB_DEPLOY;
+        } 
+        break;
       case DEEP_CLIMB_DEPLOY:
-        if(timeout(0.1)){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
+        if(ClimberSubsystem.getInstance().climberDeployed()){
+          if (timeout(0.25)) {
+            nextState = RobotState.DEEP_CLIMB_WAIT;
+          }
         } 
         break;
       case PRE_L4:
@@ -462,16 +475,26 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_IDLE;
         }
         break;
-      case DEEP_CLIMB_RETRACT:
-        if (timeout(5)){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
+      // case DEEP_CLIMB_RETRACT:
+      //   // if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
+      //   //   ClimberWheelSubsystem.getInstance().hasCage();
+      //   // }
+      //   if (timeout(1.5)){
+      //     nextState = RobotState.DEEP_CLIMB_WAIT;
+      //   }
+      //   break;
+      // case DEEP_CLIMB_UNWIND:
+      //   // if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
+      //   //   ClimberWheelSubsystem.getInstance().hasCage();
+      //   // }  
+      //   if (timeout(1.5)){
+      //     nextState = RobotState.DEEP_CLIMB_WAIT;
+      //   }
+      //   break;
+      case DEEP_CLIMB_WAIT:
+        if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
+          ClimberWheelSubsystem.getInstance().hasCage();
         }
-        break;
-      case DEEP_CLIMB_UNWIND:
-        if (timeout(5)){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
-        }
-
         break;
     }
     DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
@@ -592,14 +615,24 @@ public class RobotManager extends StateMachine<RobotState> {
           case PREPARE_DEEP_CLIMB -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.IDLE);
+            climberwheels.setState(ClimberWheelState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
           }
 
+          case DEEP_CLIMB_UNLATCH -> {
+            elevator.setState(ElevatorState.IDLE);
+            climber.setState(ClimberState.DEEP_CLIMB_UNLATCH);
+            climberwheels.setState(ClimberWheelState.IDLE);
+            wrist.setState(WristState.CAGE_FLIP);
+            elbow.setState(ElbowState.CAGE_FLIP);
+          }
+          
           case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
+            climberwheels.setState(ClimberWheelState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
@@ -608,6 +641,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_WAIT -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_WAIT);
+            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
@@ -616,6 +650,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_RETRACT -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
+            climberwheels.setState(ClimberWheelState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
@@ -624,6 +659,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_UNWIND -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_UNWIND);
+            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);

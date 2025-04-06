@@ -5,6 +5,15 @@ public final class Constants {
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.94;
     public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 300;
   }
+public static final class ClimberConstants{
+  public static final double P = 320;
+  public static final double I = 0;
+  public static final double D = 0;
+  public static final double G = 0;
+  public static final double MotionMagicAcceleration = 0.1;
+  public static final double MotionMagicCruiseVelocity = 0.1;
+  public static final double MotionMagicJerk = 200;
+}
 
 public static final class ElevatorConstants{
   public static final double encoderOffset = 0;
@@ -43,6 +52,10 @@ public static final class ElbowConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
+}
+
+public static final class ClimberWheelConstants{
+  public static final double cageStallCurrent = 50;
 }
 
 

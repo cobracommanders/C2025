@@ -10,6 +10,7 @@ public enum RobotState {
   IDLE(false, false,  new LEDState(Color.kBlue)),
   PREPARE_INVERTED_IDLE(false, true,  new LEDState(Color.kPurple)),
   INVERTED_IDLE(false, true,  new LEDState(Color.kBlue)),
+  DEEP_CLIMB_UNLATCH(true, false,  new LEDState(Color.kYellow)),
   DEEP_CLIMB_DEPLOY(true, false,  new LEDState(Color.kYellow)),
   DEEP_CLIMB_RETRACT(true, false,  new LEDState(Color.kYellowGreen)),
   DEEP_CLIMB_UNWIND(true, false,  new LEDState(Color.kYellowGreen)),

@@ -15,6 +15,9 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
 import frc.robot.commands.RobotMode.GameMode;
+import frc.robot.subsystems.climber.ClimberState;
+import frc.robot.subsystems.climber.ClimberSubsystem;
+import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.vision.LimelightLocalization;
@@ -51,20 +54,20 @@ public class LED extends SubsystemBase {
     
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.BARGE_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
-      case ALIGNED:
-        LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
-        break;
-      case NOT_ALIGNED:
-        LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
-        break;
-      case NOT_ALIGNED_FORWARD:
-        LEDPattern.solid(Color.kOrange).applyTo(m_ledBuffer);
-        break;
-      case INVALID:
-        LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
-        break;
-      }
+        case ALIGNED:
+          LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
+          break;
+        case NOT_ALIGNED:
+          LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+          break;
+        case NOT_ALIGNED_FORWARD:
+          LEDPattern.solid(Color.kOrange).applyTo(m_ledBuffer);
+          break;
+        case INVALID:
+          LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+          break;
         }
+      }
 
     if (DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP_CORAL_STATION_ALIGN){
       switch (LimelightLocalization.getInstance().getCoralStationAlignmentState(false)) {
@@ -132,15 +135,45 @@ public class LED extends SubsystemBase {
     }
 
     else{
-      switch (RobotManager.getInstance().currentGameMode) {
-        case CORAL:
-          LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
-          break;
-        case ALGAE:
-          LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
-          break;
-        default:
-          break;
+      if (robotManager.getState() == RobotState.DEEP_CLIMB_WAIT || RobotState.DEEP_CLIMB_DEPLOY == robotManager.getState() || RobotState.DEEP_CLIMB_UNLATCH == robotManager.getState() || RobotState.DEEP_CLIMB_RETRACT == robotManager.getState() || RobotState.DEEP_CLIMB_UNWIND == robotManager.getState()) {
+        switch (ClimberSubsystem.getInstance().getState()) {
+          case DEEP_CLIMB_UNLATCH:
+            LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+            break;
+          case DEEP_CLIMB_DEPLOY:
+            LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+            break;
+          case DEEP_CLIMB_WAIT:
+            if (ClimberWheelSubsystem.getInstance().hasCage()) {
+              LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
+            } else {
+              LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+            }
+            break;
+          case DEEP_CLIMB_RETRACT:
+            LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
+            break;
+          case DEEP_CLIMB_UNWIND:
+            if (ClimberWheelSubsystem.getInstance().hasCage()) {
+              LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
+            } else {
+              LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (RobotManager.getInstance().currentGameMode) {
+          case CORAL:
+              LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
+            break;
+          case ALGAE:
+             LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);
+            break;
+          default:
+            break;
+        }
       }
     }
     if (DriverStation.isDisabled()) {
