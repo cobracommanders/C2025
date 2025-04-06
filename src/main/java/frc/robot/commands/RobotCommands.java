@@ -189,7 +189,18 @@ public class RobotCommands {
   }
 
   public Command idleCommand() {
-    return new ConditionalCommand(invertIdleCommand(), stopIntakeAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(invertIdleCommand(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
+
+  public Command supercycleCommand() {
+    return Commands.runOnce(robot::algaeModeRequest, requirements)
+      .andThen(Robot.robotCommands.supercycleAlgaeCommand())
+      .andThen(Commands.waitUntil(() -> 
+        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW));
+  }
+
+  public Command supercycleAlgaeCommand() {
+    return new ConditionalCommand(highAlgaeCommand(), lowAlgaeCommand(), () -> FieldConstants.getInstance().isNearHighAlgae());
   }
 
   public Command supercycleCommand() {
@@ -281,8 +292,14 @@ public class RobotCommands {
     return runOnce(robot::stopIntakeAlgaeRequest, requirements);
   }
 
+  public Command intakeGroundAlgaeCommand() {
+    return algaeIdleCommand().andThen(runOnce(robot::intakeGroundAlgaeRequest, requirements));
+  }
+
+
+
   public Command intakeCommand() {
-    return new ConditionalCommand(invertedIntakeCommand(), intakeAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(invertedIntakeCommand(), intakeGroundAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
 
   public Command autoCoralStationAlign(){
@@ -304,7 +321,6 @@ public class RobotCommands {
   public Command autoAlgaeAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil((
-
     )-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));

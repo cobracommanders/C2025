@@ -116,6 +116,8 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.LOW_ALGAE, elevatorPosition, tolerance);
         case HIGH_ALGAE ->
           MathUtil.isNear(ElevatorPositions.HIGH_ALGAE, elevatorPosition, tolerance);
+        case GROUND_ALGAE ->
+          MathUtil.isNear(ElevatorPositions.GROUND_ALGAE, elevatorPosition, tolerance);
         case CAPPED_L4 ->
           MathUtil.isNear(ElevatorPositions.CAPPED_L4, elevatorPosition, tolerance);
         case L4 ->
@@ -168,6 +170,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
         break;
       }
+      case GROUND_ALGAE -> {
+        ElevatorPositions.GROUND_ALGAE += 0.1;
+        setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
+        break;
+      }
       case L4_MAX -> {
         ElevatorPositions.L4_MAX += 0.1;
         setElevatorPosition(ElevatorPositions.L4_MAX);
@@ -211,6 +218,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
       case HIGH_ALGAE -> {
         ElevatorPositions.HIGH_ALGAE -= 0.1;
         setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
+        break;
+      }
+      case GROUND_ALGAE -> {
+        ElevatorPositions.GROUND_ALGAE -= 0.1;
+        setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
         break;
       }
       case L4_MAX -> {
@@ -287,6 +299,9 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         }
         case HIGH_ALGAE -> {
           setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
+        }
+        case GROUND_ALGAE -> {
+          setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
         }
         case CAPPED_L4 -> {
           setElevatorPosition(ElevatorPositions.CAPPED_L4);

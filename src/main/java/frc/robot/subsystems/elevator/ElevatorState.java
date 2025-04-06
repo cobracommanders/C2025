@@ -10,6 +10,7 @@ public enum ElevatorState {
     L4_MAX,
     LOW_ALGAE,
     HIGH_ALGAE,
+    GROUND_ALGAE,
     PROCESSOR,
     HOME_ELEVATOR,
     CORAL_STATION,

@@ -10,6 +10,7 @@ public enum ElbowState {
     HIGH_ALGAE,
     LOW_ALGAE,
     PROCESSOR,
+    GROUND_ALGAE_INTAKE,
     PRE_SCORE_ALGAE,
     CAPPED_L4,
     CORAL_STATION,
