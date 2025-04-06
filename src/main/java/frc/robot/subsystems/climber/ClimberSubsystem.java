@@ -83,6 +83,14 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
           lMotor.set(0.1);
           rMotor.set(0.1);
         }
+        case MANUAL_DEEP_CLIMB_RETRACT -> {
+          lMotor.set(0.1);
+          rMotor.set(0.1);
+        }
+        case MANUAL_DEEP_CLIMB_UNWIND -> {
+          lMotor.set(-0.1);
+          rMotor.set(-0.1);
+        }
         case DEEP_CLIMB_UNWIND -> {
           lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
           rMotor.setControl(right_motor_request);

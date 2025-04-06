@@ -188,7 +188,7 @@ public class RobotCommands {
   }
 
   public Command climbUnwindCommand() {
-    return new ConditionalCommand(Commands.runOnce(robot::climbUnwindRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT);
+    return new ConditionalCommand(Commands.runOnce(robot::climbUnwindRequest), climbCommand(), () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
   }
 
   public Command climbIdleCommand() {
@@ -196,7 +196,7 @@ public class RobotCommands {
   }
 
   public Command climbRetractCommand() {
-    return new ConditionalCommand(Commands.runOnce(robot::climbRetractRequest), climbCommand(), () -> RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT);
+    return new ConditionalCommand(Commands.runOnce(robot::climbRetractRequest), climbCommand(), () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
   }
 
   public Command removeHeightCapCommand() {

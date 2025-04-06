@@ -135,7 +135,7 @@ public class LED extends SubsystemBase {
     }
 
     else{
-      if (robotManager.getState() == RobotState.DEEP_CLIMB_WAIT) {
+      if (robotManager.getState() == RobotState.DEEP_CLIMB_WAIT || RobotState.DEEP_CLIMB_DEPLOY == robotManager.getState() || RobotState.DEEP_CLIMB_UNLATCH == robotManager.getState() || RobotState.DEEP_CLIMB_RETRACT == robotManager.getState() || RobotState.DEEP_CLIMB_UNWIND == robotManager.getState()) {
         switch (ClimberSubsystem.getInstance().getState()) {
           case DEEP_CLIMB_UNLATCH:
             LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);

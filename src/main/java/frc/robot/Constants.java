@@ -6,14 +6,13 @@ public final class Constants {
     public static final double MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 300;
   }
 public static final class ClimberConstants{
-  public static final double P = 80;
+  public static final double P = 320;
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
-  public static final double MotionMagicAcceleration = 50;
-  public static final double AutoMotionMagicAcceleration = 55;
-  public static final double MotionMagicCruiseVelocity = 250;
-  public static final double MotionMagicJerk = 300;
+  public static final double MotionMagicAcceleration = 0.1;
+  public static final double MotionMagicCruiseVelocity = 0.1;
+  public static final double MotionMagicJerk = 200;
 }
 
 public static final class ElevatorConstants{
