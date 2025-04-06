@@ -17,10 +17,10 @@ public class Ports {
         public static final int ELBOW_MOTOR = 25; //25
     }
     public static class IntakePorts {
-        public static final int INTAKE_MOTOR = 498; //28?
+        public static final int INTAKE_MOTOR = 31; //28?
     }
     public static class IntakeRollerPorts {
-        public static final int INTAKE_ROLLER_MOTOR = 581; //29?
+        public static final int INTAKE_ROLLER_MOTOR = 32; //29?
     }
     public static class ClimberPorts {
         public static final int LEFT_CLIMBER_MOTOR = 26; //26

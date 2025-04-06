@@ -31,7 +31,7 @@ public class IntakeSubsystem extends StateMachine<IntakeState>{
   public IntakeSubsystem() {
     super(IntakeState.IDLE);
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     intakeMotor = new TalonFX(Ports.IntakePorts.INTAKE_MOTOR);
     intakeMotor.getConfigurator().apply(motor_config);
     motor_config.MotionMagic.MotionMagicCruiseVelocity = IntakeConstants.MotionMagicCruiseVelocity;
