@@ -90,6 +90,9 @@ public class RobotManager extends StateMachine<RobotState> {
                 nextState = (!currentState.inverted) ? RobotState.PREPARE_IDLE : RobotState.PREPARE_IDLE_FROM_INVERTED;
               }
             }
+            else {
+              nextState = (!currentState.inverted) ? RobotState.PREPARE_IDLE : RobotState.PREPARE_IDLE_FROM_INVERTED;
+            }
           }
           break;
         case INVERTED_IDLE:
@@ -484,7 +487,7 @@ public class RobotManager extends StateMachine<RobotState> {
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.IDLE);
             elbow.setState(ElbowState.IDLE);
-            intake.setState(IntakeState.INTAKE);
+            intake.setState(IntakeState.IDLE);
             rollers.setState(RollerState.IDLE);
           }
           case PRE_L4 -> {
@@ -583,7 +586,7 @@ public class RobotManager extends StateMachine<RobotState> {
             climber.setState(ClimberState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.GROUND_ALGAE_INTAKE);
-            elbow.setState(ElbowState.GROUND_ALGAE_INTAKE);
+            elbow.setState(ElbowState.IDLE);
             intake.setState(IntakeState.INTAKE);
             rollers.setState(RollerState.IDLE);
           }

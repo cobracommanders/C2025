@@ -206,7 +206,7 @@ public class WristSubsystem extends StateMachine<WristState>{
           setWristPosition(WristPositions.ALGAE_INTAKE);
         }
         case GROUND_ALGAE_INTAKE -> {
-          setWristPosition(WristPositions.ALGAE_INTAKE);
+          setWristPosition(WristPositions.GROUND_ALGAE_INTAKE);
         }
         case SCORE_ALGAE -> {
           setWristPosition(WristPositions.ALGAE_SCORE);

@@ -42,7 +42,7 @@ public static final class ElbowConstants{
 }
 
 public static final class IntakeConstants{
-  public static final double P = 5; //40
+  public static final double P = 10; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
