@@ -31,7 +31,7 @@ import frc.robot.subsystems.elbow.ElbowState;
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private final TalonFX leftMotor;
   private final TalonFX rightMotor;
-  private final CANcoder encoder;
+  private final CANcoder elevatorEncoder;
   private final TalonFXConfiguration left_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private final TalonFXConfiguration right_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
@@ -51,7 +51,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
 
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
-    encoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
+    elevatorEncoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
     isSynced = false;
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -70,7 +70,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     canCoderConfig.MagnetSensor.MagnetOffset = Constants.ElevatorConstants.encoderOffset;
     canCoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.9;
     canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-    encoder.getConfigurator().apply(canCoderConfig);
+    elevatorEncoder.getConfigurator().apply(canCoderConfig);
     tolerance = 0.1;
   }
   public void setTeleopConfig() {
@@ -243,12 +243,13 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     }
 }
 
-  public void syncEncoder(){
-    leftMotor.setPosition(absolutePosition);
-  }
+  // public void syncEncoder(){
+  //   leftMotor.setPosition(absolutePosition);
+  // }
 
   @Override
   public void collectInputs(){
+    absolutePosition = elevatorEncoder.getPosition().getValueAsDouble();
     elevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double leftElevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double rightElevatorPosition = rightMotor.getPosition().getValueAsDouble();
@@ -265,7 +266,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
       super.periodic();
 
       if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
-        syncEncoder();
+        // syncEncoder();
         isSynced = true;
       }
       else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {

@@ -130,7 +130,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513;
+    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513 - 0.023 + 0.041;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);

@@ -116,7 +116,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
       }
       case AUTO_CORAL_STATION_ALIGN_1 -> {
-        if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose) || timeout(1)) {
+        if (CommandSwerveDrivetrain.getInstance().isNear(targetCoralStationPose) || timeout(0.6)) {
           nextState = DrivetrainState.AUTO;
         }
       }
@@ -126,7 +126,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
       }
       case AUTO_REEF_ALIGN_1 -> {
-        if (CommandSwerveDrivetrain.getInstance().isNear(targetReefPose) || timeout(1)) {
+        if (CommandSwerveDrivetrain.getInstance().isNear(targetReefPose) || timeout(0.6)) {
           if (DriverStation.isAutonomous()) {
             nextState = DrivetrainState.AUTO;
           }
@@ -141,7 +141,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
       }
       case AUTO_ALGAE_ALIGN -> {
-        if (CommandSwerveDrivetrain.getInstance().isNear(targetAlgaePose) || timeout(1)) {
+        if (CommandSwerveDrivetrain.getInstance().isNear(targetAlgaePose) || timeout(0.6)) {
           if (DriverStation.isAutonomous()) {
             nextState = DrivetrainState.AUTO;
           }

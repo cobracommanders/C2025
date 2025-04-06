@@ -43,7 +43,7 @@ public class Controls {
     public void configureDriverCommands() {
         driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
-            driver.leftTrigger().onFalse(Robot.robotCommands.idleCommand());
+            driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.rightBumper().onTrue(Robot.robotCommands.autoAlignCommand());
         driver.rightTrigger().onTrue(Robot.robotCommands.scoreCommand());
             driver.rightTrigger().onFalse(Robot.robotCommands.scoreIdleCommand());
