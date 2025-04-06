@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
 import frc.robot.commands.RobotMode.CycleMode;
-import frc.robot.Constants.ElbowConstants;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.commands.RobotMode.L1Row;
 import frc.robot.subsystems.climber.ClimberState;
@@ -17,8 +16,6 @@ import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
 import frc.robot.subsystems.elbow.ElbowSubsystem;
-import frc.robot.subsystems.elevator.ElevatorPositions;
-import frc.robot.subsystems.elevator.ElevatorState;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightLocalization;
@@ -190,17 +187,6 @@ public class RobotCommands {
 
   public Command idleCommand() {
     return new ConditionalCommand(invertIdleCommand(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
-  }
-
-  public Command supercycleCommand() {
-    return Commands.runOnce(robot::algaeModeRequest, requirements)
-      .andThen(Robot.robotCommands.supercycleAlgaeCommand())
-      .andThen(Commands.waitUntil(() -> 
-        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW));
-  }
-
-  public Command supercycleAlgaeCommand() {
-    return new ConditionalCommand(highAlgaeCommand(), lowAlgaeCommand(), () -> FieldConstants.getInstance().isNearHighAlgae());
   }
 
   public Command supercycleCommand() {
