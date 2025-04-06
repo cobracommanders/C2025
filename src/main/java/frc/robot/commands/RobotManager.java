@@ -200,9 +200,6 @@ public class RobotManager extends StateMachine<RobotState> {
             case WAIT_PROCESSOR:
               nextState = RobotState.SCORE_PROCESSOR;
               break;
-            case INTAKE_CAGE:
-              nextState = RobotState.IDLE;
-              break;
             default:
               break;
           }
@@ -217,17 +214,21 @@ public class RobotManager extends StateMachine<RobotState> {
       case INVERTED_IDLE:
       case WAIT_L3:
       case PRE_HEIGHT_L4:
+      case DEEP_CLIMB_RETRACT:
+      case DEEP_CLIMB_UNWIND:
       case WAIT_PROCESSOR:
         break;
 
       case DEEP_CLIMB_UNLATCH:
-        if(timeout(0.1)){
+        if(timeout(1)){
           nextState = RobotState.DEEP_CLIMB_DEPLOY;
         } 
         break;
       case DEEP_CLIMB_DEPLOY:
         if(ClimberSubsystem.getInstance().climberDeployed()){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
+          if (timeout(0.25)) {
+            nextState = RobotState.DEEP_CLIMB_WAIT;
+          }
         } 
         break;
       case PRE_L4:
@@ -416,22 +417,22 @@ public class RobotManager extends StateMachine<RobotState> {
           nextState = RobotState.INVERTED_IDLE;
         }
         break;
-      case DEEP_CLIMB_RETRACT:
-        if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
-          ClimberWheelSubsystem.getInstance().hasCage();
-        }
-        if (timeout(5)){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
-        }
-        break;
-      case DEEP_CLIMB_UNWIND:
-        if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
-          ClimberWheelSubsystem.getInstance().hasCage();
-        }  
-        if (timeout(5)){
-          nextState = RobotState.DEEP_CLIMB_WAIT;
-        }
-        break;
+      // case DEEP_CLIMB_RETRACT:
+      //   // if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
+      //   //   ClimberWheelSubsystem.getInstance().hasCage();
+      //   // }
+      //   if (timeout(1.5)){
+      //     nextState = RobotState.DEEP_CLIMB_WAIT;
+      //   }
+      //   break;
+      // case DEEP_CLIMB_UNWIND:
+      //   // if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
+      //   //   ClimberWheelSubsystem.getInstance().hasCage();
+      //   // }  
+      //   if (timeout(1.5)){
+      //     nextState = RobotState.DEEP_CLIMB_WAIT;
+      //   }
+      //   break;
       case DEEP_CLIMB_WAIT:
         if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
           ClimberWheelSubsystem.getInstance().hasCage();
@@ -565,7 +566,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_UNLATCH -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_UNLATCH);
-            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
+            climberwheels.setState(ClimberWheelState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
           }
@@ -573,7 +574,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_DEPLOY -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_DEPLOY);
-            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
+            climberwheels.setState(ClimberWheelState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);
@@ -591,7 +592,7 @@ public class RobotManager extends StateMachine<RobotState> {
           case DEEP_CLIMB_RETRACT -> {
             elevator.setState(ElevatorState.IDLE);
             climber.setState(ClimberState.DEEP_CLIMB_RETRACT);
-            climberwheels.setState(ClimberWheelState.INTAKE_CAGE);
+            climberwheels.setState(ClimberWheelState.IDLE);
             manipulator.setState(ManipulatorState.IDLE);
             wrist.setState(WristState.CAGE_FLIP);
             elbow.setState(ElbowState.CAGE_FLIP);

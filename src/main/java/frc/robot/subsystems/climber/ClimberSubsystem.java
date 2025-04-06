@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.ElevatorConstants;
@@ -28,6 +29,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   private double climberPosition;
   private Follower right_motor_request = new Follower(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
+  private boolean exceedsClimberPosition = false;
   
   public ClimberSubsystem() {
       super(ClimberState.IDLE);
@@ -36,12 +38,12 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
       right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       left_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       right_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-      left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
-      left_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
-      right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-      right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
-      right_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
+      left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.MotionMagicCruiseVelocity;
+      left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.MotionMagicAcceleration;
+      left_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.MotionMagicJerk;
+      right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.MotionMagicCruiseVelocity;
+      right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.MotionMagicAcceleration;
+      right_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.MotionMagicJerk;
       lMotor = new TalonFX(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR);
       rMotor = new TalonFX(Ports.ClimberPorts.RIGHT_CLIMBER_MOTOR);  
       lMotor.getConfigurator().apply(left_motor_config);
@@ -66,12 +68,12 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
           rMotor.set(0.0);
         }
         case DEEP_CLIMB_WAIT -> {
-          lMotor.set(0.0);
-          rMotor.set(0.0);
+          rMotor.setControl(right_motor_request);
+          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
         }
         case DEEP_CLIMB_RETRACT -> {
-          lMotor.set(-0.1);
-          rMotor.set(-0.1);
+          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.MAX_EXTENSION));
+          rMotor.setControl(right_motor_request);
         }
         case DEEP_CLIMB_DEPLOY -> {
           rMotor.setControl(right_motor_request);
@@ -82,8 +84,8 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
           rMotor.set(0.1);
         }
         case DEEP_CLIMB_UNWIND -> {
-          lMotor.set(0.1);
-          rMotor.set(0.1);
+          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
+          rMotor.setControl(right_motor_request);
         }
         default -> {}
       }
@@ -92,6 +94,17 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   @Override
   public void periodic() {
     climberPosition = lMotor.getPosition().getValueAsDouble();
+    DogLog.log(getName() + "/Climber Position", climberPosition);
+    atMax();
+  }
+
+  private boolean atMax() {
+    if (climberPosition <= ClimberPositions.MAX_EXTENSION) {
+      return exceedsClimberPosition = true;
+
+    } else {
+      return exceedsClimberPosition = false;
+    }
   }
 
   public boolean atGoal(){

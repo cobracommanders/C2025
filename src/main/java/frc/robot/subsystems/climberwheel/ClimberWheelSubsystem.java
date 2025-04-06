@@ -20,6 +20,7 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
     private double climberWheelSpeed;
     private double climberWheelStatorCurrent;
+    private boolean hasCage = false;
     
     public ClimberWheelSubsystem() {
         super(ClimberWheelState.IDLE);
@@ -27,7 +28,7 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
         motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         motor_config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.8;
-        motor_config.CurrentLimits.StatorCurrentLimit = 100;
+        motor_config.CurrentLimits.StatorCurrentLimit = 60;
         climberWheelMotor.getConfigurator().apply(motor_config);
       }
 
@@ -47,9 +48,13 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
       DogLog.log(getName() + "/Climber wheel motor speed", climberWheelSpeed);
     }
 
-    public void hasCage(){
+    public boolean hasCage(){
       if (climberWheelStatorCurrent > Constants.ClimberWheelConstants.cageStallCurrent){
-        ClimberWheelSpeeds.INTAKE_CAGE = ClimberWheelSpeeds.IDLE;
+        hasCage = true;
+        return true;
+      } else {
+        hasCage = false;
+        return false;
       } 
     }
 
