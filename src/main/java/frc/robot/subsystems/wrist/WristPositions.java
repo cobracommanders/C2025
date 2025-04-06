@@ -1,7 +1,7 @@
 package frc.robot.subsystems.wrist;
 
 public class WristPositions {
-    public static final double IDLE = 0.471;
+    public static final double IDLE = 0.46;
     public static final double PRE_L4 = 0.1;
     public static final double L1 = 0.1;
     public static final double L2 = 0.465;
@@ -16,7 +16,7 @@ public class WristPositions {
     public static final double ALGAE_FLICK = 0.085;
     public static final double ALGAE_SCORE = 0.025;
     public static final double ALGAE_INTAKE = 0.32;
-    public static final double GROUND_ALGAE_INTAKE = 0.452;
+    public static final double GROUND_ALGAE_INTAKE = 0.43;
     public static final double PROCESSOR = 0.2;
     public static final double CAGE_FLIP = 0.566;
 }

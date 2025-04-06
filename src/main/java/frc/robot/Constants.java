@@ -42,7 +42,7 @@ public static final class ElbowConstants{
 }
 
 public static final class IntakeConstants{
-  public static final double P = 10; //40
+  public static final double P = 20; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
@@ -53,7 +53,7 @@ public static final class IntakeConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
-  public static final double algaeStallCurrent = 100;
+  public static final double algaeStallCurrent = 110;
 }
 
 public static final class OIConstants {

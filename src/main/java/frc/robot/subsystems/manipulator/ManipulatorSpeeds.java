@@ -14,7 +14,7 @@ public class ManipulatorSpeeds {
     public static final double PREPARE_L3 = -0.05;
     public static final double PREPARE_L4 = -0.05;
     public static final double INTAKE_ALGAE = -0.50;
-    public static final double INTAKE_GROUND_ALGAE = 0.60;
+    public static final double INTAKE_GROUND_ALGAE = -1;
     public static final double OUTTAKE_ALGAE = 0.3;
     public static final double SCORE_ALGAE = 1;
     public static final double SCORE_PROCESSOR = 0.5;

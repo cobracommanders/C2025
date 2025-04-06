@@ -82,8 +82,10 @@ public class RobotManager extends StateMachine<RobotState> {
         case IDLE:
           if (!currentState.ignoreRequests) {
             if (RobotMode.getInstance().inAlgaeMode()) {
-              if (currentState == RobotState.GROUND_ALGAE_INTAKE) {
+              if (currentState == RobotState.GROUND_ALGAE_INTAKE && ManipulatorSubsystem.getInstance().hasAlgae()) {
                 nextState = RobotState.PREPARE_POST_GROUND_ALGAE_INTAKE;
+              } else if (currentState == RobotState.GROUND_ALGAE_INTAKE) {
+                nextState = RobotState.PREPARE_IDLE;
               } else if (currentState == RobotState.GROUND_ALGAE_OUTTAKE) {
                 nextState = RobotState.PREPARE_IDLE;
               } else {

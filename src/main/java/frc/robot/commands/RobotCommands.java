@@ -173,7 +173,7 @@ public class RobotCommands {
   }
 
   public Command idleCommand() {
-    return new ConditionalCommand(invertIdleCommand(), stopIntakeAlgaeCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(invertIdleCommand(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
 
   public Command climbCommand() {
