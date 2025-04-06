@@ -39,7 +39,7 @@ public class WristSubsystem extends StateMachine<WristState>{
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
   public WristSubsystem() {
-    super(WristState.HOME_WRIST);
+    super(WristState.INVERTED_IDLE);
     wristMotor = new TalonFX(Ports.WristPorts.WRIST_MOTOR);
     encoder = new DutyCycle(new DigitalInput(Ports.WristPorts.ENCODER));
     motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -118,7 +118,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.512;
+    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.512; //+ 0.042;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Wrist Position", wristPosition);
