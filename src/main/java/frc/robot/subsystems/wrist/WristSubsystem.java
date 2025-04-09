@@ -1,7 +1,5 @@
 package frc.robot.subsystems.wrist;
 
-import javax.sound.sampled.Port;
-
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -17,14 +15,12 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycle;
 import frc.robot.Ports;
-import frc.robot.Robot;
 import frc.robot.StateMachine;
 import frc.robot.Constants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
-import frc.robot.subsystems.elbow.ElbowPositions;
 
 public class WristSubsystem extends StateMachine<WristState>{
     
@@ -144,7 +140,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     super.periodic();
 
       if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         wristMotor.getConfigurator().apply(motor_config);
         brakeModeEnabled = false;
       }

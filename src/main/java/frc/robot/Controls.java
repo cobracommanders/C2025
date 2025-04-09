@@ -1,35 +1,16 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.RobotMode;
-import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.drivers.Xbox;
-import frc.robot.subsystems.climberwheel.ClimberWheelState;
-import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
-import frc.robot.subsystems.drivetrain.DrivetrainState;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
-import frc.robot.subsystems.drivetrain.TunerConstants;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
 public class Controls {
-    private  double MaxSpeed = TunerConstants.kSpeedAt12Volts; // Initial max is true top speed
-    private final double TurtleSpeed = 0.1; // Reduction in speed from Max Speed, 0.1 = 10%
-    private final double MaxAngularRate = Math.PI * 3.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
-    private final double TurtleAngularRate = Math.PI * 0.5; // .75 rotation per second max angular velocity.  Adjust for max turning rate speed.
-    private double AngularRate = MaxAngularRate; // This will be updated when turtle and reset to MaxAngularRate
-    public boolean isCoralMode;
 
-     SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
-      .withDeadband(MaxSpeed * 0.1) // Deadband is handled on input
-      .withRotationalDeadband(AngularRate * 0.1);
-
+     
     public final Xbox driver = new Xbox(OIConstants.DRIVER_CONTROLLER_ID);
     public final Xbox operator = new Xbox(OIConstants.OPERATOR_CONTROLLER_ID);
 
@@ -61,7 +42,7 @@ public class Controls {
         // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
         
         driver.B().onTrue(Robot.robotCommands.climbRetractCommand());
-        driver.Y().onTrue(Robot.robotCommands.climbUnwindCommand());
+        // driver.Y().onTrue(Robot.robotCommands.climbUnwindCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
         driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = true));
@@ -75,7 +56,6 @@ public class Controls {
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
-        //operator.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().setState(DrivetrainState.TELEOP)));
         operator.POV90().onTrue(Robot.robotCommands.cycleModeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());

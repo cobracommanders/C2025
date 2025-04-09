@@ -12,10 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.RobotManager;
-import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
-import frc.robot.commands.RobotMode.GameMode;
-import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
 import frc.robot.subsystems.drivetrain.DrivetrainState;
@@ -27,8 +24,6 @@ public class LED extends SubsystemBase {
   private final  RobotManager robotManager;
   private final AddressableLEDBuffer m_ledBuffer;
   private final Timer blinkTimer = new Timer();
-  private static final double FAST_BLINK_DURATION = 0.08;
-  private static final double SLOW_BLINK_DURATION = 0.25;
   private LEDState state = new LEDState(Color.kBlue);
 
   public LED(RobotManager robotManager) {
@@ -138,16 +133,16 @@ public class LED extends SubsystemBase {
       if (robotManager.getState() == RobotState.DEEP_CLIMB_WAIT || RobotState.DEEP_CLIMB_DEPLOY == robotManager.getState() || RobotState.DEEP_CLIMB_UNLATCH == robotManager.getState() || RobotState.DEEP_CLIMB_RETRACT == robotManager.getState() || RobotState.DEEP_CLIMB_UNWIND == robotManager.getState()) {
         switch (ClimberSubsystem.getInstance().getState()) {
           case DEEP_CLIMB_UNLATCH:
-            LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+            LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
             break;
           case DEEP_CLIMB_DEPLOY:
-            LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
+            LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
             break;
           case DEEP_CLIMB_WAIT:
             if (ClimberWheelSubsystem.getInstance().hasCage()) {
               LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
             } else {
-              LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+              LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
             }
             break;
           case DEEP_CLIMB_RETRACT:
@@ -157,7 +152,7 @@ public class LED extends SubsystemBase {
             if (ClimberWheelSubsystem.getInstance().hasCage()) {
               LEDPattern.solid(Color.kGreen).applyTo(m_ledBuffer);
             } else {
-              LEDPattern.solid(Color.kYellow).applyTo(m_ledBuffer);
+              LEDPattern.solid(Color.kRed).applyTo(m_ledBuffer);
             }
             break;
           default:

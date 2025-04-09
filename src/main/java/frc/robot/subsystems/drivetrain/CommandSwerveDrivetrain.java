@@ -1,6 +1,5 @@
 package frc.robot.subsystems.drivetrain;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.Utils;

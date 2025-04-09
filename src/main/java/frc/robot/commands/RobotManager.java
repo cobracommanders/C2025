@@ -1,12 +1,10 @@
 package frc.robot.commands;
-import static edu.wpi.first.wpilibj2.command.Commands.none;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotMode.GameMode;
-import frc.robot.Controls;
 import frc.robot.FieldConstants;
 import frc.robot.FlagManager;
 import frc.robot.StateMachine;
@@ -364,7 +362,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case GROUND_ALGAE_INTAKE:
-        if (ManipulatorSubsystem.getInstance().hasAlgae()) {
+        if (ManipulatorSubsystem.getInstance().hasAlgae() && timeout(0.4)) {
           nextState = RobotState.POST_GROUND_ALGAE_INTAKE;
         }
         break;
@@ -555,7 +553,7 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
     }
     DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
-    DogLog.log(getName() + "/isCoralMode", Controls.getInstance().isCoralMode);
+    DogLog.log(getName() + "/isCoralMode", this.currentGameMode == GameMode.CORAL);
     flags.clear();
     return nextState;
   };

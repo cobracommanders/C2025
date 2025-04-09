@@ -6,9 +6,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 
@@ -17,8 +14,6 @@ import frc.robot.StateMachine;
 public class RollerSubsystem extends StateMachine<RollerState>{
     public final TalonFX rollerMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
-    private Timer intakeTimer = new Timer();
-    private double rollerSpeed;
     private double rollerStatorCurrent;
     
     public RollerSubsystem() {
@@ -37,7 +32,6 @@ public class RollerSubsystem extends StateMachine<RollerState>{
 
     @Override
     public void collectInputs(){
-      rollerSpeed = rollerMotor.get();
       rollerStatorCurrent = rollerMotor.getStatorCurrent().getValueAsDouble();
       DogLog.log(getName() + "/Intake Roller Motor Stator Current", rollerStatorCurrent);
     }

@@ -9,10 +9,6 @@ import dev.doglog.DogLog;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.commands.RobotManager;
-import frc.robot.commands.RobotState;
-import frc.robot.subsystems.climber.ClimberState;
-import frc.robot.subsystems.manipulator.ManipulatorState;
 
 
 public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{

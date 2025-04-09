@@ -1,9 +1,5 @@
 package frc.robot.subsystems.drivetrain;
 
-import static edu.wpi.first.units.Units.Rotation;
-
-import java.util.List;
-
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -23,7 +19,6 @@ import frc.robot.Robot;
 import frc.robot.StateMachine;
 import frc.robot.commands.RobotManager;
 import frc.robot.vision.AlignmentState;
-import frc.robot.vision.LimelightHelpers;
 import frc.robot.vision.LimelightLocalization;
 import frc.robot.vision.LimelightState;
 import frc.robot.vision.LimelightSubsystem;
@@ -202,12 +197,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
 
   @Override
   protected void collectInputs() {
-    // if (!hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
-    //   DriverStation.getAlliance().ifPresent((allianceColor) -> {
-    //     operatorPerspective = allianceColor == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
-    //   });
-    //   hasAppliedOperatorPerspective = true;
-    // }
+  
     limelightLocalization.update();
     drivetrainState = drivetrain.getState();
     teleopSpeeds = new ChassisSpeeds(
@@ -223,7 +213,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
 
     if (getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_1 || getState() == DrivetrainState.AUTO_CORAL_STATION_ALIGN_2) {
       targetCoralStationPose = LimelightLocalization.getInstance().getAdjustedCoralStationPose();
-      snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees(); //LimelightLocalization.getInstance().getCoralStationAngleFromTag();
+      snapCoralStationAngle = targetCoralStationPose.getRotation().getDegrees();
       coralStationTag = limelightLocalization.limelightTagIDMiddle;
       boolean isValidTag = LimelightLocalization.coralStationTags.contains(coralStationTag);
       if (isValidTag) {
@@ -238,7 +228,6 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     if (getState() == DrivetrainState.AUTO_REEF_ALIGN_1 || getState() == DrivetrainState.AUTO_REEF_ALIGN_2) {
       targetReefPose = LimelightLocalization.getInstance().getAdjustedBranchPose();
       snapReefAngle = targetReefPose.getRotation().getDegrees();
-      // reefTag = limelightLocalization.limelightTagIDRight;
       reefTag = limelightLocalization.limelightTagIDLeft;
       boolean isValidTag = LimelightLocalization.reefTags.contains(reefTag);
       if (isValidTag) {

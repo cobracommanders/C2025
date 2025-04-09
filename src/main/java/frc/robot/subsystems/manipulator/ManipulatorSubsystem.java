@@ -6,8 +6,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import dev.doglog.DogLog;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
@@ -17,7 +15,6 @@ import frc.robot.StateMachine;
 public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     public final TalonFX manipulatorMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
-    private Timer intakeTimer = new Timer();
     private double manipulatorSpeed;
     private double manipulatorStatorCurrent;
     

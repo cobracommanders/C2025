@@ -14,14 +14,10 @@ import frc.robot.commands.RobotCommands;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
-import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
-import frc.robot.vision.LimelightLocalization;
 import frc.robot.vision.LimelightState;
 import frc.robot.vision.LimelightSubsystem;
-
-import java.lang.reflect.Field;
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;

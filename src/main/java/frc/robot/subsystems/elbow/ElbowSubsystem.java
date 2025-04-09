@@ -15,7 +15,6 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 import frc.robot.commands.RobotMode;
-import frc.robot.subsystems.elevator.ElevatorPositions;
 
 public class ElbowSubsystem extends StateMachine<ElbowState>{
     
@@ -122,7 +121,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
     super.periodic();
 
     if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       motor.getConfigurator().apply(motor_config);
       brakeModeEnabled = false;
       }

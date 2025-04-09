@@ -13,10 +13,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.subsystems.elbow.ElbowPositions;
 
 public class ClimberSubsystem extends StateMachine<ClimberState>{
     
@@ -24,16 +22,12 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   private final TalonFX rMotor;
   private final TalonFXConfiguration left_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ClimberConstants.P).withKI(ClimberConstants.I).withKD(ClimberConstants.D).withKG(ClimberConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((122.449 / 1.0)));
   private final TalonFXConfiguration right_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ClimberConstants.P).withKI(ClimberConstants.I).withKD(ClimberConstants.D).withKG(ClimberConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((122.449 / 1.0)));
-  private ClimberState currentState;
-  private double GEAR_RATIO = 122.449/1.0; // 122.449:1 gear ratio
   private double climberPosition;
   private Follower right_motor_request = new Follower(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
-  private boolean exceedsClimberPosition = false;
   
   public ClimberSubsystem() {
       super(ClimberState.IDLE);
-      // motor = new LazySparkMax(Ports.IntakePorts.LMOTOR, MotorType.kBrushless);
       left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       left_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -47,9 +41,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
       lMotor = new TalonFX(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR);
       rMotor = new TalonFX(Ports.ClimberPorts.RIGHT_CLIMBER_MOTOR);  
       lMotor.getConfigurator().apply(left_motor_config);
-      rMotor.getConfigurator().apply(right_motor_config);    
-      
-      currentState = ClimberState.IDLE;
+      rMotor.getConfigurator().apply(right_motor_config);
   }
 
   public void setState(ClimberState newState) {
@@ -64,36 +56,28 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
     protected void afterTransition(ClimberState newState) {
       switch (newState) {
         case IDLE -> {
-          lMotor.set(0.0);
-          rMotor.set(0.0);
+          set(0.0);
         }
         case DEEP_CLIMB_WAIT -> {
-          rMotor.setControl(right_motor_request);
-          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
+          setClimberPosition(ClimberPositions.DEPLOYED);
         }
         case DEEP_CLIMB_RETRACT -> {
-          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.MAX_EXTENSION));
-          rMotor.setControl(right_motor_request);
+          setClimberPosition(ClimberPositions.MAX_EXTENSION);
         }
         case DEEP_CLIMB_DEPLOY -> {
-          rMotor.setControl(right_motor_request);
-          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
+          setClimberPosition(ClimberPositions.DEPLOYED);
         }
         case DEEP_CLIMB_UNLATCH -> {
-          lMotor.set(0.1);
-          rMotor.set(0.1);
+          set(0.1);
         }
         case MANUAL_DEEP_CLIMB_RETRACT -> {
-          lMotor.set(0.1);
-          rMotor.set(0.1);
+          set(0.1);
         }
         case MANUAL_DEEP_CLIMB_UNWIND -> {
-          lMotor.set(-0.1);
-          rMotor.set(-0.1);
+          set(-0.1);
         }
         case DEEP_CLIMB_UNWIND -> {
-          lMotor.setControl(left_motor_request.withPosition(ClimberPositions.DEPLOYED));
-          rMotor.setControl(right_motor_request);
+          setClimberPosition(ClimberPositions.DEPLOYED);
         }
         default -> {}
       }
@@ -103,16 +87,6 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   public void periodic() {
     climberPosition = lMotor.getPosition().getValueAsDouble();
     DogLog.log(getName() + "/Climber Position", climberPosition);
-    atMax();
-  }
-
-  private boolean atMax() {
-    if (climberPosition <= ClimberPositions.MAX_EXTENSION) {
-      return exceedsClimberPosition = true;
-
-    } else {
-      return exceedsClimberPosition = false;
-    }
   }
 
   public boolean atGoal(){
@@ -120,8 +94,14 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   }
 
   public void set(double speed) {
-      lMotor.set(speed);
-      rMotor.set(speed);
+    lMotor.set(speed);
+    rMotor.set(speed);
+  }
+
+  public void setClimberPosition(double climberSetpoint){
+    rMotor.setControl(right_motor_request);
+    lMotor.setControl(left_motor_request.withPosition(climberSetpoint));
+    DogLog.log(getName() + "/Left motor setpoint", climberSetpoint);
   }
 
   private static ClimberSubsystem instance;

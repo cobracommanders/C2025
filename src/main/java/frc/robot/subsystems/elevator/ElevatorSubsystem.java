@@ -1,7 +1,5 @@
 package frc.robot.subsystems.elevator;
 
-import org.opencv.features2d.FastFeatureDetector;
-
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -15,7 +13,6 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
@@ -26,7 +23,6 @@ import frc.robot.Ports;
 import frc.robot.StateMachine;
 import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
-import frc.robot.subsystems.elbow.ElbowState;
 
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private final TalonFX leftMotor;
@@ -47,7 +43,6 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
   private boolean preMatchHomingOccured = false;
   
-  private double lowestSeenHeight = Double.POSITIVE_INFINITY;
 
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);

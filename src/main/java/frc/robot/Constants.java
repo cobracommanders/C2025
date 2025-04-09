@@ -10,8 +10,8 @@ public static final class ClimberConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
-  public static final double MotionMagicAcceleration = 0.1;
-  public static final double MotionMagicCruiseVelocity = 0.1;
+  public static final double MotionMagicAcceleration = 0.3;
+  public static final double MotionMagicCruiseVelocity = 0.3;
   public static final double MotionMagicJerk = 200;
 }
 
@@ -51,7 +51,7 @@ public static final class ElbowConstants{
 }
 
 public static final class IntakeConstants{
-  public static final double P = 20; //40
+  public static final double P = 160; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
