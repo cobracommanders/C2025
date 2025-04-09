@@ -15,7 +15,6 @@ import frc.robot.StateMachine;
 public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     public final TalonFX manipulatorMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
-    private double manipulatorSpeed;
     private double manipulatorStatorCurrent;
     
     public ManipulatorSubsystem() {
@@ -34,7 +33,6 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
 
     @Override
     public void collectInputs(){
-      manipulatorSpeed = manipulatorMotor.get();
       manipulatorStatorCurrent = manipulatorMotor.getStatorCurrent().getValueAsDouble();
       DogLog.log(getName() + "/Motor Stator Current", manipulatorStatorCurrent);
     }

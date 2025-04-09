@@ -143,14 +143,18 @@ public class RobotCommands {
   }
 
   public Command idleCommand() {
-    return new ConditionalCommand(invertIdleCommand(), algaeIdleCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+    return new ConditionalCommand(invertIdleCommand(), algaeIdleMultiCommand(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
+  }
+
+  public Command algaeIdleMultiCommand() {
+    return new ConditionalCommand(highAlgaeCommand(), algaeIdleCommand(), () -> RobotManager.getInstance().getState() == RobotState.SCORE_ALGAE);
   }
 
   public Command supercycleCommand() {
     return Commands.runOnce(robot::algaeModeRequest, requirements)
       .andThen(Robot.robotCommands.supercycleAlgaeCommand())
       .andThen(Commands.waitUntil(() -> 
-        robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_LOW));
+        robot.getState() == RobotState.PRE_SUPERCYCLE_HIGH_ALGAE || robot.getState() == RobotState.PRE_SUPERCYCLE_LOW_ALGAE));
   }
 
   public Command supercycleAlgaeCommand() {

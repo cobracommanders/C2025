@@ -51,13 +51,13 @@ public static final class ElbowConstants{
 }
 
 public static final class IntakeConstants{
-  public static final double P = 160; //40
+  public static final double P = 120; //40
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
-  public static final double MotionMagicAcceleration = 5; //40
-  public static final double MotionMagicCruiseVelocity = 3;
-  public static final double MotionMagicJerk = 50; //300
+  public static final double MotionMagicAcceleration = 10; //40
+  public static final double MotionMagicCruiseVelocity = 10;
+  public static final double MotionMagicJerk = 100; //300
 }
 
 public static final class ManipulatorConstants{

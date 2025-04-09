@@ -196,13 +196,21 @@ public class RobotManager extends StateMachine<RobotState> {
           }
           break;
         case ALGAE_HIGH:
-        if (!currentState.ignoreRequests && !currentState.inverted) {
-          nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
-        }
-        break;
+          if (!currentState.ignoreRequests && !currentState.inverted) {
+            if ((currentState == RobotState.SCORE_L4) || (currentState == RobotState.SCORE_L3) || (currentState == RobotState.SCORE_L2)) {
+              nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
+            } else {
+              nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
+            }
+          }
+          break;
         case ALGAE_LOW:
           if (!currentState.ignoreRequests && !currentState.inverted) {
-            nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+            if ((currentState == RobotState.SCORE_L4) || (currentState == RobotState.SCORE_L3) || (currentState == RobotState.SCORE_L2)) {
+              nextState = RobotState.PRE_SUPERCYCLE_LOW_ALGAE;
+            } else {
+              nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
+            }
           }
           break;
         case HOMING:
@@ -310,7 +318,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case PREPARE_REMOVE_ALGAE_HIGH:
-        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && intake.atGoal()) {
           nextState = RobotState.REMOVE_ALGAE_HIGH;
         }
         break;
@@ -491,12 +499,12 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case PRE_SUPERCYCLE_HIGH_ALGAE:
-        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && timeout(0.5)) {
           nextState = RobotState.PREPARE_REMOVE_ALGAE_HIGH;
         }
         break;
       case PRE_SUPERCYCLE_LOW_ALGAE:
-        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+        if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal() && timeout(0.5)) {
           nextState = RobotState.PREPARE_REMOVE_ALGAE_LOW;
         }
         break;
