@@ -4,6 +4,7 @@ public enum ManipulatorState {
     INTAKE_CORAL,
     INTAKE_ALGAE,
     INTAKE_GROUND_ALGAE,
+    INTAKE_GROUND_ALGAE_FAILSAFE,
     IDLE,
     L1,
     L2,

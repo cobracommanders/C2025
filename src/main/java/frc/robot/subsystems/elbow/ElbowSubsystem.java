@@ -53,8 +53,10 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   public void setL1Row() {
     if (RobotMode.getInstance().inHighL1Mode()) {
       ElbowPositions.L1 = ElbowPositions.L1_ROW2;
+      setElbowPosition(ElbowPositions.L1);
     } else {
       ElbowPositions.L1 = ElbowPositions.L1_ROW1;
+      setElbowPosition(ElbowPositions.L1);
     }
   }
 
@@ -81,6 +83,8 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       case PRE_SCORE_ALGAE ->
         MathUtil.isNear(ElbowPositions.PRE_SCORE_ALGAE, elbowPosition, tolerance);
       case GROUND_ALGAE_INTAKE ->
+        MathUtil.isNear(ElbowPositions.GROUND_ALGAE_INTAKE, elbowPosition, tolerance);
+      case FAILSAFE_GROUND_ALGAE_INTAKE ->
         MathUtil.isNear(ElbowPositions.GROUND_ALGAE_INTAKE, elbowPosition, tolerance);
       case CORAL_STATION ->
         MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
@@ -184,6 +188,9 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
         }
         case GROUND_ALGAE_INTAKE -> {
           setElbowPosition(ElbowPositions.GROUND_ALGAE_INTAKE);
+        }
+        case FAILSAFE_GROUND_ALGAE_INTAKE -> {
+          setElbowPosition(ElbowPositions.FAILSAFE_GROUND_ALGAE_INTAKE);
         }
         case L4 -> {
           setElbowPosition(ElbowPositions.L4);

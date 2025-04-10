@@ -26,6 +26,15 @@ public class RobotMode {
     public void setCurrentCycleMode(CycleMode cycleMode) {currentCycleMode = cycleMode;}
     public boolean inSupercycleMode() {return currentCycleMode == CycleMode.SUPERCYCLE;}
     public boolean inRegularCycleMode() {return currentCycleMode == CycleMode.REGULAR_CYCLE;}
+
+
+    public IntakeMode currentIntakeMode = IntakeMode.NORMAL;
+    
+    public enum IntakeMode {NORMAL, FAILSAFE}
+    
+    public void setCurrentIntakeMode(IntakeMode intakeMode) {currentIntakeMode = intakeMode;}
+    public boolean inNormalIntakeMode() {return currentIntakeMode == IntakeMode.NORMAL;}
+    public boolean inFailsafeIntakeMode() {return currentIntakeMode == IntakeMode.FAILSAFE;}
     
   private static RobotMode instance;
 

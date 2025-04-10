@@ -61,8 +61,10 @@ public class WristSubsystem extends StateMachine<WristState>{
   public void setL1Row() {
     if (RobotMode.getInstance().inHighL1Mode()) {
       WristPositions.L1 = WristPositions.L1_ROW2;
+      setWristPosition(WristPositions.L1);
     } else {
       WristPositions.L1 = WristPositions.L1_ROW1;
+      setWristPosition(WristPositions.L1);
     }
   }
 
@@ -100,6 +102,8 @@ public class WristSubsystem extends StateMachine<WristState>{
             MathUtil.isNear(WristPositions.ALGAE_INTAKE, wristPosition, tolerance);
           case GROUND_ALGAE_INTAKE ->
             MathUtil.isNear(WristPositions.GROUND_ALGAE_INTAKE, wristPosition, tolerance);
+          case FAILSAFE_GROUND_ALGAE_INTAKE ->
+            MathUtil.isNear(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE, wristPosition, tolerance);
           case ALGAE_FLICK ->
             MathUtil.isNear(WristPositions.ALGAE_FLICK, wristPosition, tolerance);
           case CAGE_FLIP ->
@@ -213,6 +217,9 @@ public class WristSubsystem extends StateMachine<WristState>{
         }
         case GROUND_ALGAE_INTAKE -> {
           setWristPosition(WristPositions.GROUND_ALGAE_INTAKE);
+        }
+        case FAILSAFE_GROUND_ALGAE_INTAKE -> {
+          setWristPosition(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE);
         }
         case SCORE_ALGAE -> {
           setWristPosition(WristPositions.ALGAE_SCORE);

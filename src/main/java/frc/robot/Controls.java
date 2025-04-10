@@ -30,6 +30,7 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.scoreIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
+        driver.start().onTrue(Robot.robotCommands.IntakeToggleCommand());
         // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
         // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());

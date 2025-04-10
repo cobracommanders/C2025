@@ -23,7 +23,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       motor_config.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.8;
-      motor_config.CurrentLimits.StatorCurrentLimit = 100;
+      motor_config.CurrentLimits.StatorCurrentLimit = 90;
       manipulatorMotor.getConfigurator().apply(motor_config);
     }
 
@@ -57,7 +57,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       }
     }
   
-    public void setManipulatorPositions(double manipulatorSpeed){
+    public void setManipulatorSpeeds(double manipulatorSpeed){
       DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
       manipulatorMotor.set(manipulatorSpeed);
     }
@@ -66,43 +66,46 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
       protected void afterTransition(ManipulatorState newState) {
         switch (newState) {
           case IDLE -> {
-            setManipulatorPositions(ManipulatorSpeeds.IDLE);
+            setManipulatorSpeeds(ManipulatorSpeeds.IDLE);
           }
           case INTAKE_CORAL -> {
-            setManipulatorPositions(ManipulatorSpeeds.INTAKE_CORAL);
+            setManipulatorSpeeds(ManipulatorSpeeds.INTAKE_CORAL);
           }
           case INTAKE_GROUND_ALGAE -> {
-            setManipulatorPositions(ManipulatorSpeeds.INTAKE_GROUND_ALGAE);
+            setManipulatorSpeeds(ManipulatorSpeeds.INTAKE_GROUND_ALGAE);
+          }
+          case INTAKE_GROUND_ALGAE_FAILSAFE -> {
+            setManipulatorSpeeds(ManipulatorSpeeds.FAILSAFE_GROUND_ALGAE);
           }
           case AFTER_INTAKE -> {
-            setManipulatorPositions(ManipulatorSpeeds.AFTER_INTAKE);
+            setManipulatorSpeeds(ManipulatorSpeeds.AFTER_INTAKE);
           }
           case L1 -> {
-            setManipulatorPositions(ManipulatorSpeeds.L1);
+            setManipulatorSpeeds(ManipulatorSpeeds.L1);
           }
           case L2 -> {
-            setManipulatorPositions(ManipulatorSpeeds.L2);
+            setManipulatorSpeeds(ManipulatorSpeeds.L2);
           }
           case L3 -> {
-            setManipulatorPositions(ManipulatorSpeeds.L3);
+            setManipulatorSpeeds(ManipulatorSpeeds.L3);
           }
           case L4 -> {
-            setManipulatorPositions(ManipulatorSpeeds.L4);
+            setManipulatorSpeeds(ManipulatorSpeeds.L4);
           }
           case PRE_SCORE -> {
-            setManipulatorPositions(ManipulatorSpeeds.PRE_SCORE);
+            setManipulatorSpeeds(ManipulatorSpeeds.PRE_SCORE);
           }
           case INTAKE_ALGAE -> {
-            setManipulatorPositions(ManipulatorSpeeds.INTAKE_ALGAE);
+            setManipulatorSpeeds(ManipulatorSpeeds.INTAKE_ALGAE);
           }
           case SCORE_ALGAE -> {
-            setManipulatorPositions(ManipulatorSpeeds.SCORE_ALGAE);
+            setManipulatorSpeeds(ManipulatorSpeeds.SCORE_ALGAE);
           }
           case OUTTAKE_ALGAE -> {
-            setManipulatorPositions(ManipulatorSpeeds.OUTTAKE_ALGAE);
+            setManipulatorSpeeds(ManipulatorSpeeds.OUTTAKE_ALGAE);
           }
           case SCORE_PROCESSOR -> {
-            setManipulatorPositions(ManipulatorSpeeds.SCORE_PROCESSOR);
+            setManipulatorSpeeds(ManipulatorSpeeds.SCORE_PROCESSOR);
           }
           default -> {}
         }

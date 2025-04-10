@@ -62,7 +62,7 @@ public static final class IntakeConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
-  public static final double algaeStallCurrent = 110;
+  public static final double algaeStallCurrent = 80;
 }
 
 public static final class ClimberWheelConstants{
@@ -74,5 +74,5 @@ public static final class OIConstants {
     public static final int DRIVER_CONTROLLER_ID = 0;
     public static final int OPERATOR_CONTROLLER_ID = 1;
 }
-  }
+}
 

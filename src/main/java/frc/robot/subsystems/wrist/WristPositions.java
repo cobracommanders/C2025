@@ -19,6 +19,7 @@ public class WristPositions {
     public static final double ALGAE_SCORE = 0.04;
     public static final double ALGAE_INTAKE = 0.32;
     public static final double GROUND_ALGAE_INTAKE = 0.473;
-    public static final double PROCESSOR = 0.2;
+    public static final double FAILSAFE_GROUND_ALGAE_INTAKE = 0.401;
+    public static final double PROCESSOR = 0.492;
     public static final double CAGE_FLIP = 0.55;
 }

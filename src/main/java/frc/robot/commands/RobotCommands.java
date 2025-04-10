@@ -53,7 +53,11 @@ public class RobotCommands {
   }
 
   public Command algaeIntakeIdleCommand() {
-    return new ConditionalCommand((none()), algaeIdleCommand(), () -> (RobotManager.getInstance().getState() == RobotState.PREPARE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.POST_GROUND_ALGAE_INTAKE));
+    return new ConditionalCommand(algaeIntakeFailsafeIdleCommand(), algaeIdleCommand(), () -> (RobotManager.getInstance().getState() == RobotState.PREPARE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.GROUND_ALGAE_INTAKE));
+  }
+
+  public Command algaeIntakeFailsafeIdleCommand() {
+    return new ConditionalCommand((none()), algaeIdleCommand(), () -> (RobotManager.getInstance().getState() == RobotState.FAILSAFE_PREPARE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.FAILSAFE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.FAILSAFE_GROUND_ALGAE_INTAKE));
   }
 
   public Command L4ScoreCommand() {
@@ -82,6 +86,10 @@ public class RobotCommands {
     .andThen(Commands.runOnce(() -> ElevatorSubsystem.getInstance().setL1Row())
     .andThen(Commands.runOnce(() -> ElbowSubsystem.getInstance().setL1Row()))
     .andThen(Commands.runOnce(() -> WristSubsystem.getInstance().setL1Row())));
+  }
+
+  public Command IntakeToggleCommand() {
+    return Commands.runOnce(robot::intakeFailsafeRequest);
   }
 
   public Command L2Command() {

@@ -92,8 +92,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void setL1Row() {
     if (RobotMode.getInstance().inHighL1Mode()) {
       ElevatorPositions.L1 = ElevatorPositions.L1_ROW2;
+      setElevatorPosition(ElevatorPositions.L1);
     } else {
       ElevatorPositions.L1 = ElevatorPositions.L1_ROW1;
+      setElevatorPosition(ElevatorPositions.L1);
     }
   }
 
@@ -113,6 +115,8 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.HIGH_ALGAE, elevatorPosition, tolerance);
         case GROUND_ALGAE ->
           MathUtil.isNear(ElevatorPositions.GROUND_ALGAE, elevatorPosition, tolerance);
+        case FAILSAFE_GROUND_ALGAE ->
+          MathUtil.isNear(ElevatorPositions.FAILSAFE_GROUND_ALGAE, elevatorPosition, tolerance);
         case CAPPED_L4 ->
           MathUtil.isNear(ElevatorPositions.CAPPED_L4, elevatorPosition, tolerance);
         case L4 ->
@@ -170,6 +174,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
         break;
       }
+      case FAILSAFE_GROUND_ALGAE -> {
+        ElevatorPositions.FAILSAFE_GROUND_ALGAE += 0.1;
+        setElevatorPosition(ElevatorPositions.FAILSAFE_GROUND_ALGAE);
+        break;
+      }
       case L4_MAX -> {
         ElevatorPositions.L4_MAX += 0.1;
         setElevatorPosition(ElevatorPositions.L4_MAX);
@@ -218,6 +227,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
       case GROUND_ALGAE -> {
         ElevatorPositions.GROUND_ALGAE -= 0.1;
         setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
+        break;
+      }
+      case FAILSAFE_GROUND_ALGAE -> {
+        ElevatorPositions.FAILSAFE_GROUND_ALGAE -= 0.1;
+        setElevatorPosition(ElevatorPositions.FAILSAFE_GROUND_ALGAE);
         break;
       }
       case L4_MAX -> {
@@ -298,6 +312,9 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         }
         case GROUND_ALGAE -> {
           setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
+        }
+        case FAILSAFE_GROUND_ALGAE -> {
+          setElevatorPosition(ElevatorPositions.FAILSAFE_GROUND_ALGAE);
         }
         case CAPPED_L4 -> {
           setElevatorPosition(ElevatorPositions.CAPPED_L4);
