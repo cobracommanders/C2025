@@ -32,11 +32,11 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
       right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       left_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
       right_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-      left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.MotionMagicCruiseVelocity;
-      left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.MotionMagicAcceleration;
+      left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
+      left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
       left_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.MotionMagicJerk;
-      right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.MotionMagicCruiseVelocity;
-      right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.MotionMagicAcceleration;
+      right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
+      right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
       right_motor_config.MotionMagic.MotionMagicJerk = ClimberConstants.MotionMagicJerk;
       lMotor = new TalonFX(Ports.ClimberPorts.LEFT_CLIMBER_MOTOR);
       rMotor = new TalonFX(Ports.ClimberPorts.RIGHT_CLIMBER_MOTOR);  
@@ -60,12 +60,19 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
         }
         case DEEP_CLIMB_WAIT -> {
           setClimberPosition(ClimberPositions.DEPLOYED);
+          
         }
         case DEEP_CLIMB_RETRACT -> {
           setClimberPosition(ClimberPositions.MAX_EXTENSION);
         }
         case DEEP_CLIMB_DEPLOY -> {
           setClimberPosition(ClimberPositions.DEPLOYED);
+          left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.RetractMotionMagicCruiseVelocity;
+          left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.RetractMotionMagicAcceleration;
+          right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.RetractMotionMagicCruiseVelocity;
+          right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.RetractMotionMagicAcceleration;
+          lMotor.getConfigurator().apply(left_motor_config);
+          rMotor.getConfigurator().apply(right_motor_config);
         }
         case DEEP_CLIMB_UNLATCH -> {
           set(0.1);
