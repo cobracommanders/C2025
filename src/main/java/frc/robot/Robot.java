@@ -46,7 +46,6 @@ public class Robot extends TimedRobot{
 
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
-        // ElevatorSubsystem.getInstance().setTeleopConfig();
 
         NamedCommands.registerCommand("idle", Robot.robotCommands.algaeIdleCommand());
         NamedCommands.registerCommand("inverted idle", Robot.robotCommands.invertIdleCommand());

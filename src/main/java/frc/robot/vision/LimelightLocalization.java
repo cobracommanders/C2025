@@ -235,12 +235,12 @@ public class LimelightLocalization{
       CommandSwerveDrivetrain.getInstance().addVisionMeasurement(
           mt2r.pose,
           Utils.fpgaToCurrentTime(mt2r.timestampSeconds),
-          VecBuilder.fill(0.05,0.75,9999999));
+          VecBuilder.fill(0.05,0.05,9999999));
       SmartDashboard.putNumber("mt2r", mt2r.timestampSeconds);
       if (DriverStation.isDisabled()) {
         CommandSwerveDrivetrain.getInstance().resetPose(mt2r.pose);
-        double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
-        CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
+        // double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
+        // CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
       DogLog.log("LimelightLocalization/Right Limelight Tags", mt2r.tagSpan);
     }
@@ -254,8 +254,8 @@ public class LimelightLocalization{
           SmartDashboard.putNumber("mt2l", mt2l.timestampSeconds);
       if (DriverStation.isDisabled()) {
         CommandSwerveDrivetrain.getInstance().resetPose(mt2l.pose);
-        double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
-        CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
+        // double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
+        // CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
       }
       DogLog.log("LimelightLocalization/Left Limelight Tags", mt2l.tagSpan);
     }
@@ -268,6 +268,22 @@ public class LimelightLocalization{
           Utils.fpgaToCurrentTime(mt2m.timestampSeconds),
           VecBuilder.fill(0.05, 0.05,9999999));
           SmartDashboard.putNumber("mt2m", mt2m.timestampSeconds);
+    }
+    if (!rejectLeftData && !rejectRightData && DriverStation.isDisabled()) {
+      double leftAngle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
+      double rightAngle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
+      if (MathUtil.isNear(rightAngle, leftAngle, 1)) {
+        double avgAngle = (leftAngle + rightAngle) / 2.0;
+        CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(avgAngle));
+      }
+    }
+    else if (!rejectLeftData && rejectRightData && DriverStation.isDisabled()) {
+      double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
+      CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
+    }
+    else if (rejectLeftData && !rejectRightData && DriverStation.isDisabled()) {
+      double angle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
+      CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(angle));
     }
   }
 
