@@ -272,7 +272,7 @@ public class LimelightLocalization{
     if (!rejectLeftData && !rejectRightData && DriverStation.isDisabled()) {
       double leftAngle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left").getRotation().getDegrees();
       double rightAngle = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right").getRotation().getDegrees();
-      if (MathUtil.isNear(rightAngle, leftAngle, 1)) {
+      if (MathUtil.isNear(rightAngle, leftAngle, 4)) {
         double avgAngle = (leftAngle + rightAngle) / 2.0;
         CommandSwerveDrivetrain.getInstance().setYaw(Rotation2d.fromDegrees(avgAngle));
       }

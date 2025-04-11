@@ -280,11 +280,12 @@ public class RobotManager extends StateMachine<RobotState> {
       case DEEP_CLIMB_UNLATCH:
         if(timeout(1)){
           nextState = RobotState.DEEP_CLIMB_DEPLOY;
+          climber.setDeployConfig();
         } 
         break;
       case DEEP_CLIMB_DEPLOY:
         if(ClimberSubsystem.getInstance().climberDeployed()){
-          if (timeout(0.25)) {
+          if (timeout(0.4)) {
             nextState = RobotState.DEEP_CLIMB_WAIT;
           }
         } 
@@ -606,6 +607,7 @@ public class RobotManager extends StateMachine<RobotState> {
       //   }
       //   break;
       case DEEP_CLIMB_WAIT:
+        climber.setRetractConfig();
         if (ClimberWheelSpeeds.INTAKE_CAGE == ClimberWheelSpeeds.STATIC_INTAKE_CAGE) {
           ClimberWheelSubsystem.getInstance().hasCage();
         }

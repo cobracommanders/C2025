@@ -118,7 +118,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
     
     public void setYaw(Alliance alliance) { 
-        // setYaw(Rotation2d.fromDegrees(0));
         setYaw((alliance == Alliance.Red) ? RedAlliancePerspectiveRotation : BlueAlliancePerspectiveRotation); 
     }
 

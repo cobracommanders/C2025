@@ -10,9 +10,9 @@ public static final class ClimberConstants{
   public static final double I = 0;
   public static final double D = 0;
   public static final double G = 0;
-  public static final double DeployMotionMagicAcceleration = 0.6;
+  public static final double DeployMotionMagicAcceleration = 100; //100
+  public static final double DeployMotionMagicCruiseVelocity = 250; //250
   public static final double RetractMotionMagicAcceleration = 0.3;
-  public static final double DeployMotionMagicCruiseVelocity = 0.6;
   public static final double RetractMotionMagicCruiseVelocity = 0.3;
   public static final double MotionMagicJerk = 200;
 }
