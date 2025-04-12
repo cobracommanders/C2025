@@ -93,7 +93,7 @@ public final class FieldConstants {
     new Pose2d(16.697, 7.396, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
 
-  public double bargeCoordinate = 8.775;
+  public double bargeCoordinate = 8.79; // 8.775
 
 
   public Pose2d[] getCoralStationPoses() {

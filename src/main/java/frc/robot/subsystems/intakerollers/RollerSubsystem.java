@@ -42,7 +42,7 @@ public class RollerSubsystem extends StateMachine<RollerState>{
   
     public void setRollerPositions(double rollerSpeed){
       DogLog.log(getName() + "/Roller speed", rollerSpeed);
-      rollerMotor.set(0);
+      rollerMotor.set(rollerSpeed);
     }
   
       @Override

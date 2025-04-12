@@ -172,9 +172,11 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
               nextState = DrivetrainState.TELEOP_REEF_ALIGN;
             } 
           }
-          case PREPARE_SCORE_ALGAE, SCORE_ALGAE_WAIT, SCORE_ALGAE -> {
-            nextState = DrivetrainState.BARGE_ALIGN;
-          }
+          case PREPARE_SCORE_ALGAE, SCORE_ALGAE_WAIT, SCORE_ALGAE, PRE_FRONT_SCORE_ALGAE, FRONT_SCORE_ALGAE_WAIT, FRONT_SCORE_ALGAE -> {
+            if (crescendoModeEnabled){
+              nextState = DrivetrainState.BARGE_ALIGN;
+            }
+        }
           default -> {}
         }
       }

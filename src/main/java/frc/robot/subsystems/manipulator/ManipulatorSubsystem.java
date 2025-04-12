@@ -9,6 +9,7 @@ import dev.doglog.DogLog;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
+import frc.robot.commands.RobotMode;
 
 
 
@@ -34,6 +35,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     @Override
     public void collectInputs(){
       manipulatorStatorCurrent = manipulatorMotor.getStatorCurrent().getValueAsDouble();
+      setAlgaeScoreSpeed();
       DogLog.log(getName() + "/Motor Stator Current", manipulatorStatorCurrent);
     }
   
@@ -54,6 +56,14 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
         return true;
       } else {
         return false;
+      }
+    }
+
+    public void setAlgaeScoreSpeed() {
+      if (RobotMode.getInstance().inFrontAlgaeScoreMode()) {
+        ManipulatorSpeeds.SCORE_ALGAE = ManipulatorSpeeds.FRONT_SCORE_ALGAE;
+      } else {
+        ManipulatorSpeeds.SCORE_ALGAE = ManipulatorSpeeds.NORMAL_SCORE_ALGAE;
       }
     }
   

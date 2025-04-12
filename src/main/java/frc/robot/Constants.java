@@ -64,7 +64,7 @@ public static final class IntakeConstants{
 
 public static final class ManipulatorConstants{
   public static final double coralStallCurrent = 25;
-  public static final double algaeStallCurrent = 80;
+  public static final double algaeStallCurrent = 85;
 }
 
 public static final class ClimberWheelConstants{

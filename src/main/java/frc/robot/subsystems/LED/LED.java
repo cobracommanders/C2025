@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.RobotManager;
+import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.climberwheel.ClimberWheelSubsystem;
@@ -161,7 +162,11 @@ public class LED extends SubsystemBase {
       } else {
         switch (RobotManager.getInstance().currentGameMode) {
           case CORAL:
-              LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
+              if (RobotManager.getInstance().currentCycleMode == CycleMode.SUPERCYCLE) {
+                LEDPattern.solid(Color.kOrangeRed).applyTo(m_ledBuffer);
+              } else {
+                LEDPattern.solid(Color.kCoral).applyTo(m_ledBuffer);
+              }
             break;
           case ALGAE:
              LEDPattern.solid(Color.kBlue).applyTo(m_ledBuffer);

@@ -3,6 +3,7 @@ package frc.robot.commands;
 import dev.doglog.DogLog;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.commands.RobotMode.AlgaeScoreMode;
 import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotMode.GameMode;
 import frc.robot.commands.RobotMode.IntakeMode;
@@ -44,6 +45,7 @@ public class RobotManager extends StateMachine<RobotState> {
   public GameMode currentGameMode = GameMode.CORAL;
   public CycleMode currentCycleMode = CycleMode.REGULAR_CYCLE;
   public IntakeMode currentIntakeMode = IntakeMode.NORMAL;
+  public AlgaeScoreMode currentAlgaeScoreMode = AlgaeScoreMode.REGULAR;
   public boolean isInverted = false;
   public Timer timer = new Timer();
 
@@ -92,6 +94,12 @@ public class RobotManager extends StateMachine<RobotState> {
           break;
         case GROUND_INTAKE_FAILSAFE:
           currentIntakeMode = IntakeMode.FAILSAFE;
+          break;
+        case NORMAL_ALGAE_SCORE:
+          currentAlgaeScoreMode = AlgaeScoreMode.REGULAR;
+          break;
+        case FRONT_ALGAE_SCORE:
+          currentAlgaeScoreMode = AlgaeScoreMode.FRONT;
           break;
         case APPLY_HEIGHT_CAP:
           isHeightCapped = true;
@@ -253,7 +261,11 @@ public class RobotManager extends StateMachine<RobotState> {
               nextState = RobotState.SCORE_L4;
               break;
             case SCORE_ALGAE_WAIT:
-              nextState = RobotState.SCORE_ALGAE;
+                if (currentAlgaeScoreMode == AlgaeScoreMode.REGULAR) {
+                  nextState = RobotState.SCORE_ALGAE;
+                } else {
+                  nextState = RobotState.FRONT_SCORE_ALGAE;
+                }
               break;
             case WAIT_PROCESSOR:
               nextState = RobotState.SCORE_PROCESSOR;
@@ -358,10 +370,24 @@ public class RobotManager extends StateMachine<RobotState> {
         if(isHeightCapped) {
           nextState = RobotState.REMOVE_ALGAE_HIGH;
         } else if (elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
-          nextState = RobotState.SCORE_ALGAE_WAIT;
+          if (currentAlgaeScoreMode == AlgaeScoreMode.REGULAR){
+            nextState = RobotState.SCORE_ALGAE_WAIT;
+          } else {
+            nextState = RobotState.PRE_FRONT_SCORE_ALGAE;
+          }
         }
         break;
       case SCORE_ALGAE_WAIT:
+        if(isHeightCapped) {
+          nextState = RobotState.REMOVE_ALGAE_HIGH;
+        }
+        break;
+      case PRE_FRONT_SCORE_ALGAE:
+        if(elevator.atGoal() && elbow.atGoal() && wrist.atGoal()) {
+          nextState = RobotState.FRONT_SCORE_ALGAE_WAIT;
+        }
+        break;
+      case FRONT_SCORE_ALGAE_WAIT:
         if(isHeightCapped) {
           nextState = RobotState.REMOVE_ALGAE_HIGH;
         }
@@ -468,7 +494,7 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L2:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
@@ -486,7 +512,7 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L3:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
@@ -494,9 +520,6 @@ public class RobotManager extends StateMachine<RobotState> {
               nextState = RobotState.PRE_SUPERCYCLE_LOW_ALGAE;
               currentGameMode = GameMode.ALGAE;
             }
-          // } else if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isAutonomous()) {
-          //   nextState = RobotState.IDLE;
-          //   currentGameMode = GameMode.ALGAE;
           } else {
             nextState = RobotState.PREPARE_INVERTED_FROM_IDLE;
           }
@@ -504,7 +527,7 @@ public class RobotManager extends StateMachine<RobotState> {
         break;
       case SCORE_L4:
         if ((timeout(2) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
-          if (currentCycleMode == CycleMode.SUPERCYCLE && DriverStation.isTeleop()) {
+          if (currentCycleMode == CycleMode.SUPERCYCLE) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;
               currentGameMode = GameMode.ALGAE;
@@ -521,14 +544,18 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case REMOVE_ALGAE_HIGH:
-        if(!isHeightCapped) {
+        if(!isHeightCapped && DriverStation.isTeleopEnabled()) {
+          nextState = RobotState.PREPARE_SCORE_ALGAE;
+        } else if (!isHeightCapped && timeout(1)) {
           nextState = RobotState.PREPARE_SCORE_ALGAE;
         }
         break;
       case REMOVE_ALGAE_LOW:
-        if(!isHeightCapped) {
-          nextState = RobotState.PREPARE_SCORE_ALGAE;
-        }
+      if(!isHeightCapped && DriverStation.isTeleopEnabled()) {
+        nextState = RobotState.PREPARE_SCORE_ALGAE;
+      } else if (!isHeightCapped && timeout(1)) {
+        nextState = RobotState.PREPARE_SCORE_ALGAE;
+      }
         break;
       case POST_GROUND_ALGAE_INTAKE:
         if(!isHeightCapped) {
@@ -541,6 +568,11 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_ALGAE:
+        if ((timeout(3) && DriverStation.isTeleop() || (timeout(1.5) && DriverStation.isAutonomous()))) {
+          nextState = RobotState.PREPARE_IDLE;
+        }
+        break;
+      case FRONT_SCORE_ALGAE:
         if ((timeout(3) && DriverStation.isTeleop() || (timeout(1.5) && DriverStation.isAutonomous()))) {
           nextState = RobotState.PREPARE_IDLE;
         }
@@ -1079,6 +1111,30 @@ public class RobotManager extends StateMachine<RobotState> {
             wrist.setState(WristState.SCORE_ALGAE);
             elbow.setState(ElbowState.L4);
           }
+
+          case PRE_FRONT_SCORE_ALGAE -> {
+            elevator.setState(ElevatorState.L4_MAX);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.PRE_ALGAE_SCORE);
+            elbow.setState(ElbowState.L4);
+          }
+
+          case FRONT_SCORE_ALGAE_WAIT -> {
+            elevator.setState(ElevatorState.L4_MAX);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.INTAKE_ALGAE);
+            wrist.setState(WristState.FRONT_ALGAE_SCORE);
+            elbow.setState(ElbowState.L4);
+          }
+
+          case FRONT_SCORE_ALGAE -> {
+            elevator.setState(ElevatorState.L4_MAX);
+            climber.setState(ClimberState.IDLE);
+            manipulator.setState(ManipulatorState.SCORE_ALGAE);
+            wrist.setState(WristState.FRONT_ALGAE_SCORE);
+            elbow.setState(ElbowState.L4);
+          }
           
           case HOMING_STAGE_1_ELEVATOR -> {
             elevator.setState(ElevatorState.HOME_ELEVATOR);
@@ -1125,7 +1181,7 @@ public class RobotManager extends StateMachine<RobotState> {
     super.periodic(); 
     DogLog.log(getName() + "/is Coral Mode", RobotMode.getInstance().inCoralMode());
     DogLog.log(getName() + "/Is capped", isHeightCapped);
-    if (RobotManager.getInstance().getState() == RobotState.SCORE_ALGAE && timeout(0.20)) {
+    if (RobotManager.getInstance().getState() == RobotState.SCORE_ALGAE && timeout(0.18)) {
       manipulator.setState(ManipulatorState.SCORE_ALGAE);
     }
     //DogLog.log(getName() + "Active Command", elevator.getCurrentCommand().toString());
@@ -1213,6 +1269,14 @@ public class RobotManager extends StateMachine<RobotState> {
 
   public void climbRetractRequest(){
     flags.check(RobotFlag.CLIMB_RETRACT);
+  }
+
+  public void frontAlgaeScoreRequest(){
+    flags.check(RobotFlag.FRONT_ALGAE_SCORE);
+  }
+
+  public void normalAlgaeScoreRequest(){
+    flags.check(RobotFlag.NORMAL_ALGAE_SCORE);
   }
 
   public void applyHeightCapRequest(){

@@ -30,7 +30,8 @@ public class Controls {
             driver.rightTrigger().onFalse(Robot.robotCommands.scoreIdleCommand());
         driver.leftBumper().onTrue(Robot.robotCommands.removeHeightCapCommand());
             driver.leftBumper().onFalse(Robot.robotCommands.applyHeightCapCommand());
-        driver.start().onTrue(Robot.robotCommands.IntakeToggleCommand());
+        driver.start().onTrue(Robot.robotCommands.IntakeDisableCommand());
+        driver.back().onTrue(Robot.robotCommands.IntakeEnableCommand());
         // driver.B().onTrue(Robot.robotCommands.autoCoralStationAlign());
         // driver.X().onTrue(Robot.robotCommands.autoReefAlign());
         // driver.Y().onTrue(Robot.robotCommands.setDrivetrainTeleop());
@@ -43,6 +44,7 @@ public class Controls {
         // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
         
         driver.B().onTrue(Robot.robotCommands.climbRetractCommand());
+        driver.X().onTrue(Robot.robotCommands.algaeScoreSwapCommand());
         // driver.Y().onTrue(Robot.robotCommands.climbUnwindCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));

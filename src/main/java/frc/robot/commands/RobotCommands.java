@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
+import frc.robot.commands.RobotMode.AlgaeScoreMode;
 import frc.robot.commands.RobotMode.CycleMode;
 import frc.robot.commands.RobotMode.GameMode;
+import frc.robot.commands.RobotMode.IntakeMode;
 import frc.robot.commands.RobotMode.L1Row;
 import frc.robot.subsystems.climber.ClimberState;
 import frc.robot.subsystems.climber.ClimberSubsystem;
@@ -53,7 +55,11 @@ public class RobotCommands {
   }
 
   public Command algaeIntakeIdleCommand() {
-    return new ConditionalCommand(algaeIntakeFailsafeIdleCommand(), algaeIdleCommand(), () -> (RobotManager.getInstance().getState() == RobotState.PREPARE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.GROUND_ALGAE_INTAKE));
+    return new ConditionalCommand(algaeIntakeRegularIdleCommand(), algaeIntakeFailsafeIdleCommand(), () -> RobotManager.getInstance().currentIntakeMode == IntakeMode.NORMAL);
+  }
+
+  public Command algaeIntakeRegularIdleCommand() {
+    return new ConditionalCommand((none()), algaeIdleCommand(), () -> (RobotManager.getInstance().getState() == RobotState.PREPARE_POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.POST_GROUND_ALGAE_INTAKE) || (RobotManager.getInstance().getState() == RobotState.GROUND_ALGAE_INTAKE));
   }
 
   public Command algaeIntakeFailsafeIdleCommand() {
@@ -88,8 +94,12 @@ public class RobotCommands {
     .andThen(Commands.runOnce(() -> WristSubsystem.getInstance().setL1Row())));
   }
 
-  public Command IntakeToggleCommand() {
+  public Command IntakeDisableCommand() {
     return Commands.runOnce(robot::intakeFailsafeRequest);
+  }
+
+  public Command IntakeEnableCommand() {
+    return Commands.runOnce(robot::regularIntakeRequest);
   }
 
   public Command L2Command() {
@@ -184,7 +194,9 @@ public class RobotCommands {
   }
 
   public Command climbRetractCommand() {
-    return new ConditionalCommand(Commands.runOnce(robot::climbRetractRequest), climbCommand(), () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
+    return new ConditionalCommand(Commands.runOnce(robot::climbRetractRequest), 
+    climbCommand(), 
+    () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
   }
 
   public Command removeHeightCapCommand() {
@@ -193,6 +205,11 @@ public class RobotCommands {
 
   public Command applyHeightCapCommand() {
     return Commands.runOnce(robot::applyHeightCapRequest);
+  }
+
+  public Command algaeScoreSwapCommand() {
+    return new ConditionalCommand(Commands.runOnce(() -> RobotMode.getInstance().setCurrentAlgaeScoreMode(AlgaeScoreMode.REGULAR)), Commands.runOnce(() -> RobotMode.getInstance().setCurrentAlgaeScoreMode(AlgaeScoreMode.FRONT)), () -> RobotMode.getInstance().inFrontAlgaeScoreMode())
+    .andThen(new ConditionalCommand(Commands.runOnce(robot::frontAlgaeScoreRequest), Commands.runOnce(robot::normalAlgaeScoreRequest), () -> RobotMode.getInstance().inFrontAlgaeScoreMode()));
   }
 
   public Command alternateIntakeCommand() {

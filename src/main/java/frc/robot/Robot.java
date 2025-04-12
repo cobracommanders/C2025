@@ -82,6 +82,9 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("wait for high algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_HIGH));
         NamedCommands.registerCommand("wait for prepare algae score", robotManager.waitForState(RobotState.PREPARE_SCORE_ALGAE));
         NamedCommands.registerCommand("wait for algae score", robotManager.waitForState(RobotState.SCORE_ALGAE_WAIT));
+        NamedCommands.registerCommand("wait for pre supercycle low algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_LOW_ALGAE));
+        NamedCommands.registerCommand("wait for pre supercycle high algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_HIGH_ALGAE));
+        
 
         autoChooser = AutoBuilder.buildAutoChooser();
         LED led = new LED(robotManager);

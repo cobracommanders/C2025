@@ -103,47 +103,47 @@
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "apply height cap"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "set drivetrain auto"
+                      }
+                    },
                     {
                       "type": "path",
                       "data": {
                         "pathName": "Coral Move Back"
-                      }
-                    },
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "apply height cap"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "wait for idle"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "low algae intake"
-                            }
-                          }
-                        ]
                       }
                     }
                   ]
                 }
               },
               {
-                "type": "named",
+                "type": "race",
                 "data": {
-                  "name": "wait for low algae intake"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for pre supercycle low algae"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait for low algae intake"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -194,7 +194,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for prepare algae score"
+                  "name": "wait for algae score"
                 }
               },
               {
@@ -224,7 +224,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 0.5
+                                    "waitTime": 1.0
                                   }
                                 }
                               ]
@@ -281,7 +281,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.0
+                        "waitTime": 1.0
                       }
                     }
                   ]
@@ -342,7 +342,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "wait for prepare algae score"
+                  "name": "wait for algae score"
                 }
               },
               {
@@ -372,7 +372,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 0.5
+                                    "waitTime": 1.0
                                   }
                                 }
                               ]
@@ -421,7 +421,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

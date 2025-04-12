@@ -35,6 +35,14 @@ public class RobotMode {
     public void setCurrentIntakeMode(IntakeMode intakeMode) {currentIntakeMode = intakeMode;}
     public boolean inNormalIntakeMode() {return currentIntakeMode == IntakeMode.NORMAL;}
     public boolean inFailsafeIntakeMode() {return currentIntakeMode == IntakeMode.FAILSAFE;}
+
+    public AlgaeScoreMode currentAlgaeScoreMode = AlgaeScoreMode.REGULAR;
+    
+    public enum AlgaeScoreMode {REGULAR, FRONT}
+    
+    public void setCurrentAlgaeScoreMode(AlgaeScoreMode algaeScoreMode) {currentAlgaeScoreMode = algaeScoreMode;}
+    public boolean inNormalAlgaeScoreMode() {return currentAlgaeScoreMode == AlgaeScoreMode.REGULAR;}
+    public boolean inFrontAlgaeScoreMode() {return currentAlgaeScoreMode == AlgaeScoreMode.FRONT;}
     
   private static RobotMode instance;
 
