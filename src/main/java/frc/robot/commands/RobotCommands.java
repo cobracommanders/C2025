@@ -265,6 +265,7 @@ public class RobotCommands {
   public Command autoReefAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    .andThen(new ConditionalCommand(scoreCommand(), none(), () -> RobotManager.getInstance().getState() == RobotState.WAIT_L2 || RobotManager.getInstance().getState() == RobotState.WAIT_L3))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedBranchPose(), 0.5));
   }

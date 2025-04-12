@@ -94,6 +94,24 @@
                 "data": {
                   "name": "score"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "apply height cap"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "set drivetrain auto"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Coral Move Back"
+                }
               }
             ]
           }
@@ -102,31 +120,6 @@
           "type": "sequential",
           "data": {
             "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "apply height cap"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "set drivetrain auto"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Coral Move Back"
-                      }
-                    }
-                  ]
-                }
-              },
               {
                 "type": "race",
                 "data": {
