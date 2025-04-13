@@ -42,12 +42,14 @@ public class RobotCommands {
   
   public Command scoreCommand() {
     return Commands.runOnce(robot::scoreRequest, requirements)
-        .andThen(robot.waitForState(RobotState.PREPARE_INVERTED_FROM_IDLE));
+        .andThen(Commands.waitUntil(() -> 
+        robot.getState() == RobotState.PREPARE_INVERTED_IDLE || robot.getState() == RobotState.PREPARE_IDLE || robot.getState() == RobotState.PRE_SUPERCYCLE_HIGH_ALGAE || robot.getState() == RobotState.PRE_SUPERCYCLE_LOW_ALGAE));
   }
 
   public Command algaeScoreCommand() {
     return Commands.runOnce(robot::algaeScoreRequest, requirements)
-        .andThen(robot.waitForState(RobotState.IDLE));
+        .andThen(Commands.waitUntil(() -> 
+        robot.getState() == RobotState.PREPARE_IDLE || robot.getState() == RobotState.PREPARE_REMOVE_ALGAE_HIGH));
   }
 
   public Command intakeIdleCommand() {
@@ -69,6 +71,10 @@ public class RobotCommands {
   public Command L4ScoreCommand() {
     return Commands.runOnce(robot::scoreRequest, requirements)
         .andThen(robot.waitForState(RobotState.PREPARE_INVERTED_FROM_IDLE));
+  }
+
+  public Command failsafeCommand() {
+    return Commands.runOnce(robot::failsafeOverrideRequest, requirements);
   }
 
   public Command retractClimbCommand(){
@@ -261,21 +267,13 @@ public class RobotCommands {
   public Command autoAlignCommand(){
     return new ConditionalCommand(autoReefAlign(), autoAlgaeAlign(), () -> RobotManager.getInstance().currentGameMode == GameMode.CORAL);
   }
-  
-  public Command autoReefAlign(){
-    return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
-    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
-    .andThen(new ConditionalCommand(scoreCommand(), none(), () -> RobotManager.getInstance().getState() == RobotState.WAIT_L2 || RobotManager.getInstance().getState() == RobotState.WAIT_L3))
-    ,none()
-    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedBranchPose(), 0.5));
-  }
 
   public Command autoAlgaeAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoAlgaeAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil((
     )-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
     ,none()
-    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.5));
+    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedAlgaePose(), 0.75));
   }
 
   public Command setDrivetrainAuto(){
@@ -303,11 +301,24 @@ public class RobotCommands {
     return new ConditionalCommand(supercycleModeCommand(), regularCycleModeCommand(), () -> RobotManager.getInstance().currentCycleMode == CycleMode.REGULAR_CYCLE);
   }
   
+  public Command autoReefAlign(){
+    return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
+    .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
+    .andThen(new ConditionalCommand(scoreCommand(), none(), () -> RobotManager.getInstance().getState() == RobotState.WAIT_L2 || RobotManager.getInstance().getState() == RobotState.WAIT_L3 || RobotManager.getInstance().getState() == RobotState.WAIT_L4))
+    ,none()
+    ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedBranchPose(), 0.75));
+  }
+
   public Command supercycleModeCommand(){
     return Commands.runOnce(robot::supercycleRequest);
   }
 
   public Command regularCycleModeCommand(){
     return Commands.runOnce(robot::regularCycleRequest);
+  }
+  
+
+  public Command changeClimberPID(){
+    return Commands.runOnce(() -> ClimberSubsystem.getInstance().setRetractConfig());
   }
 }

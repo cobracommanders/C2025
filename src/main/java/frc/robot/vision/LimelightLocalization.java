@@ -11,9 +11,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.FieldConstants;
+import frc.robot.Robot;
 
 public class LimelightLocalization{
   public boolean rejectLeftData;
@@ -68,7 +68,7 @@ public class LimelightLocalization{
 
   public AlignmentState getBargeAlignmentState(){
     double tolerance = 0.1;
-    double bargeOffset = 1.394;
+    double bargeOffset = 0.775;
     if (tagCountMiddle == 0) {
       return AlignmentState.INVALID;
     }
@@ -171,10 +171,18 @@ public class LimelightLocalization{
   }
 
   public double getBargeSnapAngle() {
-    if (Robot.alliance.get() == Alliance.Red) {
-      return ((CommandSwerveDrivetrain.getInstance().getState().Pose.getX() > FieldConstants.getInstance().bargeCoordinate) ? 180 : 0);
+    if (Robot.alliance.get() == Alliance.Blue) {
+      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees()), 180, 90)) {
+        return 180;
+      } else {
+        return 0;
+      }
     } else {
-      return ((CommandSwerveDrivetrain.getInstance().getState().Pose.getX() < FieldConstants.getInstance().bargeCoordinate) ? 180 : 0);
+      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees()), 180, 90)) {
+        return 0;
+      } else {
+        return 180;
+      }
     }
   }
 
@@ -188,7 +196,7 @@ public class LimelightLocalization{
     limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
     limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
     limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
-    robotOffsetForBarge = CommandSwerveDrivetrain.getInstance().getState().Pose.getX() - FieldConstants.getInstance().bargeCoordinate;
+    robotOffsetForBarge = CommandSwerveDrivetrain.getInstance().getState().Pose.getX() - FieldConstants.getInstance().blueBargeCoordinate;
     tagCountMiddle = LimelightHelpers.getTargetCount("limelight-middle");
      DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
      DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);

@@ -45,14 +45,6 @@ public final class FieldConstants {
     new Pose2d(13.84, 3.86, Rotation2d.fromDegrees(180)), //A
   };
 
-  public Pose2d[] algaePosesBlue = {
-    new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K low
-    new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I high
-    new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G low
-    new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E high
-    new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C low
-    new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A high
-  };
 
   public Pose2d[] algaePosesRed = {
     new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K low
@@ -63,38 +55,43 @@ public final class FieldConstants {
     new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A high
   };
 
-  // public Pose2d[] lowAlgaePoses = {
-  //   new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K blue
-  //   new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G blue
-  //   new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C blue
-  //   new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K red 
-  //   new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0)), //H + G red
-  //   new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(-120)), //D + C red
-  // };
-  // public Pose2d[] highAlgaePoses = {
-  //   new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I blue
-  //   new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E blue
-  //   new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A blue
-  //   new Pose2d(12.643, 3.307, Rotation2d.fromDegrees(60)), //J + I red
-  //   new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(-60)), //F + E red 
-  //   new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A red
-  // };
+  public Pose2d[] algaePosesBlue = {
+    new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K low
+    new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I high
+    new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G low
+    new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E high
+    new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C low
+    new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A high
+  };
+
+  public Pose2d[] algaePoses = {
+    new Pose2d(13.47, 3.307, Rotation2d.fromDegrees(120)), //L + K low red
+    new Pose2d(12.643, 3.307, Rotation2d.fromDegrees(60)), //J + I high red
+    new Pose2d(12.227, 4.026, Rotation2d.fromDegrees(0)), //H + G low red
+    new Pose2d(12.643, 4.745, Rotation2d.fromDegrees(-60)), //F + E high red
+    new Pose2d(13.474, 4.745, Rotation2d.fromDegrees(-120)), //D + C low red
+    new Pose2d(13.884, 4.026, Rotation2d.fromDegrees(180)), //B + A high red
+
+    new Pose2d(4.074, 4.745, Rotation2d.fromDegrees(-60)), //L + K low blue
+    new Pose2d(4.905, 4.745, Rotation2d.fromDegrees(-120)), //J + I high blue
+    new Pose2d(5.321, 4.026, Rotation2d.fromDegrees(180)), //H + G low blue
+    new Pose2d(4.905, 3.307, Rotation2d.fromDegrees(120)), //F + E high blue
+    new Pose2d(4.074, 3.307, Rotation2d.fromDegrees(60)), //D + C low blue
+    new Pose2d(3.658, 4.026, Rotation2d.fromDegrees(0)), //B + A high blue
+  };
 
   public Pose2d[] coralStationPosesBlue = {
-    // new Pose2d(1.129, 7.122, Rotation2d.fromDegrees(-50)), // tag 13 CS
-    // new Pose2d(1.199, 0.974, Rotation2d.fromDegrees(50)) // tag 12 CS
     new Pose2d(0.8512, 7.396, Rotation2d.fromDegrees(-50)), // tag 13 CS
     new Pose2d(0.8512, 0.655, Rotation2d.fromDegrees(50)) // tag 12 CS
   };
   public Pose2d[] coralStationPosesRed = {
-    // new Pose2d(16.46, 0.93, Rotation2d.fromDegrees(130)), // tag 1 CS
-    // new Pose2d(16.40, 7.028, Rotation2d.fromDegrees(-130)) // tag 2 CS
     new Pose2d(16.697, 0.655, Rotation2d.fromDegrees(130)), // tag 1 CS
     new Pose2d(16.697, 7.396, Rotation2d.fromDegrees(-130)) // tag 2 CS
   };
 
-  public double bargeCoordinate = 8.79; // 8.775
-
+  public double blueBargeCoordinate = 10; // 8.775 is middle of field, this coordinate is the other alliance's auto leave line for the sake of practice; may not be needed on a real field
+  public double redBargeCoordinate = 7.5; // 8.775 is middle of field, this coordinate is the other alliance's auto leave line for the sake of practice; may not be needed on a real field
+  public double bargeCoordinate = 8.775;
 
   public Pose2d[] getCoralStationPoses() {
     return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
@@ -115,7 +112,7 @@ public final class FieldConstants {
       return closestCoralStation;
   }
   public Pose2d getNearestAlgae() {
-    closestAlgae = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(getAlgaePoses()));
+    closestAlgae = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(algaePoses));
     return closestAlgae;
   }
 

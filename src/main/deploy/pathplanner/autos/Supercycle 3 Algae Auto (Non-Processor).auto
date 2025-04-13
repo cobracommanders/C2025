@@ -146,9 +146,9 @@
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 0.5
+                  "name": "wait until has algae"
                 }
               }
             ]
@@ -165,13 +165,26 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "GH to Barge"
+                        "pathName": "Moving GH to Barge"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "remove height cap"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.35
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "remove height cap"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -195,13 +208,19 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Algae Score"
+                      }
+                    },
+                    {
                       "type": "sequential",
                       "data": {
                         "commands": [
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.1
+                              "waitTime": 0.4
                             }
                           },
                           {
@@ -217,7 +236,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.5
                                   }
                                 }
                               ]
@@ -249,7 +268,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Barge to JI "
+                        "pathName": "Moving Score Barge to JI "
                       }
                     },
                     {
@@ -262,7 +281,7 @@
                 }
               },
               {
-                "type": "race",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
@@ -272,18 +291,12 @@
                       }
                     },
                     {
-                      "type": "wait",
+                      "type": "named",
                       "data": {
-                        "waitTime": 1.0
+                        "name": "wait until has algae"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
                 }
               }
             ]
@@ -300,7 +313,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "JI to Barge"
+                        "pathName": "Moving Score JI to Barge"
                       }
                     },
                     {
@@ -343,13 +356,19 @@
                 "data": {
                   "commands": [
                     {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Algae Score"
+                      }
+                    },
+                    {
                       "type": "sequential",
                       "data": {
                         "commands": [
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.1
+                              "waitTime": 0.4
                             }
                           },
                           {
@@ -365,7 +384,155 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.5
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "apply height cap"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Moving Score Barge to EF"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "high algae intake"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "auto algae align"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "wait until has algae"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Moving Score EF to Barge"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.4
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "remove height cap"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "wait for algae score"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Algae Score"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 0.4
+                            }
+                          },
+                          {
+                            "type": "race",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "score"
+                                  }
+                                },
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 0.5
                                   }
                                 }
                               ]
@@ -387,25 +554,39 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Algae Score Back Up"
+                  "pathName": "Moving Algae Score Back Up"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "apply height cap"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "set coral mode"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "enable regular cycle"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "apply height cap"
+                      }
+                    },
+                    {
+                      "type": "parallel",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "set coral mode"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "enable regular cycle"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
                 }
               }
             ]

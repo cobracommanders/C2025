@@ -15,6 +15,7 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightState;
 import frc.robot.vision.LimelightSubsystem;
@@ -81,9 +82,9 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("wait for low algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_LOW));
         NamedCommands.registerCommand("wait for high algae intake", robotManager.waitForState(RobotState.WAIT_REMOVE_ALGAE_HIGH));
         NamedCommands.registerCommand("wait for prepare algae score", robotManager.waitForState(RobotState.PREPARE_SCORE_ALGAE));
-        NamedCommands.registerCommand("wait for algae score", robotManager.waitForState(RobotState.SCORE_ALGAE_WAIT));
         NamedCommands.registerCommand("wait for pre supercycle low algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_LOW_ALGAE));
         NamedCommands.registerCommand("wait for pre supercycle high algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_HIGH_ALGAE));
+        NamedCommands.registerCommand("wait until has algae", Commands.waitUntil(() -> ManipulatorSubsystem.getInstance().hasAlgae()));
         
 
         autoChooser = AutoBuilder.buildAutoChooser();

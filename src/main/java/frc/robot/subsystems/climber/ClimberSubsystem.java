@@ -13,7 +13,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import dev.doglog.DogLog;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
 
@@ -53,14 +52,14 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
     return MathUtil.isNear(ClimberPositions.DEPLOYED, climberPosition, 0.04);
   }
 
-  public void setDeployConfig() {
-    left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
-    left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
-    right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
-    right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
-    lMotor.getConfigurator().apply(left_motor_config);
-    rMotor.getConfigurator().apply(right_motor_config);
-  }
+  // public void setDeployConfig() {
+  //   left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
+  //   left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
+  //   right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.DeployMotionMagicCruiseVelocity;
+  //   right_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.DeployMotionMagicAcceleration;
+  //   lMotor.getConfigurator().apply(left_motor_config);
+  //   rMotor.getConfigurator().apply(right_motor_config);
+  // }
   public void setRetractConfig() {
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ClimberConstants.RetractMotionMagicCruiseVelocity;
     left_motor_config.MotionMagic.MotionMagicAcceleration = ClimberConstants.RetractMotionMagicAcceleration;

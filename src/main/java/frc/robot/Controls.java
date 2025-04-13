@@ -60,6 +60,7 @@ public class Controls {
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
         operator.POV90().onTrue(Robot.robotCommands.cycleModeCommand());
+        operator.leftStick().onTrue(Robot.robotCommands.failsafeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2MultiCommand());
