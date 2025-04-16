@@ -19,6 +19,7 @@ import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightState;
 import frc.robot.vision.LimelightSubsystem;
+
 import java.util.Optional;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -138,7 +139,7 @@ public class Robot extends TimedRobot{
     
     @Override
     public void autonomousInit() {
-        
+
         if (autoChooser.getSelected() != null)
             autoChooser.getSelected().schedule();
             DogLog.log("Selected Auto", autoChooser.getSelected().getName());
