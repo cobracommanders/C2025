@@ -32,8 +32,8 @@ public class RollerSubsystem extends StateMachine<RollerState>{
 
     @Override
     public void collectInputs(){
-      rollerStatorCurrent = rollerMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Intake Roller Motor Stator Current", rollerStatorCurrent);
+      //rollerStatorCurrent = rollerMotor.getStatorCurrent().getValueAsDouble();
+      //DogLog.log(getName() + "/Intake Roller Motor Stator Current", rollerStatorCurrent);
     }
   
     public void setState(RollerState newState) {

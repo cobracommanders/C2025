@@ -258,7 +258,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
 
   @Override
   public void collectInputs(){
-    absolutePosition = elevatorEncoder.getPosition().getValueAsDouble();
+    //absolutePosition = elevatorEncoder.getPosition().getValueAsDouble();
     elevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double leftElevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double rightElevatorPosition = rightMotor.getPosition().getValueAsDouble();

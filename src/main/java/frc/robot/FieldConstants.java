@@ -117,8 +117,8 @@ public final class FieldConstants {
   }
 
   public boolean isNearHighAlgae() {
-    if (getNearestAlgae() == algaePosesBlue[1] || getNearestAlgae() == algaePosesBlue[3] || getNearestAlgae() == algaePosesBlue[5] ||
-        getNearestAlgae() == algaePosesRed[1] || getNearestAlgae() == algaePosesRed[3] || getNearestAlgae() == algaePosesRed[5]) {
+    if (getNearestAlgae().equals(algaePosesBlue[1]) || getNearestAlgae().equals(algaePosesBlue[3]) || getNearestAlgae().equals(algaePosesBlue[5]) ||
+        getNearestAlgae().equals(algaePosesRed[1]) || getNearestAlgae().equals(algaePosesRed[3]) || getNearestAlgae().equals(algaePosesRed[5])) {
       return true;
     } else {
       return false;

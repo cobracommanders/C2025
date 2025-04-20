@@ -181,7 +181,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.35
+                              "waitTime": 0.25
                             }
                           },
                           {
@@ -218,12 +218,6 @@
                       "data": {
                         "commands": [
                           {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.1
-                            }
-                          },
-                          {
                             "type": "race",
                             "data": {
                               "commands": [
@@ -236,7 +230,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.3
                                   }
                                 }
                               ]
@@ -268,7 +262,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Barge to JI "
+                        "pathName": "Barge to EF"
                       }
                     },
                     {
@@ -313,7 +307,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "JI to Barge"
+                        "pathName": "EF to Leave Line"
                       }
                     },
                     {
@@ -323,110 +317,26 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.25
+                              "waitTime": 0.2
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "remove height cap"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "wait for algae score"
-                }
-              },
-              {
-                "type": "parallel",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 0.1
+                              "name": "processor"
                             }
                           },
                           {
-                            "type": "race",
+                            "type": "parallel",
                             "data": {
                               "commands": [
                                 {
                                   "type": "named",
                                   "data": {
-                                    "name": "score"
-                                  }
-                                },
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 1.0
+                                    "name": "enable regular cycle"
                                   }
                                 }
                               ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Algae Score Processor Back Up"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "apply height cap"
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "set coral mode"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "enable regular cycle"
                             }
                           }
                         ]

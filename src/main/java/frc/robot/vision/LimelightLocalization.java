@@ -68,7 +68,7 @@ public class LimelightLocalization{
 
   public AlignmentState getBargeAlignmentState(){
     double tolerance = 0.25;
-    double bargeOffset = 0.775;
+    double bargeOffset = 0.525;
     if (tagCountMiddle == 0) {
       return AlignmentState.INVALID;
     }

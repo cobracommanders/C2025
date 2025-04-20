@@ -69,9 +69,9 @@ public class IntakeSubsystem extends StateMachine<IntakeState>{
   @Override
   public void collectInputs() {
     intakePosition = intakeMotor.getPosition().getValueAsDouble();
-    motorCurrent = intakeMotor.getStatorCurrent().getValueAsDouble();
+    //motorCurrent = intakeMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(getName() + "/Intake Position", intakePosition);
-    DogLog.log(getName() + "/Intake current", motorCurrent);
+    //DogLog.log(getName() + "/Intake current", motorCurrent);
     DogLog.log(getName() + "/Intake AtGoal", atGoal());
   }
 

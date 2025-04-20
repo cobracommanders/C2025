@@ -155,7 +155,7 @@ public class WristSubsystem extends StateMachine<WristState>{
         wristMotor.getConfigurator().apply(motor_config);
         brakeModeEnabled = true;
       }
-      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
+      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(0.5) && !isSynced) {
         syncEncoder();
         isSynced = true;
       }

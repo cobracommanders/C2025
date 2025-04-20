@@ -289,6 +289,12 @@
                       "data": {
                         "name": "wait until has algae"
                       }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.2
+                      }
                     }
                   ]
                 }

@@ -191,6 +191,11 @@ public class RobotCommands {
       .andThen(robot.waitForState(RobotState.DEEP_CLIMB_WAIT));
   }
 
+  public Command failsafeClimbCommand() {
+    return Commands.runOnce(robot::failsafeClimbRequest, requirements)
+    .andThen(robot.waitForState(RobotState.FAILSAFE_DEEP_CLIMB_WAIT));
+}
+
   public Command climbUnwindCommand() {
     return new ConditionalCommand(Commands.runOnce(robot::climbUnwindRequest), climbCommand(), () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
   }
@@ -204,6 +209,12 @@ public class RobotCommands {
     climbCommand(), 
     () -> (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_WAIT) || (RobotManager.getInstance().getState() == RobotState.DEEP_CLIMB_RETRACT));
   }
+
+  public Command failsafeClimbRetractCommand() {
+    return Commands.runOnce(robot::failsafeClimbRetractRequest, requirements)
+    .andThen(robot.waitForState(RobotState.FAILSAFE_DEEP_CLIMB_WAIT));
+  }
+
 
   public Command removeHeightCapCommand() {
     return Commands.runOnce(robot::removeHeightCapRequest);
@@ -304,7 +315,7 @@ public class RobotCommands {
   public Command autoReefAlign(){
     return new ConditionalCommand(Commands.runOnce(robot::autoReefAlignRequest, CommandSwerveDrivetrain.getInstance())
     .andThen(Commands.waitUntil(()-> DrivetrainSubsystem.getInstance().getState() == DrivetrainState.AUTO || DrivetrainSubsystem.getInstance().getState() == DrivetrainState.TELEOP))
-    .andThen(new ConditionalCommand(scoreCommand(), none(), () -> RobotManager.getInstance().getState() == RobotState.WAIT_L2 || RobotManager.getInstance().getState() == RobotState.WAIT_L3 || RobotManager.getInstance().getState() == RobotState.WAIT_L4))
+    .andThen(new ConditionalCommand(scoreCommand(), none(), () -> RobotManager.getInstance().getState() == RobotState.WAIT_L2 || RobotManager.getInstance().getState() == RobotState.WAIT_L3))
     ,none()
     ,() ->  DriverStation.isAutonomous() || CommandSwerveDrivetrain.getInstance().isNear(LimelightLocalization.getInstance().getAdjustedBranchPose(), 0.75));
   }

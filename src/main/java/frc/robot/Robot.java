@@ -56,8 +56,10 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("L2", Robot.robotCommands.L2Command());
         NamedCommands.registerCommand("L3", Robot.robotCommands.L3Command());
         NamedCommands.registerCommand("L4", Robot.robotCommands.L4Command());
+        NamedCommands.registerCommand("processor", Robot.robotCommands.setProcessorCommand());
         NamedCommands.registerCommand("wait for inverted idle", robotManager.waitForState(RobotState.INVERTED_IDLE));
         NamedCommands.registerCommand("wait for idle", robotManager.waitForState(RobotState.IDLE));
+        NamedCommands.registerCommand("wait for prepare idle", robotManager.waitForState(RobotState.PREPARE_IDLE));
         NamedCommands.registerCommand("wait for prepare inverted idle", robotManager.waitForState(RobotState.PREPARE_INVERTED_IDLE));
         NamedCommands.registerCommand("wait for post intake", robotManager.waitForState(RobotState.POST_INVERTED_CORAL_STATION_INTAKE));
         NamedCommands.registerCommand("wait for L4", robotManager.waitForState(RobotState.WAIT_L4));
@@ -85,6 +87,7 @@ public class Robot extends TimedRobot{
         NamedCommands.registerCommand("wait for prepare algae score", robotManager.waitForState(RobotState.PREPARE_SCORE_ALGAE));
         NamedCommands.registerCommand("wait for pre supercycle low algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_LOW_ALGAE));
         NamedCommands.registerCommand("wait for pre supercycle high algae", robotManager.waitForState(RobotState.PRE_SUPERCYCLE_HIGH_ALGAE));
+        NamedCommands.registerCommand("wait for processor score", robotManager.waitForState(RobotState.WAIT_PROCESSOR));
         NamedCommands.registerCommand("wait until has algae", Commands.waitUntil(() -> ManipulatorSubsystem.getInstance().hasAlgae()));
         
 

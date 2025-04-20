@@ -44,6 +44,7 @@ public class Controls {
         // driver.B().onFalse(runOnce(() -> ClimberSubsystem.getInstance().setState(ClimberState.IDLE)).andThen(runOnce(() -> ClimberWheelSubsystem.getInstance().setState(ClimberWheelState.IDLE))));
         
         driver.B().onTrue(Robot.robotCommands.climbRetractCommand());
+        driver.Y().onTrue(Robot.robotCommands.failsafeClimbRetractCommand());
         driver.X().onTrue(Robot.robotCommands.algaeScoreSwapCommand());
         // driver.Y().onTrue(Robot.robotCommands.climbUnwindCommand());
         driver.POV0().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
@@ -60,12 +61,12 @@ public class Controls {
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
         operator.POV90().onTrue(Robot.robotCommands.cycleModeCommand());
-        operator.leftStick().onTrue(Robot.robotCommands.failsafeCommand());
         operator.Y().onTrue(Robot.robotCommands.LowReefCommand());
         operator.B().onTrue(Robot.robotCommands.HighReefCommand());
         operator.X().onTrue(Robot.robotCommands.L2MultiCommand());
         operator.A().onTrue(Robot.robotCommands.ProcessorCommand());
         operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
+        operator.rightStick().onTrue(Robot.robotCommands.failsafeClimbCommand());
     }
 
     private static Controls instance;

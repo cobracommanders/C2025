@@ -236,7 +236,7 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.6
                                   }
                                 }
                               ]
@@ -262,19 +262,44 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "idle"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "wait for idle"
+                }
+              },
+              {
                 "type": "parallel",
                 "data": {
                   "commands": [
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "Barge to JI "
+                        "pathName": "Algae Steal FE"
                       }
                     },
                     {
-                      "type": "named",
+                      "type": "sequential",
                       "data": {
-                        "name": "high algae intake"
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 1.2
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "high algae intake"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -313,7 +338,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "JI to Barge"
+                        "pathName": "Stolen FE to Barge"
                       }
                     },
                     {
@@ -323,7 +348,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 0.25
+                              "waitTime": 0.35
                             }
                           },
                           {
@@ -378,55 +403,10 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.6
                                   }
                                 }
                               ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Algae Score Processor Back Up"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "apply height cap"
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "set coral mode"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "enable regular cycle"
                             }
                           }
                         ]

@@ -38,10 +38,10 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
 
     @Override
     public void collectInputs(){
-      climberWheelSpeed = climberWheelMotor.get();
+      //climberWheelSpeed = climberWheelMotor.get();
       climberWheelStatorCurrent = climberWheelMotor.getStatorCurrent().getValueAsDouble();
       DogLog.log(getName() + "/Climber wheel motor stator Current", climberWheelStatorCurrent);
-      DogLog.log(getName() + "/Climber wheel motor speed", climberWheelSpeed);
+      //DogLog.log(getName() + "/Climber wheel motor speed", climberWheelSpeed);
     }
 
     public boolean hasCage(){

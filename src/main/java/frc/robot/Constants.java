@@ -12,8 +12,8 @@ public static final class ClimberConstants{
   public static final double G = 0;
   public static final double DeployMotionMagicAcceleration = 100; //100
   public static final double DeployMotionMagicCruiseVelocity = 250; //250
-  public static final double RetractMotionMagicAcceleration = 0.2;
-  public static final double RetractMotionMagicCruiseVelocity = 0.2;
+  public static final double RetractMotionMagicAcceleration = 0.44;
+  public static final double RetractMotionMagicCruiseVelocity = 0.44;
   public static final double MotionMagicJerk = 200;
 }
 
@@ -63,12 +63,12 @@ public static final class IntakeConstants{
 }
 
 public static final class ManipulatorConstants{
-  public static final double coralStallCurrent = 25;
+  public static final double coralStallCurrent = 20;
   public static final double algaeStallCurrent = 85;
 }
 
 public static final class ClimberWheelConstants{
-  public static final double cageStallCurrent = 47;
+  public static final double cageStallCurrent = 60;
 }
 
 
