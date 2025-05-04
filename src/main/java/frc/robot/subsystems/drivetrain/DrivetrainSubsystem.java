@@ -76,7 +76,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
 
   public DrivetrainSubsystem() {
     super(DrivetrainState.TELEOP);
-    crescendoModeEnabled = true;
+    crescendoModeEnabled = false;
     LimelightSubsystem.getInstance();
     drivetrain = CommandSwerveDrivetrain.getInstance();
     driveToAngle.HeadingController.setPID(6, 0, 0);
