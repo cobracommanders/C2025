@@ -15,9 +15,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.FieldConstants;
+import frc.robot.FmsSubsystem;
 import frc.robot.Robot;
 import frc.robot.StateMachine;
 import frc.robot.commands.RobotManager;
+import frc.robot.drivers.Xbox;
 import frc.robot.vision.AlignmentState;
 import frc.robot.vision.LimelightLocalization;
 import frc.robot.vision.LimelightState;
@@ -48,6 +50,9 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
   private Pose2d targetAlgaePose;
   private SwerveDriveState drivetrainState = new SwerveDriveState();
   private double goalSnapAngle = 0;
+  private double leftY;
+  private double leftX;
+  private double rightX;
   // private boolean hasAppliedOperatorPerspective = false;
   // private Rotation2d operatorPerspective;
 
@@ -200,13 +205,16 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
 
   @Override
   protected void collectInputs() {
+    leftY = Robot.controls.driver.leftY();
+    leftX = Robot.controls.driver.leftX();
+    rightX = Robot.controls.driver.rightX();
   
     limelightLocalization.update();
     drivetrainState = drivetrain.getState();
     teleopSpeeds = new ChassisSpeeds(
-      -Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * MaxSpeed, 
-      -Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * MaxSpeed, 
-      Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * MaxAngularRate);
+      -leftY * leftY * leftY * MaxSpeed, 
+      -leftX * leftX * leftX * MaxSpeed, 
+      rightX * rightX * rightX * MaxAngularRate);
 
     boolean isSlow = false;
     if (!RobotManager.getInstance().isHeightCapped) {
@@ -352,7 +360,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
             .withVelocityX(teleopSpeeds.vxMetersPerSecond)
             .withVelocityY(teleopSpeeds.vyMetersPerSecond)
             .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
-            .withTargetDirection((Robot.alliance.get() == Alliance.Red) ? targetReefPose.getRotation().plus(Rotation2d.fromDegrees(180)) : targetReefPose.getRotation()) 
+            .withTargetDirection(FmsSubsystem.isRedAlliance() ? targetReefPose.getRotation().plus(Rotation2d.fromDegrees(180)) : targetReefPose.getRotation()) 
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage));
         }
 

@@ -32,8 +32,6 @@ public class Robot extends TimedRobot{
 
     public static RobotManager robotManager = RobotManager.getInstance();
     public static RobotCommands robotCommands = new RobotCommands();
-
-    public static Optional<Alliance> alliance = Optional.empty();
     public static final Controls controls = new Controls();
 
     private SendableChooser<Command> autoChooser;
@@ -103,9 +101,6 @@ public class Robot extends TimedRobot{
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         SmartDashboard.putData(autoChooser);
-        if (alliance.isEmpty()) {
-            alliance = DriverStation.getAlliance();
-        }
         DogLog.log("Robot/Is autonomous", DriverStation.isAutonomous());
         DogLog.log("Robot/Is disabled", DriverStation.isDisabled());
         DogLog.log("Robot/Is teleop", DriverStation.isTeleop());
@@ -115,7 +110,6 @@ public class Robot extends TimedRobot{
     @Override
     public void disabledPeriodic() {
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
-        alliance = DriverStation.getAlliance();
     }
 
 

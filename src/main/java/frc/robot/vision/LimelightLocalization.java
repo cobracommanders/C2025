@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.FieldConstants;
+import frc.robot.FmsSubsystem;
 import frc.robot.Robot;
 
 public class LimelightLocalization{
@@ -171,7 +172,7 @@ public class LimelightLocalization{
   }
 
   public double getBargeSnapAngle() {
-    if (Robot.alliance.get() == Alliance.Blue) {
+    if (!FmsSubsystem.isRedAlliance()) {
       if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees()), 180, 90)) {
         return 180;
       } else {
@@ -187,22 +188,25 @@ public class LimelightLocalization{
   }
 
   public void collectInputs(){
-    limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
-    limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
-    limelightTXRight = LimelightHelpers.getTX("limelight-right");
-    limelightTARight = LimelightHelpers.getTA("limelight-right");
-    limelightTXLeft = LimelightHelpers.getTX("limelight-left");
-    limelightTALeft= LimelightHelpers.getTA("limelight-left");
-    limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
-    limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
-    limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
-    robotOffsetForBarge = CommandSwerveDrivetrain.getInstance().getState().Pose.getX() - FieldConstants.getInstance().blueBargeCoordinate;
-    tagCountMiddle = LimelightHelpers.getTargetCount("limelight-middle");
-     DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
-     DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
-     DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
-     DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
-     DogLog.log("LimelightLocalization/Robot Offset for Barge", robotOffsetForBarge);
+    // var leftResults = LimelightHelpers.getLatestResults("limelight-left");
+    // var middleResults = LimelightHelpers.getLatestResults("limelight-middle");
+    // var rightResults = LimelightHelpers.getLatestResults("limelight-right");
+    // limelightTXMiddle = LimelightHelpers.getTX("limelight-middle");
+    // limelightTAMiddle = LimelightHelpers.getTA("limelight-middle");
+    // limelightTXRight = LimelightHelpers.getTX("limelight-right");
+    // limelightTARight = LimelightHelpers.getTA("limelight-right");
+    // limelightTXLeft = LimelightHelpers.getTX("limelight-left");
+    // limelightTALeft= LimelightHelpers.getTA("limelight-left");
+    // limelightTagIDMiddle = (int)LimelightHelpers.getFiducialID("limelight-middle");
+    // limelightTagIDRight = (int)LimelightHelpers.getFiducialID("limelight-right");
+    // limelightTagIDLeft = (int)LimelightHelpers.getFiducialID("limelight-left");
+    //robotOffsetForBarge = CommandSwerveDrivetrain.getInstance().getState().Pose.getX() - FieldConstants.getInstance().blueBargeCoordinate;
+    //tagCountMiddle = LimelightHelpers.getTargetCount("limelight-middle");
+    //  DogLog.log("LimelightLocalization/Middle Limelight TX", limelightTXMiddle);
+    //  DogLog.log("LimelightLocalization/Middle Limelight TA", limelightTAMiddle);
+    //  DogLog.log("LimelightLocalization/Right Limelight TX", limelightTXRight);
+    //  DogLog.log("LimelightLocalization/Right Limelight TA", limelightTARight);
+    //  DogLog.log("LimelightLocalization/Robot Offset for Barge", robotOffsetForBarge);
   }
 
   public void update(){

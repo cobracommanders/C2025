@@ -22,7 +22,7 @@ public class Controls {
     }
 
     public void configureDriverCommands() {
-        driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(Robot.alliance.get())));
+        driver.A().onTrue(runOnce(() -> CommandSwerveDrivetrain.getInstance().setYaw(FmsSubsystem.isRedAlliance())));
         driver.leftTrigger().onTrue(Robot.robotCommands.intakeCommand());
             driver.leftTrigger().onFalse(Robot.robotCommands.intakeIdleCommand());
         driver.rightBumper().onTrue(Robot.robotCommands.autoAlignCommand());

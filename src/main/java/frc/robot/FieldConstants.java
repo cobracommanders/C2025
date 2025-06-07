@@ -94,13 +94,13 @@ public final class FieldConstants {
   public double bargeCoordinate = 8.775;
 
   public Pose2d[] getCoralStationPoses() {
-    return Robot.alliance.get() == Alliance.Red ? coralStationPosesRed : coralStationPosesBlue;
+    return FmsSubsystem.isRedAlliance() ? coralStationPosesRed : coralStationPosesBlue;
   }
   public Pose2d[] getReefPoses(){
-    return Robot.alliance.get() == Alliance.Red ? branchPosesRed : branchPosesBlue;
+    return FmsSubsystem.isRedAlliance() ? branchPosesRed : branchPosesBlue;
   }
   public Pose2d[] getAlgaePoses() {
-    return Robot.alliance.get() == Alliance.Red ? algaePosesRed : algaePosesBlue;
+    return FmsSubsystem.isRedAlliance() ? algaePosesRed : algaePosesBlue;
   }
 
   public Pose2d getNearestBranch() {
