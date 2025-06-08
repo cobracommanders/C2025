@@ -14,6 +14,7 @@ import frc.robot.commands.RobotMode;
 
 
 public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
+  private final String name = getName();
     public final TalonFX manipulatorMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
     private double manipulatorStatorCurrent;
@@ -36,7 +37,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     public void collectInputs(){
       manipulatorStatorCurrent = manipulatorMotor.getStatorCurrent().getValueAsDouble();
       setAlgaeScoreSpeed();
-      DogLog.log(getName() + "/Motor Stator Current", manipulatorStatorCurrent);
+      DogLog.log(name + "/Motor Stator Current", manipulatorStatorCurrent);
     }
   
     public void setState(ManipulatorState newState) {
@@ -68,7 +69,7 @@ public class ManipulatorSubsystem extends StateMachine<ManipulatorState>{
     }
   
     public void setManipulatorSpeeds(double manipulatorSpeed){
-      DogLog.log(getName() + "/Manipulator speed", manipulatorSpeed);
+      DogLog.log(name + "/Manipulator speed", manipulatorSpeed);
       manipulatorMotor.set(manipulatorSpeed);
     }
   

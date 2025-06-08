@@ -21,40 +21,32 @@ import frc.robot.commands.RobotMode;
 import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.StateMachine;
-import frc.robot.commands.RobotManager;
-import frc.robot.commands.RobotState;
 
 public class ElevatorSubsystem extends StateMachine<ElevatorState>{
+  private final String name = getName();
   private final TalonFX leftMotor;
   private final TalonFX rightMotor;
   private final CANcoder elevatorEncoder;
   private final TalonFXConfiguration left_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private final TalonFXConfiguration right_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElevatorConstants.P).withKI(ElevatorConstants.I).withKD(ElevatorConstants.D).withKG(ElevatorConstants.G).withGravityType(GravityTypeValue.Elevator_Static)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((4.0 / 1.0)));
   private CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
-  private double absolutePosition;
   private double elevatorPosition;
-  private double leftElevatorPosition;
-  private double leftMotorPosition;
-  private double rightMotorPosition;
   private double motorCurrent;
-  private boolean isSynced;
   private final double tolerance;
   private Follower right_motor_request = new Follower(Ports.ElevatorPorts.LMOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
-  private boolean preMatchHomingOccured = false;
   
 
   public ElevatorSubsystem() {
     super(ElevatorState.HOME_ELEVATOR);
     elevatorEncoder = new CANcoder(Ports.ElevatorPorts.ENCODER);
-    isSynced = false;
     right_motor_config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     left_motor_config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     left_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
     left_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     right_motor_config.MotionMagic.MotionMagicCruiseVelocity = ElevatorConstants.MotionMagicCruiseVelocity;
-    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
     right_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     leftMotor = new TalonFX(Ports.ElevatorPorts.LMOTOR);
     rightMotor = new TalonFX(Ports.ElevatorPorts.RMOTOR);
@@ -68,25 +60,14 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     elevatorEncoder.getConfigurator().apply(canCoderConfig);
     tolerance = 0.1;
   }
-  public void setTeleopConfig() {
-    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
-    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
-    leftMotor.getConfigurator().apply(left_motor_config);
-    rightMotor.getConfigurator().apply(right_motor_config);
-  }
-  public void setAutoConfig() {
-    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
-    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
-    leftMotor.getConfigurator().apply(left_motor_config);
-    rightMotor.getConfigurator().apply(right_motor_config);
-  }
+
   protected ElevatorState getNextState(ElevatorState currentState) {
-    if (getState() == ElevatorState.HOME_ELEVATOR && this.atGoal()) { 
-      leftMotor.setPosition(0);
-      return ElevatorState.IDLE;
-    } else {  
+    // if (getState() == ElevatorState.HOME_ELEVATOR && this.atGoal()) { 
+    //   leftMotor.setPosition(0);
+    //   return ElevatorState.IDLE;
+    // } else {  
       return currentState;
-    }
+    //}
   }
 
   public void setL1Row() {
@@ -263,30 +244,30 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     double leftElevatorPosition = leftMotor.getPosition().getValueAsDouble();
     double rightElevatorPosition = rightMotor.getPosition().getValueAsDouble();
     motorCurrent = leftMotor.getStatorCurrent().getValueAsDouble();
-    DogLog.log(getName() + "/Left Elevator Position", leftElevatorPosition);
-    DogLog.log(getName() + "/Right Elevator Position", rightElevatorPosition);
-    DogLog.log(getName() + "/Elevator Current", leftMotor.getStatorCurrent().getValueAsDouble());
-    DogLog.log(getName() + "/left motor voltage", leftMotor.getMotorVoltage().getValueAsDouble());
-    DogLog.log(getName() + "/right Motor voltage", rightMotor.getMotorVoltage().getValueAsDouble());
+    DogLog.log(name + "/Left Elevator Position", leftElevatorPosition);
+    DogLog.log(name + "/Right Elevator Position", rightElevatorPosition);
+    //DogLog.log(getName() + "/Elevator Current", leftMotor.getStatorCurrent().getValueAsDouble());
+    //DogLog.log(getName() + "/left motor voltage", leftMotor.getMotorVoltage().getValueAsDouble());
+    //DogLog.log(getName() + "/right Motor voltage", rightMotor.getMotorVoltage().getValueAsDouble());
   }
 
-  @Override
-  public void periodic() {
-      super.periodic();
+  // @Override
+  // public void periodic() {
+  //     super.periodic();
 
-      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
-        // syncEncoder();
-        isSynced = true;
-      }
-      else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
-        isSynced = false;
-      }
-  }
+  //     // if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(1) && !isSynced) {
+  //     //   // syncEncoder();
+  //     //   isSynced = true;
+  //     // }
+  //     // else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
+  //     //   isSynced = false;
+  //     // }
+  // }
 
   public void setElevatorPosition(double elevatorSetpoint){
     rightMotor.setControl(right_motor_request);
     leftMotor.setControl(left_motor_request.withPosition(elevatorSetpoint));
-    DogLog.log(getName() + "/right Motor Setpoint", elevatorSetpoint);
+    DogLog.log(name + "/right Motor Setpoint", elevatorSetpoint);
   }
 
     @Override

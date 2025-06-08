@@ -16,7 +16,7 @@ import frc.robot.Ports;
 import frc.robot.StateMachine;
 
 public class IntakeSubsystem extends StateMachine<IntakeState>{
-    
+  private final String name = getName();
   private final TalonFX intakeMotor;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(IntakeConstants.P).withKI(IntakeConstants.I).withKD(IntakeConstants.D).withKG(IntakeConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((8.5714 / 1.0)));
   private double intakePosition;
@@ -70,9 +70,9 @@ public class IntakeSubsystem extends StateMachine<IntakeState>{
   public void collectInputs() {
     intakePosition = intakeMotor.getPosition().getValueAsDouble();
     //motorCurrent = intakeMotor.getStatorCurrent().getValueAsDouble();
-    DogLog.log(getName() + "/Intake Position", intakePosition);
+    DogLog.log(name + "/Intake Position", intakePosition);
     //DogLog.log(getName() + "/Intake current", motorCurrent);
-    DogLog.log(getName() + "/Intake AtGoal", atGoal());
+    DogLog.log(name + "/Intake AtGoal", atGoal());
   }
 
   @Override
@@ -93,7 +93,7 @@ public class IntakeSubsystem extends StateMachine<IntakeState>{
 
   public void setIntakePosition(double position) {
     intakeMotor.setControl(motor_request.withPosition(position));
-    DogLog.log(getName() + "/Elbow Setpoint", position);
+    DogLog.log(name + "/Elbow Setpoint", position);
   }
 
     @Override

@@ -8,6 +8,7 @@ import frc.robot.StateMachine;
 
 
 public class LimelightSubsystem extends StateMachine<LimelightState>{
+  private final String name = getName();
    NetworkTable leftLimelightTable = NetworkTableInstance.getDefault().getTable("left-limelight");
    NetworkTable rightLimelightTable = NetworkTableInstance.getDefault().getTable("right-limelight");
    NetworkTable middleLimelightTable = NetworkTableInstance.getDefault().getTable("middle-limelight");
@@ -32,9 +33,9 @@ public class LimelightSubsystem extends StateMachine<LimelightState>{
     @Override
     public void collectInputs(){
       limelightLocalization.collectInputs();
-        DogLog.log(getName() + "/left camera reject data", limelightLocalization.rejectLeftData);
-        DogLog.log(getName() + "/right camera reject data", limelightLocalization.rejectRightData);
-        DogLog.log(getName() + "/middle camera reject data", limelightLocalization.rejectMiddleData);
+        DogLog.log(name + "/left camera reject data", limelightLocalization.rejectLeftData);
+        DogLog.log(name + "/right camera reject data", limelightLocalization.rejectRightData);
+        DogLog.log(name + "/middle camera reject data", limelightLocalization.rejectMiddleData);
        }
     
     public void setState(LimelightState newState) {

@@ -17,7 +17,7 @@ import frc.robot.Ports;
 import frc.robot.StateMachine;
 
 public class ClimberSubsystem extends StateMachine<ClimberState>{
-    
+  private final String name = getName();
   private final TalonFX lMotor;
   private final TalonFX rMotor;
   private TalonFXConfiguration left_motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ClimberConstants.P).withKI(ClimberConstants.I).withKD(ClimberConstants.D).withKG(ClimberConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((122.449 / 1.0)));
@@ -104,7 +104,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   @Override
   public void periodic() {
     climberPosition = lMotor.getPosition().getValueAsDouble();
-    DogLog.log(getName() + "/Climber Position", climberPosition);
+    DogLog.log(name + "/Climber Position", climberPosition);
   }
 
   public boolean atGoal(){
@@ -119,7 +119,7 @@ public class ClimberSubsystem extends StateMachine<ClimberState>{
   public void setClimberPosition(double climberSetpoint){
     rMotor.setControl(right_motor_request);
     lMotor.setControl(left_motor_request.withPosition(climberSetpoint));
-    DogLog.log(getName() + "/Left motor setpoint", climberSetpoint);
+    DogLog.log(name + "/Left motor setpoint", climberSetpoint);
   }
 
   private static ClimberSubsystem instance;

@@ -19,6 +19,7 @@ import frc.robot.commands.RobotMode;
 public class ElbowSubsystem extends StateMachine<ElbowState>{
     
   private final TalonFX motor;
+  private final String name = getName();
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(ElbowConstants.P).withKI(ElbowConstants.I).withKD(ElbowConstants.D).withKG(ElbowConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((52.381 / 1.0)));
   private double elbowPosition;
   private final double tolerance;
@@ -115,45 +116,45 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   public void collectInputs() {
     elbowPosition = motor.getPosition().getValueAsDouble();
     motorCurrent = motor.getStatorCurrent().getValueAsDouble();
-    DogLog.log(getName() + "/Elbow Position", elbowPosition);
-    DogLog.log(getName() + "/Elbow current", motorCurrent);
-    DogLog.log(getName() + "/Elbow AtGoal", atGoal());
+    DogLog.log(name + "/Elbow Position", elbowPosition);
+    DogLog.log(name + "/Elbow current", motorCurrent);
+    DogLog.log(name + "/Elbow AtGoal", atGoal());
   }
 
   @Override
   public void periodic() {
     super.periodic();
 
-    if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      motor.getConfigurator().apply(motor_config);
-      brakeModeEnabled = false;
-      }
-    else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
-      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      motor.getConfigurator().apply(motor_config);
-      brakeModeEnabled = true;
-    }
+    // if (DriverStation.isDisabled() && brakeModeEnabled == true) {
+    //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    //   motor.getConfigurator().apply(motor_config);
+    //   brakeModeEnabled = false;
+    //   }
+    // else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
+    //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    //   motor.getConfigurator().apply(motor_config);
+    //   brakeModeEnabled = true;
+    // }
 
-     if (DriverStation.isDisabled()) {
-      if (lowestSeenHeight > elbowPosition) {
-        lowestSeenHeight = elbowPosition;
-        } else {
+    //  if (DriverStation.isDisabled()) {
+    //   if (lowestSeenHeight > elbowPosition) {
+    //     lowestSeenHeight = elbowPosition;
+    //     } else {
 
-        if (!preMatchHomingOccured) {
-            double homingEndPosition = 0;
-            double homedPosition = homingEndPosition + (elbowPosition - lowestSeenHeight);
-            motor.setPosition(homedPosition);
+    //     if (!preMatchHomingOccured) {
+    //         double homingEndPosition = 0;
+    //         double homedPosition = homingEndPosition + (elbowPosition - lowestSeenHeight);
+    //         motor.setPosition(homedPosition);
 
-            preMatchHomingOccured = true;
-          }
-        }
-      }
+    //         preMatchHomingOccured = true;
+    //       }
+        //}
+      //}
     }
 
   public void setElbowPosition(double position) {
     motor.setControl(motor_request.withPosition(position));
-    DogLog.log(getName() + "/Elbow Setpoint", position);
+    DogLog.log(name + "/Elbow Setpoint", position);
   }
 
     @Override

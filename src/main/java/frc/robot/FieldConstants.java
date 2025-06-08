@@ -104,15 +104,15 @@ public final class FieldConstants {
   }
 
   public Pose2d getNearestBranch() {
-      closestBranch = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(getReefPoses()));
+      closestBranch = DrivetrainSubsystem.getInstance().drivetrain.currentState.Pose.nearest(List.of(getReefPoses()));
       return closestBranch;
   }
   public Pose2d getNearestCoralStation() {
-      closestCoralStation = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(getCoralStationPoses()));
+      closestCoralStation = DrivetrainSubsystem.getInstance().drivetrain.currentState.Pose.nearest(List.of(getCoralStationPoses()));
       return closestCoralStation;
   }
   public Pose2d getNearestAlgae() {
-    closestAlgae = DrivetrainSubsystem.getInstance().drivetrain.getState().Pose.nearest(List.of(algaePoses));
+    closestAlgae = DrivetrainSubsystem.getInstance().drivetrain.currentState.Pose.nearest(List.of(algaePoses));
     return closestAlgae;
   }
 

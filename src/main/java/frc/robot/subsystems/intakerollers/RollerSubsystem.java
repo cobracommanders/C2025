@@ -12,6 +12,7 @@ import frc.robot.StateMachine;
 
 
 public class RollerSubsystem extends StateMachine<RollerState>{
+    private final String name = getName();
     public final TalonFX rollerMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
     private double rollerStatorCurrent;
@@ -41,7 +42,7 @@ public class RollerSubsystem extends StateMachine<RollerState>{
     }
   
     public void setRollerPositions(double rollerSpeed){
-      DogLog.log(getName() + "/Roller speed", rollerSpeed);
+      DogLog.log(name + "/Roller speed", rollerSpeed);
       rollerMotor.set(rollerSpeed);
     }
   

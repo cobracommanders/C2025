@@ -26,6 +26,7 @@ import frc.robot.vision.LimelightState;
 import frc.robot.vision.LimelightSubsystem;
 
 public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
+  private final String name = getName();
   private  double MaxSpeed = TunerConstants.kSpeedAt12Volts;
   private ChassisSpeeds teleopSpeeds = new ChassisSpeeds();
   private ChassisSpeeds autoSpeeds = new ChassisSpeeds();
@@ -210,7 +211,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     rightX = Robot.controls.driver.rightX();
   
     limelightLocalization.update();
-    drivetrainState = drivetrain.getState();
+    drivetrainState = drivetrain.currentState;
     teleopSpeeds = new ChassisSpeeds(
       -leftY * leftY * leftY * MaxSpeed, 
       -leftX * leftX * leftX * MaxSpeed, 
@@ -267,13 +268,13 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     snapReefAngle = LimelightLocalization.getInstance().getReefAngleFromTag();
     snapBargeAngle = LimelightLocalization.getInstance().getBargeSnapAngle();
     
-    DogLog.log(getName() + "/isSlow", isSlow);
-    DogLog.log(getName() + "/Reef Snap Angle", snapReefAngle);
-    DogLog.log(getName() + "/Coral Station Snap Angle", snapCoralStationAngle);
-    DogLog.log(getName() + "/teleopSpeeds", teleopSpeeds);
-    DogLog.log(getName() + "/robot pose", CommandSwerveDrivetrain.getInstance().getState().Pose);
-    DogLog.log(getName() + "/coralStationTag", coralStationTag);
-    DogLog.log(getName() + "/target reef pose", targetReefPose);
+    DogLog.log(name + "/isSlow", isSlow);
+    DogLog.log(name + "/Reef Snap Angle", snapReefAngle);
+    DogLog.log(name + "/Coral Station Snap Angle", snapCoralStationAngle);
+    DogLog.log(name + "/teleopSpeeds", teleopSpeeds);
+    DogLog.log(name + "/robot pose", CommandSwerveDrivetrain.getInstance().currentState.Pose);
+    DogLog.log(name + "/coralStationTag", coralStationTag);
+    DogLog.log(name + "/target reef pose", targetReefPose);
   }
   @Override
   public void periodic() {
@@ -378,7 +379,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
       }
 
       case AUTO_CORAL_STATION_ALIGN_2 -> {
-        if (!MathUtil.isNear(snapCoralStationAngle, CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 3)) {
+        if (!MathUtil.isNear(snapCoralStationAngle, CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees(), 3)) {
           drivetrain.setControl(
             driveToAngle
               .withVelocityX(autoSpeeds.vxMetersPerSecond)
@@ -420,7 +421,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
         }
         
       case AUTO_REEF_ALIGN_2 -> {
-        if (!MathUtil.isNear(snapReefAngle, CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 3)) {
+        if (!MathUtil.isNear(snapReefAngle, CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees(), 3)) {
           drivetrain.setControl(
             driveToAngle
               .withVelocityX(autoSpeeds.vxMetersPerSecond)

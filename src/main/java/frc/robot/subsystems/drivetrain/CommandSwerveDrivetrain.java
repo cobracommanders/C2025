@@ -32,6 +32,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private static final double kSimLoopPeriod = 0.005;
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
+    public SwerveDriveState currentState = getState();
     private Field2d field = new Field2d();
     public SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private PIDController xController = new PIDController(5.0, 0, 0);
@@ -95,8 +96,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public ChassisSpeeds driveToPoseSpeeds(Pose2d pose) {
-        double xSpeed = xController.calculate(getState().Pose.getX(), pose.getX());
-        double ySpeed = yController.calculate(getState().Pose.getY(), pose.getY());
+        double xSpeed = xController.calculate(currentState.Pose.getX(), pose.getX());
+        double ySpeed = yController.calculate(currentState.Pose.getY(), pose.getY());
         return new ChassisSpeeds(xSpeed, ySpeed, 0);
     }
 
@@ -123,25 +124,26 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     public boolean isMoving() {
-        return (Math.abs(this.getState().Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.getState().Speeds.omegaRadiansPerSecond) >= 0.5);
+        return (Math.abs(this.currentState.Speeds.vxMetersPerSecond) >= 1 || Math.abs(this.currentState.Speeds.vyMetersPerSecond) >= 1 || Math.abs(this.currentState.Speeds.omegaRadiansPerSecond) >= 0.5);
     }
 
     public boolean isNear(Pose2d pose) {
-        Pose2d robotPose = getState().Pose;
+        Pose2d robotPose = currentState.Pose;
         return MathUtil.isNear(robotPose.getX(), pose.getX(), 0.03) && MathUtil.isNear(robotPose.getY(), pose.getY(), 0.03);
     }
 
     public boolean isNear(Pose2d pose, double tolerance) {
-        Pose2d robotPose = getState().Pose;
+        Pose2d robotPose = currentState.Pose;
         return MathUtil.isNear(robotPose.getX(), pose.getX(), tolerance) && MathUtil.isNear(robotPose.getY(), pose.getY(), tolerance);
     }
 
-    public void update() {
-        field.setRobotPose(this.getState().Pose);
+    public void update(){
+        currentState = getState();
+        field.setRobotPose(this.currentState.Pose);
         SmartDashboard.putData(field);
-        DogLog.log("heading", this.getState().Pose.getRotation().getDegrees());
-        DogLog.log("robot speed", this.getState().Speeds.vxMetersPerSecond);
-        DogLog.log("robot speed", this.getState().Speeds.vyMetersPerSecond);
+        DogLog.log("heading", this.currentState.Pose.getRotation().getDegrees());
+        //DogLog.log("robot speed", this.getState().Speeds.vxMetersPerSecond);
+        //DogLog.log("robot speed", this.getState().Speeds.vyMetersPerSecond);
         DogLog.log("has applied operator prespective", hasAppliedOperatorPerspective);
         /* Periodically try to apply the operator perspective */
         /* If we haven't applied the operator perspective before, then we should apply it regardless of DS state */

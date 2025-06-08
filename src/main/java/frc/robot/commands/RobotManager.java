@@ -31,6 +31,7 @@ import frc.robot.subsystems.intake.IntakeState;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 
 public class RobotManager extends StateMachine<RobotState> {
+  private final String name = getName();
   public final ElevatorSubsystem elevator;
   public final ClimberSubsystem climber;
   public final ClimberWheelSubsystem climberwheels;
@@ -676,8 +677,8 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
     }
-    DogLog.log(getName() + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
-    DogLog.log(getName() + "/isCoralMode", this.currentGameMode == GameMode.CORAL);
+    DogLog.log(name + "/AtGoal", elevator.atGoal() && elbow.atGoal() && wrist.atGoal());
+    DogLog.log(name + "/isCoralMode", this.currentGameMode == GameMode.CORAL);
     flags.clear();
     return nextState;
   };
@@ -1240,8 +1241,8 @@ public class RobotManager extends StateMachine<RobotState> {
   @Override
   public void periodic() {
     super.periodic(); 
-    DogLog.log(getName() + "/is Coral Mode", RobotMode.getInstance().inCoralMode());
-    DogLog.log(getName() + "/Is capped", isHeightCapped);
+    DogLog.log(name + "/is Coral Mode", RobotMode.getInstance().inCoralMode());
+    DogLog.log(name + "/Is capped", isHeightCapped);
     if (RobotManager.getInstance().getState() == RobotState.SCORE_ALGAE && timeout(0.165)) {
       manipulator.setState(ManipulatorState.SCORE_ALGAE);
     }

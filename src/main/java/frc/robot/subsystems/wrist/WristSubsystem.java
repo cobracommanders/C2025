@@ -23,7 +23,7 @@ import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
 
 public class WristSubsystem extends StateMachine<WristState>{
-    
+  private final String name = getName();
   public final TalonFX wristMotor;
   private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(WristConstants.P).withKI(WristConstants.I).withKD(WristConstants.D).withKG(Constants.WristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((18.0 / 1.0)));
   private double wristPosition;
@@ -135,10 +135,10 @@ public class WristSubsystem extends StateMachine<WristState>{
     absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513 - 0.023 + 0.041;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
-    DogLog.log(getName() + "/Wrist Position", wristPosition);
-    DogLog.log(getName() + "/Wrist AtGoal", atGoal());
-    DogLog.log(getName() + "/wrist current", motorCurrent);
-    DogLog.log(getName() + "/encoder position", absolutePosition);
+    DogLog.log(name + "/Wrist Position", wristPosition);
+    DogLog.log(name + "/Wrist AtGoal", atGoal());
+    DogLog.log(name + "/wrist current", motorCurrent);
+    DogLog.log(name + "/encoder position", absolutePosition);
   }
 
   @Override
@@ -166,7 +166,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
   public void setWristPosition(double position){
     wristMotor.setControl(motor_request.withPosition(position));
-    DogLog.log(getName() + "/Wrist Setpoint", position);
+    DogLog.log(name + "/Wrist Setpoint", position);
   }
 
     @Override

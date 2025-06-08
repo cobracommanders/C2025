@@ -73,8 +73,8 @@ public class LimelightLocalization{
     if (tagCountMiddle == 0) {
       return AlignmentState.INVALID;
     }
-    else if (MathUtil.isNear(CommandSwerveDrivetrain.getInstance().getState().Pose.getX(), FieldConstants.getInstance().bargeCoordinate + bargeOffset, tolerance) 
-          || MathUtil.isNear(CommandSwerveDrivetrain.getInstance().getState().Pose.getX(), FieldConstants.getInstance().bargeCoordinate - bargeOffset, tolerance)) {
+    else if (MathUtil.isNear(CommandSwerveDrivetrain.getInstance().currentState.Pose.getX(), FieldConstants.getInstance().bargeCoordinate + bargeOffset, tolerance) 
+          || MathUtil.isNear(CommandSwerveDrivetrain.getInstance().currentState.Pose.getX(), FieldConstants.getInstance().bargeCoordinate - bargeOffset, tolerance)) {
       return AlignmentState.ALIGNED;
     } else {
       return AlignmentState.NOT_ALIGNED;
@@ -105,7 +105,7 @@ public class LimelightLocalization{
       case 1:
         return 130;
       default:
-        return CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees();
+        return CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees();
     }
   }
 
@@ -136,7 +136,7 @@ public class LimelightLocalization{
       case 22:
         return 120;
       default:
-      return CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees();
+      return CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees();
     }
   }
 
@@ -173,13 +173,13 @@ public class LimelightLocalization{
 
   public double getBargeSnapAngle() {
     if (!FmsSubsystem.isRedAlliance()) {
-      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees()), 180, 90)) {
+      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees()), 180, 90)) {
         return 180;
       } else {
         return 0;
       }
     } else {
-      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees()), 180, 90)) {
+      if (MathUtil.isNear(Math.abs(CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees()), 180, 90)) {
         return 0;
       } else {
         return 180;
@@ -214,9 +214,9 @@ public class LimelightLocalization{
     rejectRightData = false;
     rejectMiddleData = false;
     
-    LimelightHelpers.SetRobotOrientation("limelight-left", CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
-    LimelightHelpers.SetRobotOrientation("limelight-right", CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
-    LimelightHelpers.SetRobotOrientation("limelight-middle", CommandSwerveDrivetrain.getInstance().getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.SetRobotOrientation("limelight-left", CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.SetRobotOrientation("limelight-right", CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers.SetRobotOrientation("limelight-middle", CommandSwerveDrivetrain.getInstance().currentState.Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
     LimelightHelpers.PoseEstimate mt2l = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
     LimelightHelpers.PoseEstimate mt2r = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-right");
     LimelightHelpers.PoseEstimate mt2m = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-middle");

@@ -12,6 +12,7 @@ import frc.robot.StateMachine;
 
 
 public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
+    private final String name = getName();
     public final TalonFX climberWheelMotor;
     private final TalonFXConfiguration motor_config = new TalonFXConfiguration();
     private double climberWheelSpeed;
@@ -40,7 +41,7 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
     public void collectInputs(){
       //climberWheelSpeed = climberWheelMotor.get();
       climberWheelStatorCurrent = climberWheelMotor.getStatorCurrent().getValueAsDouble();
-      DogLog.log(getName() + "/Climber wheel motor stator Current", climberWheelStatorCurrent);
+      DogLog.log(name + "/Climber wheel motor stator Current", climberWheelStatorCurrent);
       //DogLog.log(getName() + "/Climber wheel motor speed", climberWheelSpeed);
     }
 
@@ -55,7 +56,7 @@ public class ClimberWheelSubsystem extends StateMachine<ClimberWheelState>{
     }
 
       public void setClimberWheelPositions(double climberWheelSpeed) {
-        DogLog.log(getName() + "/Climber wheel speed", climberWheelSpeed);
+        DogLog.log(name + "/Climber wheel speed", climberWheelSpeed);
         climberWheelMotor.set(climberWheelSpeed);
       }
       

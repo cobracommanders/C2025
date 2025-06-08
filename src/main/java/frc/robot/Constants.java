@@ -25,7 +25,6 @@ public static final class ElevatorConstants{
   public static final double D = 0;
   public static final double G = 0.5075;
   public static final double MotionMagicAcceleration = 50; //40
-  public static final double AutoMotionMagicAcceleration = 55; //40
   public static final double MotionMagicCruiseVelocity = 250; //250
   public static final double MotionMagicJerk = 300; //300
 }
