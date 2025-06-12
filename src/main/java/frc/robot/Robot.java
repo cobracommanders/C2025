@@ -44,7 +44,7 @@ public class Robot extends TimedRobot{
     public void robotInit() {
         controls.configureDriverCommands();
         controls.configureOperatorCommands();
-        DogLog.setOptions(new DogLogOptions().withNtPublish(false));
+        //DogLog.setOptions(new DogLogOptions().withNtPublish(false));
 
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);

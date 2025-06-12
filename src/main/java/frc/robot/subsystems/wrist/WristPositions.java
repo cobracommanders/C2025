@@ -1,7 +1,7 @@
 package frc.robot.subsystems.wrist;
 
 public class WristPositions {
-    public static final double IDLE = 0.46;
+    public static final double IDLE = 0.37;
     public static final double PRE_L4 = 0.1;
     public static double L1 = 0.1; // -0.02
     public static double L1_ROW1 = 0.1; // -0.02

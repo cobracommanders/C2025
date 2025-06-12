@@ -43,12 +43,12 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   }
   
   protected ElbowState getNextState(ElbowState currentState) {
-    if (getState() == ElbowState.HOME_ELBOW && this.atGoal()) { 
-      motor.setPosition(0);
-      return ElbowState.INVERTED_IDLE;
-    } else {
-      return currentState;
-    }
+    // if (getState() == ElbowState.HOME_ELBOW && this.atGoal()) { 
+    //   motor.setPosition(0);
+    //   return ElbowState.INVERTED_IDLE;
+    // } else {
+    return currentState;
+    // }
   }
 
   public void setL1Row() {
@@ -125,31 +125,31 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   public void periodic() {
     super.periodic();
 
-    // if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-    //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    //   motor.getConfigurator().apply(motor_config);
-    //   brakeModeEnabled = false;
-    //   }
-    // else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
-    //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    //   motor.getConfigurator().apply(motor_config);
-    //   brakeModeEnabled = true;
-    // }
+    if (DriverStation.isDisabled() && brakeModeEnabled == true) {
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      motor.getConfigurator().apply(motor_config);
+      brakeModeEnabled = false;
+      }
+    else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      motor.getConfigurator().apply(motor_config);
+      brakeModeEnabled = true;
+    }
 
-    //  if (DriverStation.isDisabled()) {
-    //   if (lowestSeenHeight > elbowPosition) {
-    //     lowestSeenHeight = elbowPosition;
-    //     } else {
+     if (DriverStation.isDisabled()) {
+      if (lowestSeenHeight > elbowPosition) {
+        lowestSeenHeight = elbowPosition;
+        } else {
 
-    //     if (!preMatchHomingOccured) {
-    //         double homingEndPosition = 0;
-    //         double homedPosition = homingEndPosition + (elbowPosition - lowestSeenHeight);
-    //         motor.setPosition(homedPosition);
+        if (!preMatchHomingOccured) {
+            double homingEndPosition = 0;
+            double homedPosition = homingEndPosition + (elbowPosition - lowestSeenHeight);
+            motor.setPosition(homedPosition);
 
-    //         preMatchHomingOccured = true;
-    //       }
-        //}
-      //}
+            preMatchHomingOccured = true;
+          }
+        }
+      }
     }
 
   public void setElbowPosition(double position) {

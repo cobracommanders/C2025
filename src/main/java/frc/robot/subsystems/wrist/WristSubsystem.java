@@ -40,7 +40,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     super(WristState.INVERTED_IDLE);
     wristMotor = new TalonFX(Ports.WristPorts.WRIST_MOTOR);
     encoder = new DutyCycle(new DigitalInput(Ports.WristPorts.ENCODER));
-    motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     motor_config.MotionMagic.MotionMagicCruiseVelocity = WristConstants.MotionMagicCruiseVelocity;
     motor_config.MotionMagic.MotionMagicAcceleration = WristConstants.MotionMagicAcceleration;
     motor_config.MotionMagic.MotionMagicJerk = WristConstants.MotionMagicJerk;
@@ -50,13 +50,8 @@ public class WristSubsystem extends StateMachine<WristState>{
     isSynced = false;
   }
   protected WristState getNextState(WristState currentState) {
-    if (getState() == WristState.HOME_WRIST && this.atGoal()) {
-      wristMotor.setPosition(0.38);
-      return WristState.INVERTED_IDLE;
-    } else {
       return currentState;
     }
-  }
 
   public void setL1Row() {
     if (RobotMode.getInstance().inHighL1Mode()) {
@@ -132,7 +127,7 @@ public class WristSubsystem extends StateMachine<WristState>{
 
     @Override
   public void collectInputs(){
-    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513 - 0.023 + 0.041;
+    absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513 - 0.023 + 0.041 + 0.024;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
     DogLog.log(name + "/Wrist Position", wristPosition);
@@ -145,16 +140,16 @@ public class WristSubsystem extends StateMachine<WristState>{
   public void periodic(){
     super.periodic();
 
-      if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        wristMotor.getConfigurator().apply(motor_config);
-        brakeModeEnabled = false;
-      }
-      else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
-        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        wristMotor.getConfigurator().apply(motor_config);
-        brakeModeEnabled = true;
-      }
+      // if (DriverStation.isDisabled() && brakeModeEnabled == true) {
+      //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      //   wristMotor.getConfigurator().apply(motor_config);
+      //   brakeModeEnabled = false;
+      // }
+      // else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
+      //   motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      //   wristMotor.getConfigurator().apply(motor_config);
+      //   brakeModeEnabled = true;
+      //}
       if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(0.5) && !isSynced) {
         syncEncoder();
         isSynced = true;
