@@ -19,4 +19,3 @@ public class ElevatorPositions {
         public static double INVERTED_CORAL_STATION = 1.55;
         public static double PROCESSOR = 0.1;
 } 
-
