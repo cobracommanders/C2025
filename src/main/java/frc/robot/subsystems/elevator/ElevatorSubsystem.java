@@ -66,7 +66,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     canCoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.9;
     canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
     elevatorEncoder.getConfigurator().apply(canCoderConfig);
-    tolerance = 0.1;
+    tolerance = 0.15;
   }
   public void setTeleopConfig() {
     left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.MotionMagicAcceleration;
@@ -145,52 +145,52 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   public void increaseSetpoint(){
     switch (getState()) {
       case L1 -> {
-        ElevatorPositions.L1 += 0.1;
+        ElevatorPositions.L1 += 0.1; //done
         setElevatorPosition(ElevatorPositions.L1);
         break;
       }
       case L2 -> {
-        ElevatorPositions.L2 += 0.1;
+        ElevatorPositions.L2 += 0.1; //done
         setElevatorPosition(ElevatorPositions.L2);
         break;
       }
       case L3 -> {
-        ElevatorPositions.L3 += 0.1;
+        ElevatorPositions.L3 += 0.1; //done
         setElevatorPosition(ElevatorPositions.L3);
         break;
       }
       case LOW_ALGAE -> {
-        ElevatorPositions.LOW_ALGAE += 0.1;
+        ElevatorPositions.LOW_ALGAE += 0.1; //done
         setElevatorPosition(ElevatorPositions.LOW_ALGAE);
         break;
       }
       case HIGH_ALGAE -> {
-        ElevatorPositions.HIGH_ALGAE += 0.1;
+        ElevatorPositions.HIGH_ALGAE += 0.1; //done
         setElevatorPosition(ElevatorPositions.HIGH_ALGAE);
         break;
       }
       case GROUND_ALGAE -> {
-        ElevatorPositions.GROUND_ALGAE += 0.1;
+        ElevatorPositions.GROUND_ALGAE += 0.1; //done
         setElevatorPosition(ElevatorPositions.GROUND_ALGAE);
         break;
       }
       case FAILSAFE_GROUND_ALGAE -> {
-        ElevatorPositions.FAILSAFE_GROUND_ALGAE += 0.1;
+        ElevatorPositions.FAILSAFE_GROUND_ALGAE += 0.1; //done
         setElevatorPosition(ElevatorPositions.FAILSAFE_GROUND_ALGAE);
         break;
       }
       case L4_MAX -> {
-        ElevatorPositions.L4_MAX += 0.1;
+        ElevatorPositions.L4_MAX += 0.1; //done
         setElevatorPosition(ElevatorPositions.L4_MAX);
         break;
       }
       case INVERTED_CORAL_STATION -> {
-        ElevatorPositions.INVERTED_CORAL_STATION += 0.1;
+        ElevatorPositions.INVERTED_CORAL_STATION += 0.1; //done
         setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
         break;
       }
       case PROCESSOR -> {
-        ElevatorPositions.PROCESSOR += 0.1;
+        ElevatorPositions.PROCESSOR += 0.1; //done
         setElevatorPosition(ElevatorPositions.PROCESSOR);
         break;
       }

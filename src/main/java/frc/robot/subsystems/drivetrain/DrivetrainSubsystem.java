@@ -204,9 +204,9 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     limelightLocalization.update();
     drivetrainState = drivetrain.getState();
     teleopSpeeds = new ChassisSpeeds(
-      -Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * Robot.controls.driver.leftY() * MaxSpeed, 
-      -Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * Robot.controls.driver.leftX() * MaxSpeed, 
-      Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * Robot.controls.driver.rightX() * MaxAngularRate);
+      -Robot.controls.driver.leftY() * Robot.controls.driver.leftY()*.8 * Robot.controls.driver.leftY() * MaxSpeed, 
+      -Robot.controls.driver.leftX() * Robot.controls.driver.leftX()*.8 * Robot.controls.driver.leftX() * MaxSpeed, 
+      Robot.controls.driver.rightX() * Robot.controls.driver.rightX()*.8 * Robot.controls.driver.rightX() * MaxAngularRate);
 
     boolean isSlow = false;
     if (!RobotManager.getInstance().isHeightCapped) {
