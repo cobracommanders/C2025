@@ -1,10 +1,15 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.drivers.Xbox;
 import frc.robot.subsystems.drivetrain.CommandSwerveDrivetrain;
 import frc.robot.subsystems.drivetrain.DrivetrainSubsystem;
+import frc.robot.subsystems.elbow.ElbowSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.manipulator.ManipulatorSpeeds;
+import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
@@ -68,6 +73,20 @@ public class Controls {
         operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
         operator.rightStick().onTrue(Robot.robotCommands.failsafeClimbCommand());
     }
+
+    public void configureTestControls(){
+        driver.A().onTrue(runOnce(() -> ManipulatorSubsystem.getInstance().setManipulatorSpeeds(ManipulatorSpeeds.INTAKE_CORAL)));
+        driver.A().onFalse(runOnce(() -> ManipulatorSubsystem.getInstance().setManipulatorSpeeds(0)));
+        driver.rightBumper().onTrue(runOnce(() -> ElbowSubsystem.getInstance().tickUp()));
+        driver.leftBumper().onTrue(runOnce(() -> ElbowSubsystem.getInstance().tickDown()));
+
+        driver.B().onTrue(runOnce(() -> WristSubsystem.getInstance().tickUp()));
+        driver.X().onTrue(runOnce(() -> WristSubsystem.getInstance().tickDown()));
+
+        driver.POV90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
+        driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
+    }
+
 
     private static Controls instance;
 

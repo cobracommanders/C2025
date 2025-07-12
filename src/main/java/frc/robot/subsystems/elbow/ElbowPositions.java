@@ -1,8 +1,8 @@
 package frc.robot.subsystems.elbow;
 
 public class ElbowPositions {
-    public static final double IDLE = 0.225;
-    public static final double INVERTED_IDLE = 0;
+    public static double IDLE = 0.225;
+    public static double INVERTED_IDLE = 0;
     public static double L1 = 0;
     public static double L1_ROW1 = 0;
     public static double L1_ROW2 = 0;

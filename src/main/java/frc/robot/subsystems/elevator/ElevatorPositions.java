@@ -2,7 +2,7 @@ package frc.robot.subsystems.elevator;
 
 public class ElevatorPositions {
         public static double manualSetpoint;
-        public static final double IDLE = 0.1;
+        public static double IDLE = 0.1;
         public static double L1 = 1.1;
         public static double L1_ROW1 = 0.8; // 1.2
         public static double L1_ROW2 = 0.9; // 1.57

@@ -547,7 +547,7 @@ public class RobotManager extends StateMachine<RobotState> {
         }
         break;
       case SCORE_L4:
-        if ((timeout(0.75) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous())) {
+        if (timeout(.35) && ((timeout(0.75) && DriverStation.isTeleop()) || (timeout(0.35) && DriverStation.isAutonomous()))) {
           if (currentCycleMode == CycleMode.SUPERCYCLE) {
             if (FieldConstants.getInstance().isNearHighAlgae()) {
               nextState = RobotState.PRE_SUPERCYCLE_HIGH_ALGAE;

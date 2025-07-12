@@ -15,6 +15,7 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotState;
 import frc.robot.subsystems.LED.LED;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.manipulator.ManipulatorSpeeds;
 import frc.robot.subsystems.manipulator.ManipulatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.vision.LimelightState;
@@ -43,9 +44,8 @@ public class Robot extends TimedRobot{
 
     @Override
     public void robotInit() {
-        controls.configureDriverCommands();
-        controls.configureOperatorCommands();
-
+        // controls.configureDriverCommands();
+        // controls.configureOperatorCommands();
         WristSubsystem.getInstance().wristMotor.setPosition(0.38);
         LimelightSubsystem.getInstance().setState(LimelightState.DISABLED);
 
@@ -121,6 +121,8 @@ public class Robot extends TimedRobot{
 
     @Override
     public void teleopInit() {
+        controls.configureDriverCommands();
+        controls.configureOperatorCommands();
         LimelightSubsystem.getInstance().setState(LimelightState.DRIVE);
         CommandScheduler.getInstance().schedule(Robot.robotCommands.setDrivetrainTeleop());
     }
@@ -158,6 +160,14 @@ public class Robot extends TimedRobot{
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
+        controls.configureTestControls();
+        ElevatorSubsystem.getInstance().setTestConfig();
+        
+    }
+
+    @Override
+    public void testPeriodic(){
+        
     }
 
     public static void main(String... args) {

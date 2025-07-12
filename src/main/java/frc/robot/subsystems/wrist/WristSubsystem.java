@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveRequest.Idle;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -129,6 +130,15 @@ public class WristSubsystem extends StateMachine<WristState>{
     wristMotor.setPosition(absolutePosition);
   }
 
+  public void tickUp(){
+    WristPositions.INVERTED_IDLE += .01;
+    setWristPosition(WristPositions.INVERTED_IDLE);
+  }
+
+  public void tickDown(){
+    WristPositions.INVERTED_IDLE -= .01;
+    setWristPosition(WristPositions.INVERTED_IDLE);
+  }
 
     @Override
   public void collectInputs(){

@@ -58,8 +58,10 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     right_motor_config.MotionMagic.MotionMagicJerk = ElevatorConstants.MotionMagicJerk;
     leftMotor = new TalonFX(Ports.ElevatorPorts.LMOTOR);
     rightMotor = new TalonFX(Ports.ElevatorPorts.RMOTOR);
-    left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    // left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    // right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     leftMotor.getConfigurator().apply(left_motor_config);
     rightMotor.getConfigurator().apply(right_motor_config);
     canCoderConfig.MagnetSensor.MagnetOffset = Constants.ElevatorConstants.encoderOffset;
@@ -80,6 +82,15 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
     leftMotor.getConfigurator().apply(left_motor_config);
     rightMotor.getConfigurator().apply(right_motor_config);
   }
+  public void setTestConfig(){
+    left_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    right_motor_config.MotionMagic.MotionMagicAcceleration = ElevatorConstants.AutoMotionMagicAcceleration;
+    left_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    right_motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    leftMotor.getConfigurator().apply(left_motor_config);
+    rightMotor.getConfigurator().apply(right_motor_config);
+  }
+
   protected ElevatorState getNextState(ElevatorState currentState) {
     if (getState() == ElevatorState.HOME_ELEVATOR && this.atGoal()) { 
       leftMotor.setPosition(0);
@@ -144,6 +155,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
 
   public void increaseSetpoint(){
     switch (getState()) {
+      case IDLE -> {
+        ElevatorPositions.IDLE += 0.1; //done
+        setElevatorPosition(ElevatorPositions.IDLE);
+        break;
+      }
       case L1 -> {
         ElevatorPositions.L1 += 0.1; //done
         setElevatorPosition(ElevatorPositions.L1);
@@ -199,6 +215,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
 
   public void decreaseSetpoint(){
     switch (getState()) {
+      case IDLE -> {
+        ElevatorPositions.IDLE -= 0.1; //done
+        setElevatorPosition(ElevatorPositions.IDLE);
+        break;
+      }
       case L1 -> {
         ElevatorPositions.L1 -= 0.1;
         setElevatorPosition(ElevatorPositions.L1);

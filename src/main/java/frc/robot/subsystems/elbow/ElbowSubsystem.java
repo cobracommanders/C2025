@@ -31,7 +31,8 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   
   public ElbowSubsystem() {
     super(ElbowState.HOME_ELBOW);
-    motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    // motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    motor_config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     motor = new TalonFX(Ports.ElbowPorts.ELBOW_MOTOR);
     motor.getConfigurator().apply(motor_config);
     motor_config.MotionMagic.MotionMagicCruiseVelocity = ElbowConstants.MotionMagicCruiseVelocity;
@@ -58,6 +59,16 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       ElbowPositions.L1 = ElbowPositions.L1_ROW1;
       setElbowPosition(ElbowPositions.L1);
     }
+  }
+
+  public void tickUp(){
+    ElbowPositions.INVERTED_IDLE += .01;
+    setElbowPosition(ElbowPositions.INVERTED_IDLE);
+  }
+
+  public void tickDown(){
+    ElbowPositions.INVERTED_IDLE -= .01;
+    setElbowPosition(ElbowPositions.INVERTED_IDLE);
   }
 
    public boolean atGoal() {
