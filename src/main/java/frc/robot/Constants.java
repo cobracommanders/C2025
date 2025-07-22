@@ -1,5 +1,6 @@
 package frc.robot;
 
+//This is the constants Jawn
 public final class Constants {
   public static final class DrivetrainConstants{
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.94;
