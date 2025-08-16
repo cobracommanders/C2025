@@ -20,5 +20,5 @@ public class ElbowPositions {
     public static final double INVERTED_CORAL_STATION = 0.08; //0.1
     public static final double CAGE_FLIP = 0.448; //0.448 //0.225
     public static final double PROCESSOR = 0.25;
-
+    public static final double FUNNEL_INTKAE = 0.02;
 }

@@ -56,12 +56,14 @@ public class Controls {
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
         driver.POV90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = true));
         driver.POVMinus90().onTrue(runOnce(()-> DrivetrainSubsystem.getInstance().crescendoModeEnabled = false));
+        
     }
 
     public void configureOperatorCommands(){
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.rightBumper().onTrue(Robot.robotCommands.algaeIdleCommand());
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
+        operator.back().onTrue(runOnce(() -> toggleFunnel()));
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
@@ -73,7 +75,7 @@ public class Controls {
         operator.leftTrigger().and(operator.rightTrigger()).onTrue(Robot.robotCommands.climbCommand());
         operator.rightStick().onTrue(Robot.robotCommands.failsafeClimbCommand());
     }
-
+    //add: comment in IntakeRollerSubsystem
     public void configureTestControls(){
         driver.A().onTrue(runOnce(() -> ManipulatorSubsystem.getInstance().setManipulatorSpeeds(ManipulatorSpeeds.INTAKE_CORAL)));
         driver.A().onFalse(runOnce(() -> ManipulatorSubsystem.getInstance().setManipulatorSpeeds(0)));
@@ -85,6 +87,19 @@ public class Controls {
 
         driver.POV90().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().increaseSetpoint()));
         driver.POV180().onTrue(runOnce(() -> ElevatorSubsystem.getInstance().decreaseSetpoint()));
+    }
+
+    boolean isFunnel = false;
+    public void toggleFunnel(){
+        WristSubsystem.getInstance().toggleFunnel();
+        ElbowSubsystem.getInstance().toggleFunnel();
+        ElevatorSubsystem.getInstance().toggleFunnel();
+        isFunnel = !isFunnel;
+        if(isFunnel){
+            operator.rumble(1);
+        }else{
+            operator.rumble(0);
+        }
     }
 
 

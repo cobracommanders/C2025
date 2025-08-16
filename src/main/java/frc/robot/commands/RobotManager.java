@@ -104,9 +104,15 @@ public class RobotManager extends StateMachine<RobotState> {
           break;
         case APPLY_HEIGHT_CAP:
           isHeightCapped = true;
+          // if(currentState == RobotState.FUNNEL_INTAKE){
+          //   nextState = RobotState.INTAKE_CORAL_STATION;
+          // }
           break;
         case REMOVE_HEIGHT_CAP:
           isHeightCapped = false;
+          // if(currentState == RobotState.INTAKE_CORAL_STATION){
+          //   nextState = RobotState.FUNNEL_INTAKE;
+          // }
           break;
         case OVERRIDE_STATE:
           currentState = nextState;

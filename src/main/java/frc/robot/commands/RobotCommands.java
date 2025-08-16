@@ -253,17 +253,18 @@ public class RobotCommands {
       () -> (!robot.getState().inverted));
   }
 
-  public Command funnelIntakeCommand() {
-    return new ConditionalCommand(
-      invertIdleCommand() // go to non-inverted idle
-      .andThen(Commands.runOnce(robot::prepareFunnelRequest, requirements)) // Prepare CS (inverted)
-      .andThen(robot.waitForState(RobotState.INVERTED_IDLE)), // Goes back to inverted idle when we're done intaking
+  // public Command funnelIntakeCommand() {
+  //   return new ConditionalCommand(
+  //     invertIdleCommand() // go to non-inverted idle
+  //     .andThen(Commands.runOnce(robot::prepareFunnelRequest, requirements)) // Prepare CS (inverted)
+  //     .andThen(robot.waitForState(RobotState.INVERTED_IDLE)), // Goes back to inverted idle when we're done intaking
         
-      Commands.runOnce(robot::prepareInvertedCoralStationRequest, requirements)
-      .andThen(robot.waitForState(RobotState.INVERTED_IDLE)),
+  //     Commands.runOnce(robot::prepareInvertedCoralStationRequest, requirements)
+  //     .andThen(robot.waitForState(RobotState.INVERTED_IDLE)),
       
-      () -> (!robot.getState().inverted));
-  }
+  //     () -> (!robot.getState().inverted));
+  // }
+
   public Command intakeAlgaeCommand() {
     return runOnce(robot::intakeAlgaeRequest, requirements);
   }

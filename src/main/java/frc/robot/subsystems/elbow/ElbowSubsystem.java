@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elbow;
 
+import org.opencv.core.Mat;
+
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -26,6 +28,7 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
   private double lowestSeenHeight = Double.POSITIVE_INFINITY;
   private boolean brakeModeEnabled;
   private double motorCurrent;
+  public boolean funnelMode = false;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
   
@@ -98,11 +101,16 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       case FAILSAFE_GROUND_ALGAE_INTAKE ->
         MathUtil.isNear(ElbowPositions.GROUND_ALGAE_INTAKE, elbowPosition, tolerance);
       case CORAL_STATION ->
-        MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
+         MathUtil.isNear(ElbowPositions.CORAL_STATION, elbowPosition, tolerance);
       case HOME_ELBOW ->
         motorCurrent > ElbowConstants.homingStallCurrent;
-      case INVERTED_CORAL_STATION ->
-        MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
+      case INVERTED_CORAL_STATION ->{
+        if(!funnelMode){
+          yield MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
+        }else{
+          yield MathUtil.isNear(ElbowPositions.FUNNEL_INTKAE, elbowPosition, tolerance);
+        }
+      }
       case L4_ELBOW ->
         MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
       case CAGE_FLIP ->
@@ -210,7 +218,11 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
           setElbowPosition(ElbowPositions.CORAL_STATION);
         }
         case INVERTED_CORAL_STATION -> {
-          setElbowPosition(ElbowPositions.INVERTED_CORAL_STATION);
+          if(!funnelMode){
+            setElbowPosition(ElbowPositions.INVERTED_CORAL_STATION);  
+          }else{
+            setElbowPosition(ElbowPositions.FUNNEL_INTKAE);
+          }
         }
         case L4_ELBOW -> {
           setElbowPosition(ElbowPositions.L4_ELBOW);
@@ -228,6 +240,11 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
           motor.setControl(new VoltageOut(0));
         }
       }
+    }
+  
+    public void toggleFunnel(){
+      funnelMode = !funnelMode;
+      DogLog.log(getName() + "/funnelMode", funnelMode);
     }
 
   private static ElbowSubsystem instance;

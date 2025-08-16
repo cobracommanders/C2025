@@ -23,10 +23,13 @@ import frc.robot.commands.RobotManager;
 import frc.robot.commands.RobotMode;
 import frc.robot.commands.RobotState;
 
-public class WristSubsystem extends StateMachine<WristState>{
-    
+public class WristSubsystem extends StateMachine<WristState> {
+
   public final TalonFX wristMotor;
-  private final TalonFXConfiguration motor_config = new TalonFXConfiguration().withSlot0(new Slot0Configs().withKP(WristConstants.P).withKI(WristConstants.I).withKD(WristConstants.D).withKG(Constants.WristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine)).withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((18.0 / 1.0)));
+  private final TalonFXConfiguration motor_config = new TalonFXConfiguration()
+      .withSlot0(new Slot0Configs().withKP(WristConstants.P).withKI(WristConstants.I).withKD(WristConstants.D)
+          .withKG(Constants.WristConstants.G).withGravityType(GravityTypeValue.Arm_Cosine))
+      .withFeedback(new FeedbackConfigs().withSensorToMechanismRatio((18.0 / 1.0)));
   private double wristPosition;
   private double motorCurrent;
   private final double tolerance;
@@ -34,9 +37,10 @@ public class WristSubsystem extends StateMachine<WristState>{
   private final DutyCycle encoder;
   private double absolutePosition;
   private boolean isSynced;
+  public boolean funnelMode = false;
 
   private MotionMagicVoltage motor_request = new MotionMagicVoltage(0).withSlot(0);
-  
+
   public WristSubsystem() {
     super(WristState.INVERTED_IDLE);
     wristMotor = new TalonFX(Ports.WristPorts.WRIST_MOTOR);
@@ -50,6 +54,7 @@ public class WristSubsystem extends StateMachine<WristState>{
     brakeModeEnabled = false;
     isSynced = false;
   }
+
   protected WristState getNextState(WristState currentState) {
     if (getState() == WristState.HOME_WRIST && this.atGoal()) {
       wristMotor.setPosition(0.38);
@@ -69,52 +74,58 @@ public class WristSubsystem extends StateMachine<WristState>{
     }
   }
 
-    public boolean atGoal() {
-      return switch (getState()) {
-          case IDLE -> 
-            MathUtil.isNear(WristPositions.IDLE, wristPosition, tolerance);
-          case INVERTED_IDLE ->
-            MathUtil.isNear(WristPositions.INVERTED_IDLE, wristPosition, tolerance);
-          case PRE_L4 ->
-            MathUtil.isNear(WristPositions.PRE_L4, wristPosition, tolerance);
-          case L1 ->
-            MathUtil.isNear(WristPositions.L1, wristPosition, tolerance);
-          case L2 ->
-            MathUtil.isNear(WristPositions.L2, wristPosition, tolerance);
-          case L3 ->
-            MathUtil.isNear(WristPositions.L3, wristPosition, tolerance);
-          case CAPPED_L4 ->
-            MathUtil.isNear(WristPositions.CAPPED_L4, wristPosition, tolerance);
-          case L4_TRANSITION ->
-            MathUtil.isNear(WristPositions.L4_TRANSITION, wristPosition, tolerance);
-          case CORAL_STATION ->
-            MathUtil.isNear(WristPositions.CORAL_STATION, wristPosition, tolerance);
-          case HOME_WRIST ->
-            motorCurrent > WristConstants.homingStallCurrent;
-          case L4_WRIST ->
-            MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
-          case INVERTED_CORAL_STATION ->
-            MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
-          case PRE_ALGAE_SCORE ->
-            MathUtil.isNear(WristPositions.PRE_ALGAE_SCORE, wristPosition, tolerance);
-          case FRONT_ALGAE_SCORE ->
-            MathUtil.isNear(WristPositions.FRONT_ALGAE_SCORE, wristPosition, tolerance);
-          case SCORE_ALGAE ->
-            MathUtil.isNear(WristPositions.ALGAE_SCORE, wristPosition, tolerance);
-          case INTAKE_ALGAE ->
-            MathUtil.isNear(WristPositions.ALGAE_INTAKE, wristPosition, tolerance);
-          case GROUND_ALGAE_INTAKE ->
-            MathUtil.isNear(WristPositions.GROUND_ALGAE_INTAKE, wristPosition, tolerance);
-          case FAILSAFE_GROUND_ALGAE_INTAKE ->
-            MathUtil.isNear(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE, wristPosition, tolerance);
-          case ALGAE_FLICK ->
-            MathUtil.isNear(WristPositions.ALGAE_FLICK, wristPosition, tolerance);
-          case CAGE_FLIP ->
-            MathUtil.isNear(WristPositions.CAGE_FLIP, wristPosition, tolerance);
-          case PROCESSOR ->
-            MathUtil.isNear(WristPositions.PROCESSOR, wristPosition, tolerance);
-          case DISABLED ->
-            true;
+  public boolean atGoal() {
+    return switch (getState()) {
+      case IDLE ->
+        MathUtil.isNear(WristPositions.IDLE, wristPosition, tolerance);
+      case INVERTED_IDLE ->
+        MathUtil.isNear(WristPositions.INVERTED_IDLE, wristPosition, tolerance);
+      case PRE_L4 ->
+        MathUtil.isNear(WristPositions.PRE_L4, wristPosition, tolerance);
+      case L1 ->
+        MathUtil.isNear(WristPositions.L1, wristPosition, tolerance);
+      case L2 ->
+        MathUtil.isNear(WristPositions.L2, wristPosition, tolerance);
+      case L3 ->
+        MathUtil.isNear(WristPositions.L3, wristPosition, tolerance);
+      case CAPPED_L4 ->
+        MathUtil.isNear(WristPositions.CAPPED_L4, wristPosition, tolerance);
+      case L4_TRANSITION ->
+        MathUtil.isNear(WristPositions.L4_TRANSITION, wristPosition, tolerance);
+      case CORAL_STATION -> {
+        yield MathUtil.isNear(WristPositions.CORAL_STATION, wristPosition, tolerance);
+      }
+      case HOME_WRIST ->
+        motorCurrent > WristConstants.homingStallCurrent;
+      case L4_WRIST ->
+        MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
+      case INVERTED_CORAL_STATION -> {
+        if (!funnelMode) {
+          yield MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
+        } else {
+          yield MathUtil.isNear(WristPositions.FUNNEL_INTAKE, wristPosition, tolerance);
+        }
+      }
+      case PRE_ALGAE_SCORE ->
+        MathUtil.isNear(WristPositions.PRE_ALGAE_SCORE, wristPosition, tolerance);
+      case FRONT_ALGAE_SCORE ->
+        MathUtil.isNear(WristPositions.FRONT_ALGAE_SCORE, wristPosition, tolerance);
+      case SCORE_ALGAE ->
+        MathUtil.isNear(WristPositions.ALGAE_SCORE, wristPosition, tolerance);
+      case INTAKE_ALGAE ->
+        MathUtil.isNear(WristPositions.ALGAE_INTAKE, wristPosition, tolerance);
+      case GROUND_ALGAE_INTAKE ->
+        MathUtil.isNear(WristPositions.GROUND_ALGAE_INTAKE, wristPosition, tolerance);
+      case FAILSAFE_GROUND_ALGAE_INTAKE ->
+        MathUtil.isNear(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE, wristPosition, tolerance);
+      case ALGAE_FLICK ->
+        MathUtil.isNear(WristPositions.ALGAE_FLICK, wristPosition, tolerance);
+      case CAGE_FLIP ->
+        MathUtil.isNear(WristPositions.CAGE_FLIP, wristPosition, tolerance);
+      case PROCESSOR ->
+        MathUtil.isNear(WristPositions.PROCESSOR, wristPosition, tolerance);
+      case DISABLED ->
+        true;
     };
   }
 
@@ -126,22 +137,22 @@ public class WristSubsystem extends StateMachine<WristState>{
     return getState() == WristState.INVERTED_IDLE;
   }
 
-  public void syncEncoder(){
+  public void syncEncoder() {
     wristMotor.setPosition(absolutePosition);
   }
 
-  public void tickUp(){
+  public void tickUp() {
     WristPositions.INVERTED_IDLE += .01;
     setWristPosition(WristPositions.INVERTED_IDLE);
   }
 
-  public void tickDown(){
+  public void tickDown() {
     WristPositions.INVERTED_IDLE -= .01;
     setWristPosition(WristPositions.INVERTED_IDLE);
   }
 
-    @Override
-  public void collectInputs(){
+  @Override
+  public void collectInputs() {
     absolutePosition = encoder.getOutput() - 0.01128 - 0.107 - 0.272 + 0.513 - 0.023 + 0.041;
     wristPosition = wristMotor.getPosition().getValueAsDouble();
     motorCurrent = wristMotor.getStatorCurrent().getValueAsDouble();
@@ -152,110 +163,121 @@ public class WristSubsystem extends StateMachine<WristState>{
   }
 
   @Override
-  public void periodic(){
+  public void periodic() {
     super.periodic();
 
-      if (DriverStation.isDisabled() && brakeModeEnabled == true) {
-        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        wristMotor.getConfigurator().apply(motor_config);
-        brakeModeEnabled = false;
-      }
-      else if (DriverStation.isEnabled() && brakeModeEnabled == false)  {
-        motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        wristMotor.getConfigurator().apply(motor_config);
-        brakeModeEnabled = true;
-      }
-      if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(0.5) && !isSynced) {
-        syncEncoder();
-        isSynced = true;
-      }
-      else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
-        isSynced = false;
-      }
+    if (DriverStation.isDisabled() && brakeModeEnabled == true) {
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      wristMotor.getConfigurator().apply(motor_config);
+      brakeModeEnabled = false;
+    } else if (DriverStation.isEnabled() && brakeModeEnabled == false) {
+      motor_config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+      wristMotor.getConfigurator().apply(motor_config);
+      brakeModeEnabled = true;
+    }
+    if (RobotManager.getInstance().getState() == RobotState.INVERTED_IDLE && RobotManager.getInstance().timeout(0.5)
+        && !isSynced) {
+      syncEncoder();
+      isSynced = true;
+    } else if (RobotManager.getInstance().getState() != RobotState.INVERTED_IDLE) {
+      isSynced = false;
+    }
   }
 
-  public void setWristPosition(double position){
+  public void setWristPosition(double position) {
     wristMotor.setControl(motor_request.withPosition(position));
     DogLog.log(getName() + "/Wrist Setpoint", position);
   }
 
-    @Override
-    protected void afterTransition(WristState newState) {
-      switch (newState) {
-        case IDLE -> {
-          setWristPosition(WristPositions.IDLE);
-        }
-        case INVERTED_IDLE -> {
-          setWristPosition(WristPositions.INVERTED_IDLE);
-        }
-        case PRE_L4 -> {
-          setWristPosition(WristPositions.PRE_L4);
-        }
-        case L1 -> {
-          setWristPosition(WristPositions.L1);
-        }
-        case L2 -> {
-          setWristPosition(WristPositions.L2);
-        }
-        case L3 -> {
-          setWristPosition(WristPositions.L3);
-        }
-        case CAPPED_L4 -> {
-          setWristPosition(WristPositions.CAPPED_L4);
-        }
-        case L4_TRANSITION -> {
-          setWristPosition(WristPositions.L4_TRANSITION);
-        }
-        case CORAL_STATION -> {
-          setWristPosition(WristPositions.CORAL_STATION);
-        }
-        case INVERTED_CORAL_STATION -> {
+  @Override
+  protected void afterTransition(WristState newState) {
+    switch (newState) {
+      case IDLE -> {
+        setWristPosition(WristPositions.IDLE);
+      }
+      case INVERTED_IDLE -> {
+        setWristPosition(WristPositions.INVERTED_IDLE);
+      }
+      case PRE_L4 -> {
+        setWristPosition(WristPositions.PRE_L4);
+      }
+      case L1 -> {
+        setWristPosition(WristPositions.L1);
+      }
+      case L2 -> {
+        setWristPosition(WristPositions.L2);
+      }
+      case L3 -> {
+        setWristPosition(WristPositions.L3);
+      }
+      case CAPPED_L4 -> {
+        setWristPosition(WristPositions.CAPPED_L4);
+      }
+      case L4_TRANSITION -> {
+        setWristPosition(WristPositions.L4_TRANSITION);
+      }
+      case CORAL_STATION -> {
+        setWristPosition(WristPositions.CORAL_STATION);
+      }
+      case INVERTED_CORAL_STATION -> {
+        if (!funnelMode) {
           setWristPosition(WristPositions.INVERTED_CORAL_STATION);
+        } else {
+          setWristPosition(WristPositions.FUNNEL_INTAKE);
         }
-        case HOME_WRIST -> {
-          wristMotor.setControl(new VoltageOut(0.38));
-        }
-        case DISABLED-> {
-          wristMotor.setControl(new VoltageOut(0));
-        }
-        case L4_WRIST -> {
-          setWristPosition(WristPositions.L4_WRIST);
-        }
-        case PRE_ALGAE_SCORE -> {
-          setWristPosition(WristPositions.PRE_ALGAE_SCORE);
-        }
-        case FRONT_ALGAE_SCORE -> {
-          setWristPosition(WristPositions.FRONT_ALGAE_SCORE);
-        }
-        case INTAKE_ALGAE -> {
-          setWristPosition(WristPositions.ALGAE_INTAKE);
-        }
-        case GROUND_ALGAE_INTAKE -> {
-          setWristPosition(WristPositions.GROUND_ALGAE_INTAKE);
-        }
-        case FAILSAFE_GROUND_ALGAE_INTAKE -> {
-          setWristPosition(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE);
-        }
-        case SCORE_ALGAE -> {
-          setWristPosition(WristPositions.ALGAE_SCORE);
-        }
-        case ALGAE_FLICK -> {
-          setWristPosition(WristPositions.ALGAE_FLICK);
-        }
-        case CAGE_FLIP -> {
-          setWristPosition(WristPositions.CAGE_FLIP);
-        }
-        case PROCESSOR -> {
-          setWristPosition(WristPositions.PROCESSOR);
-        }
-        default -> {}
+      }
+      case HOME_WRIST -> {
+        wristMotor.setControl(new VoltageOut(0.38));
+      }
+      case DISABLED -> {
+        wristMotor.setControl(new VoltageOut(0));
+      }
+      case L4_WRIST -> {
+        setWristPosition(WristPositions.L4_WRIST);
+      }
+      case PRE_ALGAE_SCORE -> {
+        setWristPosition(WristPositions.PRE_ALGAE_SCORE);
+      }
+      case FRONT_ALGAE_SCORE -> {
+        setWristPosition(WristPositions.FRONT_ALGAE_SCORE);
+      }
+      case INTAKE_ALGAE -> {
+        setWristPosition(WristPositions.ALGAE_INTAKE);
+      }
+      case GROUND_ALGAE_INTAKE -> {
+        setWristPosition(WristPositions.GROUND_ALGAE_INTAKE);
+      }
+      case FAILSAFE_GROUND_ALGAE_INTAKE -> {
+        setWristPosition(WristPositions.FAILSAFE_GROUND_ALGAE_INTAKE);
+      }
+      case SCORE_ALGAE -> {
+        setWristPosition(WristPositions.ALGAE_SCORE);
+      }
+      case ALGAE_FLICK -> {
+        setWristPosition(WristPositions.ALGAE_FLICK);
+      }
+      case CAGE_FLIP -> {
+        setWristPosition(WristPositions.CAGE_FLIP);
+      }
+      case PROCESSOR -> {
+        setWristPosition(WristPositions.PROCESSOR);
+      }
+      default -> {
       }
     }
+  }
+
+  public void toggleFunnel() {
+
+    funnelMode = !funnelMode;
+    DogLog.log(getName() + "/funnelMode", funnelMode);
+  }
 
   private static WristSubsystem instance;
 
   public static WristSubsystem getInstance() {
-      if (instance == null) instance = new WristSubsystem(); // Make sure there is an instance (this will only run once)
-      return instance;
+    if (instance == null)
+      instance = new WristSubsystem(); // Make sure there is an instance (this will only run once)
+    return instance;
   }
 }

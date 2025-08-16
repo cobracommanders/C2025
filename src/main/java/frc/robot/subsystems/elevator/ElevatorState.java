@@ -15,5 +15,5 @@ public enum ElevatorState {
     PROCESSOR,
     HOME_ELEVATOR,
     CORAL_STATION,
-    INVERTED_CORAL_STATION;
+    INVERTED_CORAL_STATION,
 }

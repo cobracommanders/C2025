@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
+import java.util.jar.Attributes.Name;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -42,6 +44,7 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
   private Follower right_motor_request = new Follower(Ports.ElevatorPorts.LMOTOR, true);
   private MotionMagicVoltage left_motor_request = new MotionMagicVoltage(0).withSlot(0);
   private boolean preMatchHomingOccured = false;
+  public boolean funnelMode = false;
   
 
   public ElevatorSubsystem() {
@@ -138,8 +141,13 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           MathUtil.isNear(ElevatorPositions.CORAL_STATION, elevatorPosition, tolerance);
         case HOME_ELEVATOR ->
           (motorCurrent > ElevatorConstants.homingStallCurrent);
-        case INVERTED_CORAL_STATION ->
-          MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
+        case INVERTED_CORAL_STATION ->{
+          if(!funnelMode){
+            yield MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
+          }else{
+            yield MathUtil.isNear(ElevatorPositions.FUNNEL_INTAKE, elevatorPosition, tolerance);
+          }
+        } 
         case PROCESSOR ->
           MathUtil.isNear(ElevatorPositions.PROCESSOR, elevatorPosition, tolerance);
       };
@@ -354,12 +362,21 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           setElevatorPosition(ElevatorPositions.CORAL_STATION);
         }
         case INVERTED_CORAL_STATION -> {
-          setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);
+          if(!funnelMode){
+            setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);  
+          }else{
+            setElevatorPosition(ElevatorPositions.FUNNEL_INTAKE);
+          }
         }
         case PROCESSOR -> {
           setElevatorPosition(ElevatorPositions.PROCESSOR);
         }
       }
+    }
+    public void toggleFunnel(){
+      
+      funnelMode = !funnelMode;
+      DogLog.log(getName() + "/funnelMode", funnelMode);
     }
   
   private static ElevatorSubsystem instance;

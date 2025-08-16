@@ -23,4 +23,5 @@ public class WristPositions {
     public static final double FAILSAFE_GROUND_ALGAE_INTAKE = 0.38;
     public static final double PROCESSOR = 0.492;
     public static final double CAGE_FLIP = 0.55;
+    public static final double FUNNEL_INTAKE = 0.229;
 }
