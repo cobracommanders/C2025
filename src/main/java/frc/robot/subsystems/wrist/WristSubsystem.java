@@ -100,11 +100,11 @@ public class WristSubsystem extends StateMachine<WristState> {
       case L4_WRIST ->
         MathUtil.isNear(WristPositions.L4_WRIST, wristPosition, tolerance);
       case INVERTED_CORAL_STATION -> {
-        if (!funnelMode) {
+        // if (!funnelMode) {
           yield MathUtil.isNear(WristPositions.INVERTED_CORAL_STATION, wristPosition, tolerance);
-        } else {
-          yield MathUtil.isNear(WristPositions.FUNNEL_INTAKE, wristPosition, tolerance);
-        }
+        // } else {
+        //   yield MathUtil.isNear(WristPositions.FUNNEL_INTAKE, wristPosition, tolerance);
+        // }
       }
       case PRE_ALGAE_SCORE ->
         MathUtil.isNear(WristPositions.PRE_ALGAE_SCORE, wristPosition, tolerance);
@@ -220,11 +220,11 @@ public class WristSubsystem extends StateMachine<WristState> {
         setWristPosition(WristPositions.CORAL_STATION);
       }
       case INVERTED_CORAL_STATION -> {
-        if (!funnelMode) {
+        // if (!funnelMode) {
           setWristPosition(WristPositions.INVERTED_CORAL_STATION);
-        } else {
-          setWristPosition(WristPositions.FUNNEL_INTAKE);
-        }
+        // } else {
+        //   setWristPosition(WristPositions.FUNNEL_INTAKE);
+        // }
       }
       case HOME_WRIST -> {
         wristMotor.setControl(new VoltageOut(0.38));

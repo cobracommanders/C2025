@@ -18,5 +18,5 @@ public class ElevatorPositions {
         public static final double CORAL_STATION = 1.15;
         public static double INVERTED_CORAL_STATION = 1.90;
         public static double PROCESSOR = 0.4;
-        public static double FUNNEL_INTAKE = 0.2;
+        public static double FUNNEL_INTAKE = 0.35;
 } 

@@ -142,11 +142,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
         case HOME_ELEVATOR ->
           (motorCurrent > ElevatorConstants.homingStallCurrent);
         case INVERTED_CORAL_STATION ->{
-          if(!funnelMode){
-            yield MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
-          }else{
+          // if(!funnelMode){
+          //   yield MathUtil.isNear(ElevatorPositions.INVERTED_CORAL_STATION, elevatorPosition, tolerance);
+          // }else{
             yield MathUtil.isNear(ElevatorPositions.FUNNEL_INTAKE, elevatorPosition, tolerance);
-          }
+          // }
         } 
         case PROCESSOR ->
           MathUtil.isNear(ElevatorPositions.PROCESSOR, elevatorPosition, tolerance);
@@ -362,11 +362,11 @@ public class ElevatorSubsystem extends StateMachine<ElevatorState>{
           setElevatorPosition(ElevatorPositions.CORAL_STATION);
         }
         case INVERTED_CORAL_STATION -> {
-          if(!funnelMode){
+          // if(!funnelMode){
             setElevatorPosition(ElevatorPositions.INVERTED_CORAL_STATION);  
-          }else{
-            setElevatorPosition(ElevatorPositions.FUNNEL_INTAKE);
-          }
+          // }else{
+          //   setElevatorPosition(ElevatorPositions.FUNNEL_INTAKE);
+          // }
         }
         case PROCESSOR -> {
           setElevatorPosition(ElevatorPositions.PROCESSOR);

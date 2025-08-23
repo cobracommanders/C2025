@@ -105,11 +105,12 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
       case HOME_ELBOW ->
         motorCurrent > ElbowConstants.homingStallCurrent;
       case INVERTED_CORAL_STATION ->{
-        if(!funnelMode){
+        // if(!ad
+        // funnelMode){
           yield MathUtil.isNear(ElbowPositions.INVERTED_CORAL_STATION, elbowPosition, tolerance);
-        }else{
-          yield MathUtil.isNear(ElbowPositions.FUNNEL_INTKAE, elbowPosition, tolerance);
-        }
+        // }else{
+        //   yield MathUtil.isNear(ElbowPositions.FUNNEL_INTKAE, elbowPosition, tolerance);
+        // }
       }
       case L4_ELBOW ->
         MathUtil.isNear(ElbowPositions.L4_ELBOW, elbowPosition, tolerance);
@@ -218,11 +219,11 @@ public class ElbowSubsystem extends StateMachine<ElbowState>{
           setElbowPosition(ElbowPositions.CORAL_STATION);
         }
         case INVERTED_CORAL_STATION -> {
-          if(!funnelMode){
+          // if(!funnelMode){
             setElbowPosition(ElbowPositions.INVERTED_CORAL_STATION);  
-          }else{
-            setElbowPosition(ElbowPositions.FUNNEL_INTKAE);
-          }
+          // }else{
+          //   setElbowPosition(ElbowPositions.FUNNEL_INTKAE);
+          // }
         }
         case L4_ELBOW -> {
           setElbowPosition(ElbowPositions.L4_ELBOW);
