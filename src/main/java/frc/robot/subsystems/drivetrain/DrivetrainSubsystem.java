@@ -266,6 +266,7 @@ public class DrivetrainSubsystem extends StateMachine<DrivetrainState> {
     DogLog.log(getName() + "/robot pose", CommandSwerveDrivetrain.getInstance().getState().Pose);
     DogLog.log(getName() + "/coralStationTag", coralStationTag);
     DogLog.log(getName() + "/target reef pose", targetReefPose);
+    DogLog.log(getName() + "/auto align enabled", crescendoModeEnabled);
   }
   @Override
   public void periodic() {
