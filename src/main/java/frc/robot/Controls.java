@@ -63,7 +63,7 @@ public class Controls {
         operator.leftBumper().onTrue(Robot.robotCommands.idleCommand());
         operator.rightBumper().onTrue(Robot.robotCommands.algaeIdleCommand());
         operator.start().and(operator.back()).onTrue(Robot.robotCommands.homeCommand());
-        // operator.back().onTrue(runOnce(() -> toggleFunnel()));
+         operator.leftStick().onTrue(runOnce(() -> toggleFunnel()));
         operator.POV180().onTrue(Robot.robotCommands.coralModeCommand());
         operator.POVMinus90().onTrue(Robot.robotCommands.L1ToggleCommand());
         operator.POV0().onTrue(Robot.robotCommands.algaeModeCommand());
