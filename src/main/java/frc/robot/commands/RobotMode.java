@@ -28,7 +28,7 @@ public class RobotMode {
     public boolean inRegularCycleMode() {return currentCycleMode == CycleMode.REGULAR_CYCLE;}
 
 
-    public IntakeMode currentIntakeMode = IntakeMode.NORMAL;
+    public IntakeMode currentIntakeMode = IntakeMode.FAILSAFE;
     
     public enum IntakeMode {NORMAL, FAILSAFE}
     
