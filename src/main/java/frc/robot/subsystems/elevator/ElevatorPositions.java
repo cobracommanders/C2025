@@ -13,7 +13,7 @@ public class ElevatorPositions {
         public static double LOW_ALGAE = 1.6;
         public static double HIGH_ALGAE = 3.2;
         public static double GROUND_ALGAE = 0.77; //0.1
-        public static double FAILSAFE_GROUND_ALGAE = 0.7;
+        public static double FAILSAFE_GROUND_ALGAE = 0.1;
         public static final double CAPPED_L4 = 3;
         public static final double CORAL_STATION = 1.15;
         public static double INVERTED_CORAL_STATION = 1.90;
